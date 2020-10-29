@@ -1,0 +1,19 @@
+#+title: A readme for my Emacs config
+#+author: Panadestein
+
+* Simple Emacs config
+
+  This is my =$HOME/.emacs.d/init.el=. I have a very basic config,
+  fine tuned for Python, C and FORTRAN development. It can be extended /ad infinitum/,
+  as usual in Emacs (see for instance [[https://www.emacswiki.org/emacs/WhyUseEmacs][this]]).
+
+* Useful tweaks
+
+  I use Emacs in an *Arch Linux* box, with *Gnome* as desktop environment. I think the
+  systemd unit is the way to go here. It speeds up the startup process af the heavy config
+  file is uploaded only once. A very good explanation can be found [[https://wiki.archlinux.org/index.php/Emacs#Running_Emacs][here]]. After editing 
+  the config file, the unit must be reloaded:
+
+  #+BEGIN_SRC bash
+  systemctl --user restart emacs
+  #+END_SRC

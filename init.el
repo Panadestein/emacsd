@@ -49,6 +49,13 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 
+;; Tabs-bar-mode (somehow tricky for Vim users)
+;; C-x t f "filename" to open a new tab
+;; C-x t 0 to close current tab
+;; C-x t "tabname" to switch to tab
+
+;; (tab-bar-show 1)
+
 ;; Org-mode stuff
 
 (require 'org-tempo)
@@ -68,6 +75,7 @@
 (require 'flyspell)
 (add-hook 'prog-mode-hook 'flyspell-prog-mode)
 (add-hook 'org-mode-hook 'turn-on-flyspell)
+(add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
 (flyspell-mode +1)
 
 ;; Syntax checking with flycheck
@@ -96,6 +104,7 @@
 ;; Latex
 
 (setq TeX-PDF-mode t)
+(setq TeX-save-query nil)
 
 (provide 'init.el)
 ;;; init.el ends here

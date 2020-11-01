@@ -2,8 +2,8 @@
 #+author: Panadestein
 
 This is my =$HOME/.emacs.d/init.el=. I have a very basic config,
-fine tuned for Python, C and FORTRAN development. It can be extended /ad infinitum/,
-as usual in Emacs (see for instance [[https://www.emacswiki.org/emacs/WhyUseEmacs][this]]).
+fine tuned for Python, C and FORTRAN development. I use =use-package=
+throughout the file, to make it portable for future installs.
 
 * Useful tweaks
 

@@ -122,8 +122,7 @@
   :ensure t
   :hook
   ((prog-mode . flyspell-prog-mode)
-   (org-mode . turn-on-flyspell)
-   (LaTeX-mode-hook  . turn-on-flyspell))
+   (org-mode . turn-on-flyspell))
   :config
   (flyspell-mode +1))
 
@@ -189,11 +188,21 @@
 
 ;; Latex
 
-(use-package tex
-  :ensure auctex
-  :config
-  (setq TeX-PDF-mode t)
-  (setq TeX-save-query nil))
+(use-package auctex
+  :ensure t
+  :mode ("\\.tex\\'" . latex-mode)
+  :commands (latex-mode LaTeX-mode plain-tex-mode)
+  :init
+  (progn
+    (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+    (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+    (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
+    (setq TeX-auto-save t
+          TeX-parse-self t
+          TeX-save-query nil
+          TeX-PDF-mode t)))
+
 
 ;; Org-mode stuff
 

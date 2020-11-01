@@ -219,7 +219,17 @@
 (use-package web-mode
   :ensure t
   :defer t
-  :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'"))
+  :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'")
+  :hook
+  ((web-mode . company-mode)
+   (web-mode . webmd-hooks)))
+
+(defun webmd-hooks ()
+  "Some hooks for web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "red"))
 
 (use-package js-mode :ensure nil
   :mode ("\\.js\\'"))

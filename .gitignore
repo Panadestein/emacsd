@@ -4,3 +4,6 @@ elpa
 elpy
 snippets
 places
+transient
+.last-package-update-day
+package-quickstart.el

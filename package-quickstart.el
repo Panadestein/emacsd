@@ -1229,6 +1229,54 @@ Restart Python inferior processes." t nil)
 
 
 )
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/deferred-20170901.1330/deferred-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/deferred-20170901.1330/deferred-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "deferred" '("deferred:")))
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/python-environment-20150310.853/python-environment-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/python-environment-20150310.853/python-environment-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "python-environment" '("python-environment-")))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "test-python-environment" '("pye-")))
+
+
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/py-autopep8-20160925.1052/py-autopep8-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/py-autopep8-20160925.1052/py-autopep8-autoloads.el") (car load-path))))
+
+
+
+(autoload 'py-autopep8 "py-autopep8" "\
+Deprecated! Use py-autopep8-buffer instead." t nil)
+
+(autoload 'py-autopep8-buffer "py-autopep8" "\
+Uses the \"autopep8\" tool to reformat the current buffer." t nil)
+
+(autoload 'py-autopep8-enable-on-save "py-autopep8" "\
+Pre-save hook to be used before running autopep8." t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "py-autopep8" '("py-autopep8-")))
+
+
+)
 (let ((load-file-name "/home/rpanades/.emacs.d/elpa/powerline-20200817.1321/powerline-autoloads.el"))
 
 (add-to-list 'load-path (directory-file-name
@@ -1298,6 +1346,17 @@ Setup a nano-like mode-line." t nil)
 (if (fboundp 'register-definition-prefixes) (register-definition-prefixes "powerline-themes" '("powerline-")))
 
 
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/popup-20200610.317/popup-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/popup-20200610.317/popup-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "popup" '("popup-")))
 
 
 )
@@ -4119,6 +4178,228 @@ mode otherwise.
 
 
 )
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/concurrent-20161229.330/concurrent-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/concurrent-20161229.330/concurrent-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "concurrent" '("cc:")))
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/ctable-20171006.11/ctable-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/ctable-20171006.11/ctable-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "ctable" '("ctbl:")))
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/epc-20140610.534/epc-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/epc-20140610.534/epc-autoloads.el") (car load-path))))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "epc" '("epc:")))
+
+
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "epcs" '("epcs:")))
+
+
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/jedi-core-20191011.1750/jedi-core-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/jedi-core-20191011.1750/jedi-core-autoloads.el") (car load-path))))
+
+
+
+(autoload 'jedi:start-dedicated-server "jedi-core" "\
+Start Jedi server dedicated to this buffer.
+This is useful, for example, when you want to use different
+`sys.path' for some buffer.  When invoked as an interactive
+command, it asks you how to start the Jedi server.  You can edit
+the command in minibuffer to specify the way Jedi server run.
+
+If you want to setup how Jedi server is started programmatically
+per-buffer/per-project basis, make `jedi:server-command' and
+`jedi:server-args' buffer local and set it in `python-mode-hook'.
+See also: `jedi:server-args'.
+
+\(fn COMMAND)" t nil)
+
+(autoload 'helm-jedi-related-names "jedi-core" "\
+Find related names of the object at point using `helm' interface." t nil)
+
+(autoload 'anything-jedi-related-names "jedi-core" "\
+Find related names of the object at point using `anything' interface." t nil)
+
+(autoload 'jedi:setup "jedi-core" "\
+Fully setup jedi.el for current buffer.
+It setups `ac-sources' or `company-backends' and turns
+`jedi-mode' on.
+
+This function is intended to be called from `python-mode-hook',
+like this::
+
+       (add-hook 'python-mode-hook 'jedi:setup)
+
+You can also call this function as a command, to quickly test
+what jedi can do." t nil)
+
+(autoload 'jedi:install-server "jedi-core" "\
+This command installs Jedi server script jediepcserver.py in a
+Python environment dedicated to Emacs.  By default, the
+environment is at ``~/.emacs.d/.python-environments/default/``.
+This environment is automatically created by ``virtualenv`` if it
+does not exist.
+
+Run this command (i.e., type ``M-x jedi:install-server RET``)
+whenever Jedi.el shows a message to do so.  It is a good idea to
+run this every time after you update Jedi.el to sync version of
+Python modules used by Jedi.el and Jedi.el itself.
+
+You can modify the location of the environment by changing
+`jedi:environment-root' and/or `python-environment-directory'.  More
+specifically, Jedi.el will install Python modules under the directory
+``PYTHON-ENVIRONMENT-DIRECTORY/JEDI:ENVIRONMENT-ROOT``.  Note that you
+need command line program ``virtualenv``.  If you have the command in
+an unusual location, use `python-environment-virtualenv' to specify the
+location.
+
+.. NOTE:: jediepcserver.py is installed in a virtual environment but it
+   does not mean Jedi.el cannot recognize the modules in virtual
+   environment you are using for your Python development.  Jedi
+   EPC server recognize the virtualenv it is in (i.e., the
+   environment variable ``VIRTUAL_ENV`` in your Emacs) and then
+   add modules in that environment to its ``sys.path``.  You can
+   also add ``--virtual-env PATH/TO/ENV`` to `jedi:server-args'
+   to include modules of virtual environment even you launch
+   Emacs outside of the virtual environment.
+
+.. NOTE:: It is highly recommended to use this command to install
+   Python modules for Jedi.el.  You still can install Python
+   modules used by Jedi.el manually.  However, you are then
+   responsible for keeping Jedi.el and Python modules compatible.
+
+See also:
+
+- https://github.com/tkf/emacs-jedi/pull/72
+- https://github.com/tkf/emacs-jedi/issues/140#issuecomment-37358527" t nil)
+
+(autoload 'jedi:reinstall-server "jedi-core" "\
+Reinstall Jedi server script jediepcserver.py." t nil)
+
+(autoload 'jedi:install-server-block "jedi-core" "\
+Blocking version `jedi:install-server'." nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jedi-core" '("jedi")))
+
+
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/auto-complete-20201011.1341/auto-complete-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/auto-complete-20201011.1341/auto-complete-autoloads.el") (car load-path))))
+
+
+
+(autoload 'auto-complete "auto-complete" "\
+Start auto-completion at current point.
+
+\(fn &optional SOURCES)" t nil)
+
+(autoload 'auto-complete-mode "auto-complete" "\
+AutoComplete mode
+
+If called interactively, enable Auto-Complete mode if ARG is
+positive, and disable it if ARG is zero or negative.  If called
+from Lisp, also enable the mode if ARG is omitted or nil, and
+toggle it if ARG is `toggle'; disable the mode otherwise.
+
+\(fn &optional ARG)" t nil)
+
+(put 'global-auto-complete-mode 'globalized-minor-mode t)
+
+(defvar global-auto-complete-mode nil "\
+Non-nil if Global Auto-Complete mode is enabled.
+See the `global-auto-complete-mode' command
+for a description of this minor mode.
+Setting this variable directly does not take effect;
+either customize it (see the info node `Easy Customization')
+or call the function `global-auto-complete-mode'.")
+
+(custom-autoload 'global-auto-complete-mode "auto-complete" nil)
+
+(autoload 'global-auto-complete-mode "auto-complete" "\
+Toggle Auto-Complete mode in all buffers.
+With prefix ARG, enable Global Auto-Complete mode if ARG is positive;
+otherwise, disable it.  If called from Lisp, enable the mode if
+ARG is omitted or nil.
+
+Auto-Complete mode is enabled in all buffers where
+`auto-complete-mode-maybe' would do it.
+See `auto-complete-mode' for more information on Auto-Complete mode.
+
+\(fn &optional ARG)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "auto-complete" '("ac-" "auto-complete-mode")))
+
+
+
+(autoload 'ac-config-default "auto-complete-config" "\
+No documentation." nil nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "auto-complete-config" '("ac-")))
+
+
+
+
+)
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/jedi-20191011.1750/jedi-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/jedi-20191011.1750/jedi-autoloads.el") (car load-path))))
+
+
+
+(autoload 'jedi:ac-setup "jedi" "\
+Add Jedi AC sources to `ac-sources'.
+
+If auto-completion is all you need, you can call this function instead
+of `jedi:setup', like this::
+
+   (add-hook 'python-mode-hook 'jedi:ac-setup)
+
+Note that this function calls `auto-complete-mode' if it is not
+already enabled, for people who don't call `global-auto-complete-mode'
+in their Emacs configuration." t nil)
+
+(autoload 'jedi:complete "jedi" "\
+Complete code at point.
+
+\(fn &key (EXPAND ac-expand-on-auto-complete))" t nil)
+
+(autoload 'jedi:auto-complete-mode "jedi" nil nil nil)
+
+(setq jedi:setup-function #'jedi:ac-setup jedi:mode-function #'jedi:auto-complete-mode)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "jedi" '("jedi:")))
+
+
+)
 (let ((load-file-name "/home/rpanades/.emacs.d/elpa/highlight-indentation-20181204.839/highlight-indentation-autoloads.el"))
 
 (add-to-list 'load-path (directory-file-name
@@ -5101,6 +5382,23 @@ See the documentation of `company-backends' for COMMAND and ARG.
 
 
 )
+(let ((load-file-name "/home/rpanades/.emacs.d/elpa/company-jedi-20200324.25/company-jedi-autoloads.el"))
+
+(add-to-list 'load-path (directory-file-name
+                         (or (file-name-directory "/home/rpanades/.emacs.d/elpa/company-jedi-20200324.25/company-jedi-autoloads.el") (car load-path))))
+
+
+
+(autoload 'company-jedi "company-jedi" "\
+A `command:company-mode' completion back-end for jedi-core.
+Provide completion info according to COMMAND and ARG.
+
+\(fn COMMAND &optional ARG &rest IGNORED)" t nil)
+
+(if (fboundp 'register-definition-prefixes) (register-definition-prefixes "company-jedi" '("company-jedi-")))
+
+
+)
 (let ((load-file-name "/home/rpanades/.emacs.d/elpa/auto-package-update-20200826.2227/auto-package-update-autoloads.el"))
 
 (add-to-list 'load-path (directory-file-name
@@ -5460,7 +5758,7 @@ Limit searched to BOUND.
 )
 (setq package-activated-list
       (append
-       '(yasnippet yasnippet-snippets xclip async with-editor web-mode bind-key use-package transient tabbar spinner spacemacs-theme s epl pkg-info raku-mode pyvenv powerline markdown-mode dash git-commit magit lv dash-functional f ht lsp-mode highlight-indentation autothemer gruvbox-theme goto-chg gnuplot flycheck evil company elpy company-lsp auto-package-update auctex alect-themes)
+       '(yasnippet yasnippet-snippets xclip async with-editor web-mode bind-key use-package transient tabbar spinner spacemacs-theme s epl pkg-info raku-mode pyvenv deferred python-environment py-autopep8 powerline popup markdown-mode dash git-commit magit lv dash-functional f ht lsp-mode concurrent ctable epc jedi-core auto-complete jedi highlight-indentation autothemer gruvbox-theme goto-chg gnuplot flycheck evil company elpy company-lsp company-jedi auto-package-update auctex alect-themes)
        package-activated-list))
 (progn
   (require 'info)

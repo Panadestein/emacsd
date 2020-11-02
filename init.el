@@ -174,10 +174,33 @@
 
 ;; Python stuff
 
+(setenv "PATH" (concat (expand-file-name "~/.local/bin:") (getenv "PATH")))
+
 (use-package elpy
   :ensure t
+  :init
+  (setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+  (setq elpy-shell-starting-directory 'current-directory)
+  (setq elpy-shell-echo-input nil)
+  (elpy-enable)
   :config
-  (elpy-enable))
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter"))
+
+(use-package jedi
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t
+        jedi:use-shortcuts t
+        jedi:environment-root "jedi"))
+
+(use-package py-autopep8
+  :ensure t
+  :config
+  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
 
 ;; Raku stuff
 

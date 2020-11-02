@@ -185,6 +185,7 @@
   (setq elpy-shell-echo-input nil)
   (elpy-enable)
   :config
+  (add-hook 'elpy-mode-hook (lambda () (elpy-shell-toggle-dedicated-shell 1)))
   (add-to-list 'python-shell-completion-native-disabled-interpreters
              "jupyter"))
 

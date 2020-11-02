@@ -107,8 +107,7 @@
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package lsp-mode
-  :ensure t
-  :disabled t)
+  :ensure t)
 
 (use-package company-lsp
   :ensure t

@@ -7,3 +7,4 @@ places
 transient
 .last-package-update-day
 package-quickstart.el
+ac-comphist.dat

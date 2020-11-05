@@ -18,6 +18,23 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 
+;; Line numbers
+
+(when (version<= "26.0.50" emacs-version )
+  (global-display-line-numbers-mode))
+
+;; Start Emacs maximized in X
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
 
@@ -60,17 +77,17 @@
   :defer t
   :init (load-theme 'spacemacs-dark t))
 
-(if (display-graphic-p)
-    nil
-  (set-face-attribute 'default nil :background "unspecified-bg"))
+;; Modify face so Emacs is always transparent in terminal
+
+(face-spec-set 'default
+  '((((type tty)) :background "unspecified-bg")))
+
+;; Fancy mode line
 
 (use-package powerline
   :ensure t
   :config
   (powerline-default-theme))
-
-(when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
 
 ;; Practical settings to make Emacs more ergonomic
 ;; Avoid enabling the xterm-mouse-mode option, as it
@@ -79,6 +96,16 @@
 (if (fboundp #'save-place-mode)
   (save-place-mode +1)
   (setq-default save-place t))
+
+;; Multiple cursors support
+;; C-n make and go to next
+;; C-p make and go to prev
+;; g r q stop all cursors
+
+(use-package evil-mc
+  :ensure t
+  :config
+  (global-evil-mc-mode 1))
 
 ;; Tabs-bar-mode (cannot use without side effects in Evil)
 ;; C-x t f "filename" to open a new tab
@@ -298,16 +325,3 @@
 
 (provide 'init.el)
 ;;; init.el ends here
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )

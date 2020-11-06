@@ -14,9 +14,13 @@
 	      custom-safe-themes t)
 
 (menu-bar-mode -1)
-(toggle-scroll-bar -1)
 (tool-bar-mode -1)
 (show-paren-mode 1)
+
+;; Never use scroll bar
+
+(add-to-list 'default-frame-alist
+             '(vertical-scroll-bars . nil))
 
 ;; Line numbers
 

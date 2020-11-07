@@ -8,3 +8,4 @@ transient
 .last-package-update-day
 package-quickstart.el
 ac-comphist.dat
+.mc-lists.el

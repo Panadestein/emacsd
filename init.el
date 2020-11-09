@@ -37,7 +37,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+   '(lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -283,10 +283,29 @@
   :ensure t
   :defer t
   :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'")
+  :bind (("C-c C-v" . browse-url-of-buffer))
   :hook
   ((web-mode . company-mode)
    (web-mode . emmet-mode)
+   (web-mode . (lambda () (flyspell-mode 1)))
    (web-mode . webmd-hooks)))
+
+(defun web-mode-flyspefll-verify ()
+  (let ((f (get-text-property (- (point) 1) 'face)))
+    (not (memq f '(web-mode-html-attr-value-face
+                   web-mode-html-tag-face
+                   web-mode-html-attr-name-face
+                   web-mode-doctype-face
+                   web-mode-keyword-face
+                   web-mode-function-name-face
+                   web-mode-variable-name-face
+                   web-mode-css-property-name-face
+                   web-mode-css-selector-face
+                   web-mode-css-color-face
+                   web-mode-type-face
+                   )
+               ))))
+(put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspefll-verify)
 
 (use-package emmet-mode
   :ensure t)

@@ -17,6 +17,10 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 
+;; Keybindings
+
+(global-set-key (kbd "<f9>") 'ranger)
+
 ;; Never use scroll bar
 
 (add-to-list 'default-frame-alist
@@ -37,7 +41,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+   '(irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -173,14 +177,43 @@
 (use-package yasnippet-snippets
   :after yasnippet)
 
+;; Terminal
+
+(use-package shell-pop
+  :ensure t
+  :bind (("C-c p" . shell-pop))
+  :config
+  (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*"
+				     (lambda nil (ansi-term shell-pop-term-shell)))))
+  (setq shell-pop-term-shell "/bin/bash")
+  ;; need to do this manually or not picked up by `shell-pop'
+  (shell-pop--set-shell-type 'shell-pop-shell-type shell-pop-shell-type))
+
+;; File browser
+
+(use-package ranger
+  :ensure t
+  :config
+  (setq ranger-preview-file t))
+
 ;; SSH with TRAMP
 
 (use-package tramp
-  :defer t)
+  :ensure t)
 
 ;; FORTRAN stuff
 
-(add-to-list 'auto-mode-alist '("\\.f\\'" . f90-mode))
+(use-package f90-mode
+  :mode ("\\.f\\'" "\\.f90\\'")
+  :hook
+  (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
+
+;; IRPF90
+
+(use-package irp-mode
+  :ensure nil
+  :mode ("\\.irp.f\\'")
+  :load-path "~/.emacs.d/lib")
 
 ;; C/C++ stuff
 
@@ -232,6 +265,12 @@
   :ensure t
   :config
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
+;; Perl stuff
+
+(use-package cperl-mode
+  :ensure t
+  :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 
 ;; Raku stuff
 

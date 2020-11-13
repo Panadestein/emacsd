@@ -9,3 +9,5 @@ transient
 package-quickstart.el
 ac-comphist.dat
 .mc-lists.el
+tramp
+eshell

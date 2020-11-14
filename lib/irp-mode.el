@@ -1,41 +1,41 @@
-;;; irpmode.el --- A major mode for dealing with IRPF90 files
+;;; irp-mode.el --- A major mode for dealing with IRPF90 files
 
 ;;; Commentary:
 ;; An attempt to support Scemama's IRPF90 in Emacs
-;; Package-Requires: ((dash "2.17.0"))
 
 ;;; Code:
 
-;(defconst irp-mode-syntax-table
-;  (-let [table (copy-syntax-table f90-mode-syntax-table)]
-;    ;; Additional syntax
-;    table)
-;  "IRPF90 syntax table.")
+;; Define IRPF90 extended FORTRAN syntax
 
-(defconst irp--kwds-constants
-  '("BEGIN_PROVIDER" "END_PROVIDER" "BEGIN_DOC"
-    "END_DOC" "double precision")
-  "IRPF90 constant keywords.")
+(defvar irp-font-lock-keywords)
 
-(defconst irp--font-lock-kwds-constants
-  (list
-   (rx-to-string
-    `(: (or ,@irp--kwds-constants)))
-   '(0 font-lock-constant-face))
-  "IRPF90 constant keywords.")
+(setq irp-font-lock-keywords
+      (let* (
+             ;; Define different keywords
+	     (x-keywords '("BEGIN_PROVIDER" "END_PROVIDER" "ASSERT"
+			    "FREE" "PROVIDE" "BEGIN_TEMPLATE"
+			    "END_TEMPLATE" "BEGIN_SHELL"
+			    "END_SHELL" "IRP_IF" "IRP_ELSE"))
+             (x-types '("double precision" "integer"))
+	     (x-comments '("BEGIN_DOC" "END_DOC"))
 
-(defconst irp-font-lock-kwds
-  (list irp--font-lock-kwds-constants)
-  "All IRPF90 font lock keywords.")
+             ;; Generate regex
+             (x-keywords-regexp (regexp-opt x-keywords 'words))
+             (x-types-regexp (regexp-opt x-types 'words))
+             (x-comments-regexp (regexp-opt x-comments 'words)))
 
-(defun irp-mode ()
+	`(
+	  (,x-types-regexp . font-lock-type-face)
+          (,x-keywords-regexp . font-lock-preprocessor-face)
+          (,x-comments-regexp . font-lock-comment-face)
+          )))
+
+;;;###autoload
+(define-derived-mode irp-mode f90-mode "irp mode"
   "Major mode for editing IRPF90 files."
-  (interactive)
-  (kill-all-local-variables)
-  ;(set-syntax-table irp-mode-syntax-table)
-  (set (make-local-variable 'font-lock-defaults) '(irp-font-lock-kwds))
-  (setq major-mode 'irp-mode)
-  (setq mode-name "IRPF90"))
+  :syntax-table nil
+  :abbrev-table nil
+  (font-lock-add-keywords nil irp-font-lock-keywords))
 
 (provide 'irp-mode)
 ;;; irp-mode.el ends here

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: BEGIN_DOC ... END_DOC
+# key: bc
+# --
+BEGIN_DOC
+! $0
+END_DOC

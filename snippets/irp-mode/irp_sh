@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# -*- mode: snippet -*-
+# name: BEGIN_SHELL ... END_SHELL 
+# key: bsh
+# --
+BEGIN_SHELL [ ${1:/bin/bash} ]
+    $0
+END_SHELL

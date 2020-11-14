@@ -208,10 +208,9 @@
   :hook
   (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
 
-;; IRPF90
+;; IRPF90 (see the derived mode in ~/.emacs.d/lib/irp-mode.el)
 
 (use-package irp-mode
-  :ensure nil
   :mode ("\\.irp.f\\'")
   :load-path "~/.emacs.d/lib")
 

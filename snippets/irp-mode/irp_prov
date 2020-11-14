@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: BEGIN_PROVIDER ... END_PROVIDER 
+# key: bp
+# --
+BEGIN_PROVIDER [${1:integer}, ${2:var}]
+    $0
+END_PROVIDER

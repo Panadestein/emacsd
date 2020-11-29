@@ -41,7 +41,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+   '(magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -65,6 +65,7 @@
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
 
+
 ;; Backup all files here
 
 (setq backup-directory-alist
@@ -82,8 +83,32 @@
 
 (use-package spacemacs-theme
   :ensure t
-  :defer t
+  :disabled
   :init (load-theme 'spacemacs-dark t))
+
+(use-package gruvbox-theme
+  :ensure t
+  :init (load-theme 'gruvbox-dark-soft t))
+  
+(use-package afternoon-theme
+  :ensure t
+  :disabled
+  :init (load-theme 'afternoon t))
+
+(use-package blackboard-theme
+  :ensure t
+  :disabled
+  :init (load-theme 'blackboard t))
+
+(use-package dakrone-theme
+  :ensure t
+  :disabled
+  :init (load-theme 'dakrone t))
+
+(use-package ample-theme
+  :ensure t
+  :disabled
+  :init (load-theme 'ample-flat t))
 
 ;; Modify face so Emacs is always transparent in terminal
 
@@ -126,7 +151,7 @@
 ;; Command's information with which-key
 
 (use-package which-key
-  :defer t
+  :ensure t
   :diminish
   :custom
   (which-key-idle-secondary-delay 0.01)
@@ -234,6 +259,22 @@
 (use-package flycheck-julia
   :hook (julia-mode . flycheck-julia-setup))
 
+;; Haskell stuff
+
+(use-package haskell-mode
+  :ensure t
+  :custom
+  (haskell-process-load-or-reload-prompt t)
+  (haskell-process-auto-import-loaded-modules t)
+  (haskell-process-log t)
+  (haskell-tags-on-save t))
+
+(use-package flycheck-haskell
+  :ensure t
+  :config
+  (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
+  (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
+
 ;; Python stuff
 
 (setenv "PATH" (concat (expand-file-name "~/.local/bin:") (getenv "PATH")))
@@ -329,6 +370,7 @@
    (web-mode . webmd-hooks)))
 
 (defun web-mode-flyspefll-verify ()
+  "Make flyspell behave correctly in web mode."
   (let ((f (get-text-property (- (point) 1) 'face)))
     (not (memq f '(web-mode-html-attr-value-face
                    web-mode-html-tag-face

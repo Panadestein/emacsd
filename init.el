@@ -41,7 +41,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+   '(highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -88,6 +88,7 @@
 
 (use-package gruvbox-theme
   :ensure t
+  :disabled
   :init (load-theme 'gruvbox-dark-soft t))
   
 (use-package afternoon-theme
@@ -109,6 +110,23 @@
   :ensure t
   :disabled
   :init (load-theme 'ample-flat t))
+
+(use-package monokai-theme
+  :ensure t
+  :disabled
+  :init (load-theme 'monokai t))
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :init (load-theme 'sanityinc-tomorrow-eighties t))
+
+;; Highlight numbers
+
+(use-package highlight-numbers
+  :ensure t
+  :hook
+  (prog-mode . highlight-numbers-mode))
+  
 
 ;; Modify face so Emacs is always transparent in terminal
 
@@ -224,6 +242,11 @@
 ;; SSH with TRAMP
 
 (use-package tramp
+  :ensure t)
+
+;; Makefile stuff
+
+(use-package make-mode
   :ensure t)
 
 ;; FORTRAN stuff

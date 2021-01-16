@@ -15,7 +15,8 @@
 	     (x-keywords '("BEGIN_PROVIDER" "END_PROVIDER" "ASSERT"
 			    "FREE" "PROVIDE" "BEGIN_TEMPLATE"
 			    "END_TEMPLATE" "BEGIN_SHELL"
-			    "END_SHELL" "IRP_IF" "IRP_ELSE"))
+			    "END_SHELL" "IRP_IF" "IRP_ELSE" "TOUCH"
+			    "SOFT_TOUCH"))
              (x-types '("double precision" "integer"))
 	     (x-comments '("BEGIN_DOC" "END_DOC"))
 

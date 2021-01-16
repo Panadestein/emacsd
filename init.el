@@ -29,7 +29,8 @@
 ;; Line numbers
 
 (when (version<= "26.0.50" emacs-version )
-  (global-display-line-numbers-mode))
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers 'relative))
 
 ;; Start Emacs maximized in X
 
@@ -64,7 +65,6 @@
   (setq auto-package-update-delete-old-versions t)
   (setq auto-package-update-hide-results t)
   (auto-package-update-maybe))
-
 
 ;; Backup all files here
 

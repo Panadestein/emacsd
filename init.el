@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-;; Emacs internal options (credits here to Jimmy Aguiar Mena)
+;; Emacs internal options, credits here to Jimmy Aguiar Mena (Ergus)
 
 (setq-default initial-scratch-message ";; Welcome Panadestein!!"
 	      ring-bell-function #'ignore
@@ -28,7 +28,7 @@
 
 ;; Line numbers
 
-(when (version<= "26.0.50" emacs-version )
+(when (version<= "26.0.50" emacs-version)
   (global-display-line-numbers-mode)
   (setq display-line-numbers 'relative))
 
@@ -42,7 +42,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
+   (quote
+    (vterm-toggle vterm tramp-term projectile tabbar web-mode raku-mode py-autopep8 jedi ranger yasnippet company highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes))))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -98,7 +99,6 @@
 
 (use-package blackboard-theme
   :ensure t
-  :disabled
   :init (load-theme 'blackboard t))
 
 (use-package dakrone-theme
@@ -118,6 +118,7 @@
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
+  :disabled
   :init (load-theme 'sanityinc-tomorrow-eighties t))
 
 ;; Highlight numbers
@@ -126,7 +127,6 @@
   :ensure t
   :hook
   (prog-mode . highlight-numbers-mode))
-  
 
 ;; Modify face so Emacs is always transparent in terminal
 
@@ -162,9 +162,9 @@
 ;; C-x t f "filename" to open a new tab
 ;; C-x t 0 to close current tab
 
-(use-package tab-bar
-  :ensure nil
-  :bind (("C-<right>" . tab-next)))
+(use-package tabbar
+  :ensure t
+  :bind (("C-<right>" . tabbar-forward)))
 
 ;; Command's information with which-key
 
@@ -218,12 +218,14 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
+  :ensure t
   :after yasnippet)
 
-;; Terminal
+;; Terminal, vterm config from Ergus
 
 (use-package shell-pop
   :ensure t
+  :disabled
   :bind (("C-c p" . shell-pop))
   :config
   (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*"
@@ -232,12 +234,73 @@
   ;; need to do this manually or not picked up by `shell-pop'
   (shell-pop--set-shell-type 'shell-pop-shell-type shell-pop-shell-type))
 
+(use-package vterm
+  :ensure t
+  :preface
+  (defun my/vterm-mode-hook ()
+    (display-fill-column-indicator-mode -1)
+    (auto-fill-mode -1))
+  :hook (vterm-mode . my/vterm-mode-hook)
+  :custom
+  (vterm-kill-buffer-on-exit t)
+  (vterm-max-scrollback 10000)
+  :init
+  (which-key-add-key-based-replacements "C-c t" "term")
+  :config
+  ;; Add find-file-other-window to accepted commands
+  (add-to-list 'vterm-eval-cmds
+	       '("find-file-other-window" find-file-other-window)))
+
+(use-package vterm-toggle
+  :bind (("C-c p" . vterm-toggle-cd)
+	 :map vterm-mode-map
+	 (("<C-return>" . vterm-toggle-insert-cd)
+	  ("C-M-n" . vterm-toggle-forward)
+	  ("C-M-p" . vterm-toggle-backward)))
+  :custom
+  (vterm-toggle-scope 'project)
+  (vterm-toggle-project-root t)
+  (vterm-toggle-fullscreen-p nil)
+  :config
+  ;; Show at bottom
+  (add-to-list 'display-buffer-alist
+               '((lambda(bufname _)
+		   (with-current-buffer bufname
+		     (equal major-mode 'vterm-mode)))
+                 ;; (display-buffer-reuse-window display-buffer-at-bottom)
+                 (display-buffer-reuse-window display-buffer-in-direction)
+                 ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                 (direction . bottom)
+                 (dedicated . t) ;dedicated is supported in emacs27
+                 (reusable-frames . visible)
+                 (window-height . 0.3))))
+
+
 ;; File browser
 
 (use-package ranger
   :ensure t
   :config
   (setq ranger-preview-file t))
+
+(use-package neotree
+  :ensure t
+  :bind ("<f8>" . 'neotree-toggle)
+  :init
+  ;; slow rendering
+  (setq inhibit-compacting-font-caches t)
+
+  ;; set icons theme
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+  ;; Every time when the neotree window is opened, let it find current file and jump to node
+  (setq neo-smart-open t)
+
+  ;; When running ‘projectile-switch-project’ (C-c p p), ‘neotree’ will change root automatically
+  (setq projectile-switch-project-action 'neotree-projectile-action)
+
+  ;; show hidden files
+  (setq-default neo-show-hidden-files t))
 
 ;; SSH with TRAMP
 
@@ -310,16 +373,29 @@
       python-shell-prompt-detect-failure-warning nil)
   (setq elpy-shell-starting-directory 'current-directory)
   (setq elpy-shell-echo-input nil)
+  (setq elpy-rpc-python-command "python3")
   (elpy-enable)
   :config
   (add-hook 'elpy-mode-hook (lambda () (elpy-shell-toggle-dedicated-shell 1)))
   (add-to-list 'python-shell-completion-native-disabled-interpreters
-             "jupyter"))
+	       "jupyter"))
+
+(defvar jedi-config:use-system-python t)
+(defun jedi-config:set-python-executable ()
+  "Defines some variables to find Python executable."
+       (make-local-variable 'jedi:server-command)
+       (set 'jedi:server-command
+	    (list (executable-find "python3")
+		  (cadr default-jedi-server-command))))
 
 (use-package jedi
   :ensure t
   :config
   (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi-config:setup-server-args)
+  (when jedi-config:use-system-python
+      (add-hook 'python-mode-hook
+                 'jedi-config:set-python-executable))
   (setq jedi:complete-on-dot t
         jedi:use-shortcuts t
         jedi:environment-root "jedi"))
@@ -456,4 +532,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(minibuffer-prompt ((t (:foreground "brightcyan"))))
+ '(org-table ((t (:foreground "color-69")))))

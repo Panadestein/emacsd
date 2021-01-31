@@ -1,12 +1,13 @@
+ac-comphist.dat
 auto-save-list
 backups
 elpa
 elpy
+eshell
 places
+package-quickstart.el
+tramp
 transient
 .last-package-update-day
-package-quickstart.el
-ac-comphist.dat
 .mc-lists.el
-tramp
-eshell
+.python-environments

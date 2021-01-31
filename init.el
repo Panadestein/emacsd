@@ -221,7 +221,7 @@
   :ensure t
   :after yasnippet)
 
-;; Terminal, vterm config from Ergus
+;; Terminals, vterm config from Ergus
 
 (use-package shell-pop
   :ensure t
@@ -240,7 +240,9 @@
   (defun my/vterm-mode-hook ()
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
-  :hook (vterm-mode . my/vterm-mode-hook)
+  :hook
+  ((vterm-mode . my/vterm-mode-hook)
+   (vterm-mode . (lambda () (setq evil-default-state 'emacs))))
   :custom
   (vterm-kill-buffer-on-exit t)
   (vterm-max-scrollback 10000)

@@ -42,8 +42,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   (quote
-    (vterm-toggle vterm tramp-term projectile tabbar web-mode raku-mode py-autopep8 jedi ranger yasnippet company highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes))))
+   '(yaml-mode cperl-mode make-mode flyspell neotree vterm-toggle vterm tramp-term projectile tabbar web-mode raku-mode py-autopep8 jedi ranger yasnippet company highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
 
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
@@ -60,12 +59,12 @@
 
 ;; Autoupdate packages
 
-(use-package auto-package-update
-  :ensure t
-  :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
-  (auto-package-update-maybe))
+;; (use-package auto-package-update
+;;   :ensure t
+;;   :config
+;;   (setq auto-package-update-delete-old-versions t)
+;;   (setq auto-package-update-hide-results t)
+;;   (auto-package-update-maybe))
 
 ;; Backup all files here
 
@@ -187,16 +186,9 @@
 (use-package lsp-mode
   :ensure t)
 
-(use-package company-lsp
-  :ensure t
-  :after company lsp-mode
-  :init
-  (push 'company-lsp company-backends))
-
 ;; Spell checking with flyspell
 
 (use-package flyspell
-  :ensure t
   :hook
   ((prog-mode . flyspell-prog-mode)
    (org-mode . turn-on-flyspell))
@@ -206,7 +198,6 @@
 ;; Syntax checking with flycheck
 
 (use-package flycheck
-  :ensure t
   :hook
   (after-init . global-flycheck-mode))
 
@@ -311,13 +302,12 @@
 
 ;; Makefile stuff
 
-(use-package make-mode
-  :ensure t)
+(use-package make-mode)
 
 ;; FORTRAN stuff
 
 (use-package f90-mode
-  :mode ("\\.f\\'" "\\.f90\\'")
+  :mode ("\\.f90\\'")
   :hook
   (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
 
@@ -367,6 +357,11 @@
 
 (setenv "PATH" (concat (expand-file-name "~/.local/bin:") (getenv "PATH")))
 
+(defun run-buffer ()
+  (interactive)
+  (shell-command (concat "python " buffer-file-name)))
+(global-set-key (kbd "<f9>") 'run-buffer)
+
 (use-package elpy
   :ensure t
   :init
@@ -375,7 +370,7 @@
       python-shell-prompt-detect-failure-warning nil)
   (setq elpy-shell-starting-directory 'current-directory)
   (setq elpy-shell-echo-input nil)
-  (setq elpy-rpc-python-command "python3")
+  (setq elpy-rpc-python-command "python")
   (elpy-enable)
   :config
   (add-hook 'elpy-mode-hook (lambda () (elpy-shell-toggle-dedicated-shell 1)))
@@ -387,7 +382,7 @@
   "Defines some variables to find Python executable."
        (make-local-variable 'jedi:server-command)
        (set 'jedi:server-command
-	    (list (executable-find "python3")
+	    (list (executable-find "python")
 		  (cadr default-jedi-server-command))))
 
 (use-package jedi
@@ -410,7 +405,6 @@
 ;; Perl stuff
 
 (use-package cperl-mode
-  :ensure t
   :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 
 ;; Raku stuff
@@ -502,6 +496,12 @@
 
 (use-package js-mode :ensure nil
   :mode ("\\.js\\'"))
+
+;; YAML stuff
+
+(use-package yaml-mode
+  :ensure t
+  :mode "\.ya?ml\'")
 
 ;; JSON stuff
 

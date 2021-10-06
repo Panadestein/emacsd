@@ -5,7 +5,7 @@
 
 ;;; Code:
 
-;; Emacs internal options, credits here to Jimmy Aguiar Mena (Ergus)
+;; Emacs internal options
 
 (setq-default initial-scratch-message ";; Welcome Panadestein!!"
 	      ring-bell-function #'ignore
@@ -16,10 +16,12 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (show-paren-mode 1)
+(fringe-mode '(0 . 0))
 
-;; Keybindings
+;; Prevent custom from messing with my config file
 
-(global-set-key (kbd "<f9>") 'ranger)
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;; Never use scroll bar
 
@@ -36,14 +38,6 @@
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(yaml-mode cperl-mode make-mode flyspell neotree vterm-toggle vterm tramp-term projectile tabbar web-mode raku-mode py-autopep8 jedi ranger yasnippet company highlight-numbers makefile-mode htmlize color-theme-sanityinc-tomorrow magit flycheck-haskell haskell-mode which-key irp-mode shell-pop lsp-mode emmet-mode evil-mc company-lsp gnuplot powerline xclip spacemacs-theme auctex yasnippet-snippets ## elpy gruvbox-theme flycheck evil alect-themes)))
-
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
 ;; Allows for using this config in any machine
 
@@ -57,16 +51,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Autoupdate packages
-
-;; (use-package auto-package-update
-;;   :ensure t
-;;   :config
-;;   (setq auto-package-update-delete-old-versions t)
-;;   (setq auto-package-update-hide-results t)
-;;   (auto-package-update-maybe))
-
-;; Backup all files here
+;; Backup files directory
 
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))
@@ -80,12 +65,32 @@
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree))
 
-(use-package undo-tree  ;; Emacs’s undo system is a mistake
+;; Emacs’s native undo system is a mistake
+
+(use-package undo-tree
   :ensure t
   :init
   (global-undo-tree-mode))
 
 ;; Some eye candy stuff (Sehr Wichtig!)
+;; Here I have a bunch of themes that I like
+
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t
+        doom-themes-enable-italic t)
+  (load-theme 'doom-vibrant t)
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom")
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (use-package spacemacs-theme
   :ensure t
@@ -104,6 +109,7 @@
 
 (use-package blackboard-theme
   :ensure t
+  :disabled
   :init (load-theme 'blackboard t))
 
 (use-package dakrone-theme
@@ -140,13 +146,21 @@
 
 ;; Fancy mode line
 
-(use-package powerline
+(use-package all-the-icons
+  ;; Needs a manual `M-x all-the-icons-install-fonts`
+  :ensure t)
+
+(use-package doom-modeline
   :ensure t
+  :init (doom-modeline-mode 1)
   :config
-  (powerline-default-theme))
+  (setq doom-modeline-height 50)
+  (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+  (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-major-mode-color-icon t))
 
 ;; Practical settings to make Emacs more ergonomic
-;; Avoid enabling the xterm-mouse-mode option, as it
+;; I avoid enabling the xterm-mouse-mode option, as it
 ;; introduces an unwanted behaviour in the clipboard
 
 (if (fboundp #'save-place-mode)
@@ -190,7 +204,8 @@
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package lsp-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 
 ;; Spell checking with flyspell
 
@@ -205,7 +220,9 @@
 
 (use-package flycheck
   :hook
-  (after-init . global-flycheck-mode))
+  (after-init . global-flycheck-mode)
+  :config
+  (setq flycheck-check-syntax-automatically '(save mode-enable)))
 
 ;; Snippets
 
@@ -220,17 +237,6 @@
 
 ;; Terminals, vterm config from Ergus
 
-(use-package shell-pop
-  :ensure t
-  :disabled
-  :bind (("C-c p" . shell-pop))
-  :config
-  (setq shell-pop-shell-type (quote ("ansi-term" "*ansi-term*"
-				     (lambda nil (ansi-term shell-pop-term-shell)))))
-  (setq shell-pop-term-shell "/bin/bash")
-  ;; need to do this manually or not picked up by `shell-pop'
-  (shell-pop--set-shell-type 'shell-pop-shell-type shell-pop-shell-type))
-
 (use-package vterm
   :ensure t
   :preface
@@ -238,8 +244,7 @@
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
   :hook
-  ((vterm-mode . my/vterm-mode-hook)
-   (vterm-mode . (lambda () (setq evil-default-state 'emacs))))
+  ((vterm-mode . my/vterm-mode-hook))
   :custom
   (vterm-kill-buffer-on-exit t)
   (vterm-max-scrollback 10000)
@@ -251,6 +256,7 @@
 	       '("find-file-other-window" find-file-other-window)))
 
 (use-package vterm-toggle
+  :ensure t
   :bind (("C-c p" . vterm-toggle-cd)
 	 :map vterm-mode-map
 	 (("<C-return>" . vterm-toggle-insert-cd)
@@ -274,11 +280,11 @@
                  (reusable-frames . visible)
                  (window-height . 0.3))))
 
-
 ;; File browser
 
 (use-package ranger
   :ensure t
+  :disabled
   :config
   (setq ranger-preview-file t))
 
@@ -288,18 +294,9 @@
   :init
   ;; slow rendering
   (setq inhibit-compacting-font-caches t)
-
   ;; set icons theme
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-
-  ;; Every time when the neotree window is opened, let it find current file and jump to node
-  (setq neo-smart-open t)
-
-  ;; When running ‘projectile-switch-project’ (C-c p p), ‘neotree’ will change root automatically
-  (setq projectile-switch-project-action 'neotree-projectile-action)
-
-  ;; show hidden files
-  (setq-default neo-show-hidden-files t))
+  (setq neo-smart-open t))
 
 ;; SSH with TRAMP
 
@@ -361,52 +358,36 @@
 
 ;; Python stuff
 
-(setenv "PATH" (concat (expand-file-name "~/.local/bin:") (getenv "PATH")))
-
-(defun run-buffer ()
-  (interactive)
-  (shell-command (concat "python " buffer-file-name)))
-(global-set-key (kbd "<f9>") 'run-buffer)
-
-(use-package elpy
-  :ensure t
-  :init
-  (setq python-shell-interpreter "jupyter"
-      python-shell-interpreter-args "console --simple-prompt"
-      python-shell-prompt-detect-failure-warning nil)
-  (setq elpy-shell-starting-directory 'current-directory)
-  (setq elpy-shell-echo-input nil)
-  (setq elpy-rpc-python-command "python")
-  (elpy-enable)
-  :config
-  (add-hook 'elpy-mode-hook (lambda () (elpy-shell-toggle-dedicated-shell 1)))
-  (add-to-list 'python-shell-completion-native-disabled-interpreters
-	       "jupyter"))
-
-(defvar jedi-config:use-system-python t)
-(defun jedi-config:set-python-executable ()
-  "Defines some variables to find Python executable."
-       (make-local-variable 'jedi:server-command)
-       (set 'jedi:server-command
-	    (list (executable-find "python")
-		  (cadr default-jedi-server-command))))
-
-(use-package jedi
+(use-package python
   :ensure t
   :config
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi-config:setup-server-args)
-  (when jedi-config:use-system-python
-      (add-hook 'python-mode-hook
-                 'jedi-config:set-python-executable))
-  (setq jedi:complete-on-dot t
-        jedi:use-shortcuts t
-        jedi:environment-root "jedi"))
+  ;; Use IPython when available
+  (cond
+   ((executable-find "ipython")
+    (progn
+      (setq python-shell-buffer-name "IPython")
+      (setq python-shell-interpreter "ipython")
+      (setq python-shell-interpreter-args "-i --simple-prompt")))
+   ((executable-find "python3")
+    (setq python-shell-interpreter "python3"))
+   ((executable-find "python2")
+    (setq python-shell-interpreter "python2"))
+   (t
+    (setq python-shell-interpreter "python")))
+  (defun run-buffer ()
+    "This is not the Emacs way, I know"
+    (interactive)
+    (shell-command (concat "python " buffer-file-name)))
+  (global-set-key (kbd "<f9>") 'run-buffer))
 
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+
+(use-package anaconda-mode
+  :ensure t
+  :bind ("C-c C-d" . anaconda-mode-show-doc))
 
 ;; Perl stuff
 
@@ -436,7 +417,6 @@
           TeX-parse-self t
           TeX-save-query nil
           TeX-PDF-mode t)))
-
 
 ;; Org-mode stuff
 
@@ -535,11 +515,3 @@
 
 (provide 'init.el)
 ;;; init.el ends here
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(font-latex-sectioning-5-face ((t (:foreground "red" :weight bold))))
- '(minibuffer-prompt ((t (:foreground "brightcyan"))))
- '(org-table ((t (:foreground "color-69")))))

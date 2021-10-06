@@ -156,6 +156,7 @@
   :config
   (setq doom-modeline-height 50)
   (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+  (setq doom-line-numbers-style 'relative)
   (setq doom-modeline-major-mode-icon t)
   (setq doom-modeline-major-mode-color-icon t))
 
@@ -433,6 +434,14 @@
 			       (latex . t)
 			       (shell . t)))
   (setq org-preview-latex-default-process 'imagemagick))
+
+(use-package org-superstar  ;; Fancy bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+  
+(setq org-startup-indented t)           ;; Indent according to section
+(setq org-startup-with-inline-images t) ;; Display images in-buffer by default
 
 ;; Web stuff
 

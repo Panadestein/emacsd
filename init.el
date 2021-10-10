@@ -18,6 +18,15 @@
 (show-paren-mode 1)
 (fringe-mode '(0 . 0))
 
+;; Only highlight programming and text buffers
+
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1)
+  :hook
+  (prog-mode . hl-line-mode)
+  (text-mode . hl-line-mode))
+
 ;; Prevent custom from messing with my config file
 
 (setq custom-file "~/.emacs.d/custom.el")
@@ -72,8 +81,11 @@
   :init
   (global-undo-tree-mode))
 
-;; Some eye candy stuff (Sehr Wichtig!)
-;; Here I have a bunch of themes that I like
+;; Fonts (emacsclient requires the add-to-list)
+
+(add-to-list 'default-frame-alist '(font . "Fira Code-18"))
+
+;; Themes
 
 (use-package doom-themes
   :ensure t
@@ -92,45 +104,15 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
-(use-package spacemacs-theme
-  :ensure t
-  :disabled
-  :init (load-theme 'spacemacs-dark t))
-
 (use-package gruvbox-theme
   :ensure t
   :disabled
   :init (load-theme 'gruvbox-dark-soft t))
   
-(use-package afternoon-theme
-  :ensure t
-  :disabled
-  :init (load-theme 'afternoon t))
-
 (use-package blackboard-theme
   :ensure t
   :disabled
   :init (load-theme 'blackboard t))
-
-(use-package dakrone-theme
-  :ensure t
-  :disabled
-  :init (load-theme 'dakrone t))
-
-(use-package ample-theme
-  :ensure t
-  :disabled
-  :init (load-theme 'ample-flat t))
-
-(use-package monokai-theme
-  :ensure t
-  :disabled
-  :init (load-theme 'monokai t))
-
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  :disabled
-  :init (load-theme 'sanityinc-tomorrow-eighties t))
 
 ;; Highlight numbers
 
@@ -154,7 +136,7 @@
   :ensure t
   :init (doom-modeline-mode 1)
   :config
-  (setq doom-modeline-height 50)
+  (setq doom-modeline-height 40)
   (setq doom-modeline-buffer-file-name-style 'relative-to-project)
   (setq doom-line-numbers-style 'relative)
   (setq doom-modeline-major-mode-icon t)
@@ -167,6 +149,10 @@
 (if (fboundp #'save-place-mode)
   (save-place-mode +1)
   (setq-default save-place t))
+
+;; Make ESC close prompts
+
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Multiple cursors support
 ;; C-n make and go to next
@@ -186,6 +172,19 @@
   :ensure t
   :bind (("C-<right>" . tabbar-forward)))
 
+;; Completion in Emacs with ivy
+
+(use-package ivy
+  :ensure t
+  :diminish
+  :bind
+  (("C-s" . swiper))
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (ivy-mode 1))
+
+(use-package swiper :ensure t)
+
 ;; Command's information with which-key
 
 (use-package which-key
@@ -202,7 +201,12 @@
 (use-package company
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-minimum-prefix-length 3
+	company-selection-wrap-around t
+	company-tooltip-limit 20
+	company-tooltip-minimum-width 15
+	company-tooltip-align-annotations t))
 
 (use-package lsp-mode
   :ensure t
@@ -242,6 +246,8 @@
   :ensure t
   :preface
   (defun my/vterm-mode-hook ()
+    (hl-line-mode -1)
+    (display-line-numbers-mode -1)
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
   :hook
@@ -497,6 +503,23 @@
 (use-package yaml-mode
   :ensure t
   :mode "\.ya?ml\'")
+
+;; Markdown stuff
+
+(use-package markdown-mode
+  :ensure t
+  :init
+  (setq-default markdown-hide-markup t))
+
+;; reStructuredText stuff
+
+(use-package rst
+  :mode ("\\.rst\\'" . rst-mode)
+  :bind (:map rst-mode-map
+              ("M-a" . rst-backward-section)
+              ("M-e" . rst-forward-section))
+  :init
+  (setq rst-indent-width 2))
 
 ;; JSON stuff
 

@@ -60,7 +60,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Backup files directory
+;; Backup directory
 
 (setq backup-directory-alist
       `(("." . ,(concat user-emacs-directory "backups"))))

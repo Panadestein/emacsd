@@ -8,6 +8,7 @@ places
 package-quickstart.el
 tramp
 transient
+anaconda-mode
 .last-package-update-day
 .mc-lists.el
 .python-environments

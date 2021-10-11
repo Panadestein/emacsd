@@ -73,8 +73,8 @@
   :config
   (evil-mode 1)
   (evil-set-undo-system 'undo-tree)
-  ;; Pasting in vterm is a mess
-  (evil-define-key 'normal vterm-mode-map "p" 'vterm-yank))
+  ;; This is the cleanest solution for vterm
+  (evil-set-initial-state 'vterm-mode 'emacs))
 
 ;; Emacs’s native undo system is a mistake
 
@@ -253,8 +253,7 @@
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
   :hook
-  ((vterm-mode . my/vterm-mode-hook)
-   (vterm-mode . (lambda () (setq evil-default-state 'emacs))))
+  ((vterm-mode . my/vterm-mode-hook))
   :custom
   (vterm-kill-buffer-on-exit t)
   (vterm-max-scrollback 10000)

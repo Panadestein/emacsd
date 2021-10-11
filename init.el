@@ -72,7 +72,9 @@
   :demand t
   :config
   (evil-mode 1)
-  (evil-set-undo-system 'undo-tree))
+  (evil-set-undo-system 'undo-tree)
+  ;; Pasting in vterm is a mess
+  (evil-define-key 'normal vterm-mode-map "p" 'vterm-yank))
 
 ;; Emacs’s native undo system is a mistake
 
@@ -240,7 +242,7 @@
   :ensure t
   :after yasnippet)
 
-;; Terminals, vterm config from Ergus
+;; Terminals the only one that is worth
 
 (use-package vterm
   :ensure t
@@ -251,7 +253,8 @@
     (display-fill-column-indicator-mode -1)
     (auto-fill-mode -1))
   :hook
-  ((vterm-mode . my/vterm-mode-hook))
+  ((vterm-mode . my/vterm-mode-hook)
+   (vterm-mode . (lambda () (setq evil-default-state 'emacs))))
   :custom
   (vterm-kill-buffer-on-exit t)
   (vterm-max-scrollback 10000)
@@ -259,6 +262,7 @@
   (which-key-add-key-based-replacements "C-c t" "term")
   :config
   ;; Add find-file-other-window to accepted commands
+  (setq vterm-shell (executable-find "zsh"))
   (add-to-list 'vterm-eval-cmds
 	       '("find-file-other-window" find-file-other-window)))
 

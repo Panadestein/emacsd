@@ -198,7 +198,7 @@
   :config
   (which-key-mode t))
 
-;; Completion with company and language server protocol
+;; Completion with company
 
 (use-package company
   :ensure t
@@ -210,9 +210,41 @@
 	company-tooltip-minimum-width 15
 	company-tooltip-align-annotations t))
 
+;; Language serve protocol
+
 (use-package lsp-mode
   :ensure t
-  :defer t)
+  :config
+  (setq lsp-idle-delay 0.5
+        lsp-enable-symbol-highlighting t
+        lsp-enable-snippet nil
+	lsp-pyls-plugins-flake8-enabled t)
+  (lsp-register-custom-settings
+   '(("pyls.plugins.pyls_mypy.enabled" nil nil)
+     ("pyls.plugins.pyls_mypy.live_mode" nil t)
+     ("pyls.plugins.pyls_black.enabled" t t)
+     ("pyls.plugins.pyls_isort.enabled" t t)
+     ;; Disable duplicated by flake8
+     ("pyls.plugins.pycodestyle.enabled" nil t)
+     ("pyls.plugins.mccabe.enabled" nil t)
+     ("pyls.plugins.pyflakes.enabled" nil t)))
+  :hook
+  ((python-mode . lsp)
+   (lsp-mode . lsp-enable-which-key-integration)))
+
+(use-package lsp-ui
+  :ensure t
+  :config
+  (setq lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-delay 0.5
+	lsp-ui-doc-delay 5
+        lsp-ui-sideline-ignore-duplicates t
+        lsp-ui-doc-position 'bottom
+        lsp-ui-doc-alignment 'frame
+        lsp-ui-doc-header nil
+        lsp-ui-doc-include-signature t
+        lsp-ui-doc-use-childframe t)
+  :commands lsp-ui-mode)
 
 ;; Spell checking with flyspell
 
@@ -223,13 +255,15 @@
   :config
   (flyspell-mode +1))
 
-;; Syntax checking with flycheck
+;; Syntax checking with flycheck, mypy disabled due to performance
 
 (use-package flycheck
-  :hook
-  (after-init . global-flycheck-mode)
+  :init
+  (setq-default flycheck-disabled-checkers '(python-mypy))
   :config
-  (setq flycheck-check-syntax-automatically '(save mode-enable)))
+  (setq flycheck-check-syntax-automatically '(save mode-enable))
+  :hook
+  (after-init . global-flycheck-mode))
 
 ;; Snippets
 
@@ -369,35 +403,23 @@
 ;; Python stuff
 
 (use-package python
-  :ensure t
   :config
-  ;; Use IPython when available
-  (cond
-   ((executable-find "ipython")
-    (progn
-      (setq python-shell-buffer-name "IPython")
-      (setq python-shell-interpreter "ipython")
-      (setq python-shell-interpreter-args "-i --simple-prompt")))
-   ((executable-find "python3")
-    (setq python-shell-interpreter "python3"))
-   ((executable-find "python2")
-    (setq python-shell-interpreter "python2"))
-   (t
-    (setq python-shell-interpreter "python")))
-  (defun run-buffer ()
-    "This is not the Emacs way, I know"
-    (interactive)
-    (shell-command (concat "python " buffer-file-name)))
-  (global-set-key (kbd "<f9>") 'run-buffer))
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+
+(use-package pyvenv
+  :ensure t
+  :demand t
+  :config
+  (setq pyvenv-workon "emacs")
+  (pyvenv-tracking-mode 1))
 
 (use-package py-autopep8
   :ensure t
   :config
   (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
-
-(use-package anaconda-mode
-  :ensure t
-  :bind ("C-c C-d" . anaconda-mode-show-doc))
 
 ;; Perl stuff
 

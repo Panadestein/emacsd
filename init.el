@@ -126,6 +126,12 @@
   :hook
   (prog-mode . highlight-numbers-mode))
 
+;; Improved parentheses
+
+(use-package smartparens
+  :ensure t
+  :hook (prog-mode . smartparens-mode))
+
 ;; Highlight parentheses with different color
 
 (use-package rainbow-delimiters

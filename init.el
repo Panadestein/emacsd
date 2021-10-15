@@ -29,8 +29,11 @@
 
 ;; Prevent custom from messing with my config file
 
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(let
+    ((customization-file (expand-file-name "custom.el" user-emacs-directory)))
+  (when (file-exists-p customization-file)
+    (setq custom-file customization-file)
+    (load custom-file 'noerror)))
 
 ;; Never use scroll bar
 
@@ -185,7 +188,21 @@
   (setq ivy-use-virtual-buffers t)
   (ivy-mode 1))
 
-(use-package swiper :ensure t)
+(use-package swiper
+  :ensure t)
+
+(use-package counsel
+  :after ivy
+  :ensure t
+  :config (counsel-mode)
+  :bind
+  ("M-x" . counsel-M-x)
+  ("C-x b" . counsel-ibuffer)
+  ("C-x C-f" . counsel-find-file))
+
+(use-package all-the-icons-ivy
+  :ensure t
+  :demand t)
 
 ;; Command's information with which-key
 
@@ -197,6 +214,14 @@
   (which-key-dont-use-unicode t)
   :config
   (which-key-mode t))
+
+;; Improved help system with Helpful
+
+(use-package helpful
+  :ensure t
+  :bind (("C-h f" . helpful-callable)
+         ("C-h v" . helpful-variable)
+         ("C-h k" . helpful-key)))
 
 ;; Completion with company
 
@@ -419,7 +444,7 @@
 (use-package py-autopep8
   :ensure t
   :config
-  (add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save))
+  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 ;; Perl stuff
 

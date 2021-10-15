@@ -126,6 +126,12 @@
   :hook
   (prog-mode . highlight-numbers-mode))
 
+;; Highlight parentheses with different color
+
+(use-package rainbow-delimiters
+  :ensure t
+  :hook (prog-mode . rainbow-delimiters-mode))
+
 ;; Modify face so Emacs is always transparent in terminal
 
 (face-spec-set 'default
@@ -372,9 +378,12 @@
 (use-package tramp
   :ensure t)
 
-;; Makefile stuff
+;; Lisp stuff
 
-(use-package make-mode)
+(use-package lispy
+  :ensure t
+  :hook ((emacs-lisp-mode . lispy-mode)
+         (scheme-mode . lispy-mode)))
 
 ;; FORTRAN stuff
 
@@ -391,10 +400,36 @@
 
 ;; C/C++ stuff
 
-(setq c-basic-offset 6)
-(setq c-default-style '((java-mode . "java")
-                        (awk-mode . "awk")
-                        (other . "linux")))
+(use-package ccls
+  :ensure t
+  :hook ((c-mode c++-mode objc-mode cuda-mode) .
+         (lambda () (require 'ccls) (lsp)))
+  :config
+  (setq c-basic-offset 6)
+  (setq c-default-style '((java-mode . "java")
+                          (awk-mode . "awk")
+                          (other . "linux"))))
+
+;; Python stuff
+
+(use-package python
+  :config
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+
+(use-package pyvenv
+  :ensure t
+  :demand t
+  :config
+  (setq pyvenv-workon "emacs")
+  (pyvenv-tracking-mode 1))
+
+(use-package py-autopep8
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 
 ;; Cuda stuff
 
@@ -425,26 +460,9 @@
   (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
   (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
 
-;; Python stuff
+;; Makefile stuff
 
-(use-package python
-  :config
-  (setq python-shell-interpreter "jupyter"
-	python-shell-interpreter-args "console --simple-prompt"
-	python-shell-prompt-detect-failure-warning nil)
-  (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
-
-(use-package pyvenv
-  :ensure t
-  :demand t
-  :config
-  (setq pyvenv-workon "emacs")
-  (pyvenv-tracking-mode 1))
-
-(use-package py-autopep8
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+(use-package make-mode)
 
 ;; Perl stuff
 
@@ -489,15 +507,14 @@
 			       (awk . t)
 			       (latex . t)
 			       (shell . t)))
-  (setq org-preview-latex-default-process 'imagemagick))
+  (setq org-preview-latex-default-process 'imagemagick)
+  (setq org-startup-indented t)
+  (setq org-startup-with-inline-images t))
 
 (use-package org-superstar  ;; Fancy bullets
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
-  
-(setq org-startup-indented t)           ;; Indent according to section
-(setq org-startup-with-inline-images t) ;; Display images in-buffer by default
 
 ;; Web stuff
 

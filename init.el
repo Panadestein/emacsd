@@ -545,6 +545,11 @@
   :init
   (setq rst-indent-width 2))
 
+;; Lua stuff
+
+(use-package lua-mode
+  :ensure t)
+
 ;; JSON stuff
 
 (use-package json-mode
@@ -567,6 +572,11 @@
 ;; Git stuff
 
 (use-package magit
+  :ensure t)
+
+;; The heretic Vim stuff
+
+(use-package vimrc-mode
   :ensure t)
 
 (provide 'init.el)

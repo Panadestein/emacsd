@@ -547,6 +547,9 @@
 (use-package js-mode :ensure nil
   :mode ("\\.js\\'"))
 
+(use-package simple-httpd
+  :ensure t)
+
 ;; YAML stuff
 
 (use-package yaml-mode

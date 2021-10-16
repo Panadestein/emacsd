@@ -126,6 +126,13 @@
   :hook
   (prog-mode . highlight-numbers-mode))
 
+;; Handle very long lines
+
+(use-package so-long
+  :ensure t
+  :hook
+  (after-init-hook . global-so-long-mode))
+
 ;; Improved parentheses
 
 (use-package smartparens
@@ -210,7 +217,18 @@
   :bind
   ("M-x" . counsel-M-x)
   ("C-x b" . counsel-ibuffer)
-  ("C-x C-f" . counsel-find-file))
+  ("C-M-l" . counsel-imenu)
+  ("C-x C-f" . counsel-find-file)
+  ("<f1> v" . counsel-describe-variable)
+  ("<f1> f" . counsel-descbinds-function)
+  :hook
+  (after-init . counsel-mode))
+
+(use-package ivy-prescient
+  :ensure t
+  :after counsel
+  :config
+  (ivy-prescient-mode 1))
 
 (use-package ivy-rich
   :ensure t
@@ -253,9 +271,15 @@
 
 (use-package helpful
   :ensure t
-  :bind (("C-h f" . helpful-callable)
-         ("C-h v" . helpful-variable)
-         ("C-h k" . helpful-key)))
+  :custom
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
+  :bind
+  ([remap describe-function] . helpful-function)
+  ([remap describe-symbol] . helpful-symbol)
+  ([remap describe-variable] . helpful-variable)
+  ([remap describe-command] . helpful-command)
+  ([remap describe-key] . helpful-key))
 
 ;; Completion with company
 

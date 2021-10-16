@@ -204,13 +204,35 @@
   :ensure t)
 
 (use-package counsel
-  :after ivy
   :ensure t
+  :after ivy
   :config (counsel-mode)
   :bind
   ("M-x" . counsel-M-x)
   ("C-x b" . counsel-ibuffer)
   ("C-x C-f" . counsel-find-file))
+
+(use-package ivy-rich
+  :ensure t
+  :init
+  (ivy-rich-mode 1)
+  :after counsel
+  :config
+  (setq ivy-format-function #'ivy-format-function-line)
+  (setq ivy-rich-display-transformers-list
+        (plist-put ivy-rich-display-transformers-list
+                   'ivy-switch-buffer
+                   '(:columns
+                     ((ivy-rich-candidate (:width 40))
+                      (ivy-rich-switch-buffer-indicators
+		       (:width 4 :face error :align right))
+                      (ivy-rich-switch-buffer-major-mode
+		       (:width 12 :face warning))
+                      (ivy-rich-switch-buffer-project
+		       (:width 15 :face success))
+                      (ivy-rich-switch-buffer-path
+		       (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path
+					    x (ivy-rich-minibuffer-width 0.3))))))))))
 
 (use-package all-the-icons-ivy
   :ensure t

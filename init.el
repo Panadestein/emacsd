@@ -154,7 +154,8 @@
 
 (use-package all-the-icons
   ;; Needs a manual `M-x all-the-icons-install-fonts`
-  :ensure t)
+  ;; :ensure t
+  :load-path "~/.emacs.d/src/all-the-icons/")
 
 (use-package doom-modeline
   :ensure t
@@ -164,6 +165,7 @@
   (setq doom-modeline-buffer-file-name-style 'relative-to-project)
   (setq doom-line-numbers-style 'relative)
   (setq doom-modeline-major-mode-icon t)
+  (setq doom-modeline-buffer-state-icon t)
   (setq doom-modeline-major-mode-color-icon t))
 
 ;; Practical settings to make Emacs more ergonomic
@@ -171,7 +173,7 @@
 ;; introduces an unwanted behaviour in the clipboard
 
 (if (fboundp #'save-place-mode)
-  (save-place-mode +1)
+    (save-place-mode +1)
   (setq-default save-place t))
 
 ;; Make ESC close prompts
@@ -213,6 +215,8 @@
 (use-package counsel
   :ensure t
   :after ivy
+  :hook
+  (after-init . counsel-mode)
   :config (counsel-mode)
   :bind
   ("M-x" . counsel-M-x)
@@ -220,10 +224,8 @@
   ("C-M-l" . counsel-imenu)
   ("C-x C-f" . counsel-find-file)
   ("<f1> v" . counsel-describe-variable)
-  ("<f1> f" . counsel-descbinds-function)
-  :hook
-  (after-init . counsel-mode))
-
+  ("<f1> f" . counsel-descbinds-function))
+  
 (use-package ivy-prescient
   :ensure t
   :after counsel
@@ -270,12 +272,10 @@
 ;; Improved help system with Helpful
 
 (use-package helpful
-  :ensure t
   :custom
-  (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
   :bind
-  ([remap describe-function] . helpful-function)
+  ("C-h f" . helpful-function)
   ([remap describe-symbol] . helpful-symbol)
   ([remap describe-variable] . helpful-variable)
   ([remap describe-command] . helpful-command)
@@ -425,6 +425,25 @@
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   (setq neo-smart-open t))
 
+(use-package all-the-icons-dired
+  :ensure t)
+
+(use-package dired
+  ;; TIP: use ( to hide file information
+  :ensure nil
+  :custom ((dired-listing-switches "-agho --group-directories-first"))
+  :commands (dired dired-jump)
+  :bind (("C-x C-j" . dired-jump))
+  :hook
+  (dired-mode . all-the-icons-dired-mode)
+  :config
+  (evil-define-key 'normal 'dired-mode-map
+    "h" 'dired-single-up-directory
+    "l" 'dired-single-buffer))
+
+(use-package dired-single
+  :ensure t)
+
 ;; SSH with TRAMP
 
 (use-package tramp
@@ -436,6 +455,18 @@
   :ensure t
   :hook ((emacs-lisp-mode . lispy-mode)
          (scheme-mode . lispy-mode)))
+
+(use-package hy-mode
+  :ensure t
+  :mode "\\.hy\\'"
+  :commands (hy-mode org-babel-execute:hy)
+  :interpreter "hy"
+  :hook
+  (hy-mode . company-mode)
+  (hy-mode . (lambda () (lispy-mode 1)))
+  :config
+  (add-hook 'hy-mode-hook #'paredit-mode)
+  (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
 
 ;; FORTRAN stuff
 

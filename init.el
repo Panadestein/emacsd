@@ -1,57 +1,11 @@
-;;; init.el --- A basic Emacs configuration
+;;; init.el --- Simple Emacs configuration
 
 ;;; Commentary:
-;; Fine tuned for development in Python, C/C++ and FORTRAN
+;; Today that's not so, in Lisp they can go.  (RMS)
 
 ;;; Code:
 
-;; Emacs internal options
-
-(setq-default initial-scratch-message ";; Welcome Panadestein!!"
-	      ring-bell-function #'ignore
-	      user-full-name "Ramón L. Panadés-Barrueta, PhD"
-              inhibit-startup-screen t
-	      custom-safe-themes t)
-
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(show-paren-mode 1)
-(fringe-mode '(0 . 0))
-
-;; Only highlight programming and text buffers
-
-(use-package hl-line
-  :config
-  (global-hl-line-mode +1)
-  :hook
-  (prog-mode . hl-line-mode)
-  (text-mode . hl-line-mode))
-
-;; Prevent custom from messing with my config file
-
-(let
-    ((customization-file (expand-file-name "custom.el" user-emacs-directory)))
-  (when (file-exists-p customization-file)
-    (setq custom-file customization-file)
-    (load custom-file 'noerror)))
-
-;; Never use scroll bar
-
-(add-to-list 'default-frame-alist
-             '(vertical-scroll-bars . nil))
-
-;; Line numbers
-
-(when (version<= "26.0.50" emacs-version)
-  (global-display-line-numbers-mode)
-  (setq display-line-numbers 'relative))
-
-;; Start Emacs maximized in X
-
-(add-to-list 'default-frame-alist '(fullscreen . maximized))
-
 ;; Add the GNU ELPA and MELPA archives, and then ensure use-package
-;; Allows for using this config in any machine
 
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
        ("melpa" . "https://melpa.org/packages/"))
@@ -63,12 +17,61 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-;; Backup directory
+;; One editor to rule them all, one editor to find them
 
-(setq backup-directory-alist
-      `(("." . ,(concat user-emacs-directory "backups"))))
+(use-package emacs
+  :ensure nil
+  :config
+  ;; Emacs internal options
+  (setq-default initial-scratch-message ";; Welcome Panadestein!!"
+		ring-bell-function #'ignore
+		user-full-name "Ramón L. Panadés-Barrueta, PhD"
+		inhibit-startup-screen t
+		custom-safe-themes t)
+  (setq backup-directory-alist
+	`(("." . ,(concat user-emacs-directory "backups"))))
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (show-paren-mode 1)
+  (fringe-mode '(0 . 0))
+  ;; Make ESC close prompts
+  (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+  ;; No scroll bar, always full screen
+  (add-to-list 'default-frame-alist
+               '(vertical-scroll-bars . nil))
+  (add-to-list 'default-frame-alist '(fullscreen . maximized))
+  ;; Font
+  (add-to-list 'default-frame-alist '(font . "Fira Code-18"))
+  ;; Terminal transparency
+  (face-spec-set 'default
+		 '((((type tty)) :background "unspecified-bg")))
+  ;; Line numbers
+  (when (version<= "26.0.50" emacs-version)
+    (global-display-line-numbers-mode)
+    (setq display-line-numbers 'relative))
+  ;; Remember line number
+  (if (fboundp #'save-place-mode)
+      (save-place-mode +1)
+    (setq-default save-place t)))
 
-;; The single most important section of this file (Vim workflow!)
+;; Prevent custom from messing with my config file
+
+(let
+    ((customization-file (expand-file-name "custom.el" user-emacs-directory)))
+  (when (file-exists-p customization-file)
+    (setq custom-file customization-file)
+    (load custom-file 'noerror)))
+
+;; Only highlight programming and text buffers
+
+(use-package hl-line
+  :config
+  (global-hl-line-mode +1)
+  :hook
+  (prog-mode . hl-line-mode)
+  (text-mode . hl-line-mode))
+
+;; Old habits die hard
 
 (use-package evil
   :ensure t
@@ -79,16 +82,12 @@
   ;; This is the cleanest solution for vterm
   (evil-set-initial-state 'vterm-mode 'emacs))
 
-;; Emacs’s native undo system is a mistake
+;; Linear undo system
 
 (use-package undo-tree
   :ensure t
   :init
   (global-undo-tree-mode))
-
-;; Fonts (emacsclient requires the add-to-list)
-
-(add-to-list 'default-frame-alist '(font . "Fira Code-18"))
 
 ;; Themes
 
@@ -145,11 +144,6 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
-;; Modify face so Emacs is always transparent in terminal
-
-(face-spec-set 'default
-  '((((type tty)) :background "unspecified-bg")))
-
 ;; Fancy mode line
 
 (use-package all-the-icons
@@ -167,18 +161,6 @@
   (setq doom-modeline-major-mode-icon t)
   (setq doom-modeline-buffer-state-icon t)
   (setq doom-modeline-major-mode-color-icon t))
-
-;; Practical settings to make Emacs more ergonomic
-;; I avoid enabling the xterm-mouse-mode option, as it
-;; introduces an unwanted behaviour in the clipboard
-
-(if (fboundp #'save-place-mode)
-    (save-place-mode +1)
-  (setq-default save-place t))
-
-;; Make ESC close prompts
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 ;; Multiple cursors support
 ;; C-n make and go to next
@@ -444,6 +426,16 @@
 (use-package dired-single
   :ensure t)
 
+;; PDF support
+
+(use-package pdf-tools
+  :ensure t
+  :pin manual
+  :config
+  (setq-default pdf-view-display-size 'fit-page)
+  (setq pdf-annot-activate-created-annotations t)
+  (pdf-tools-install))
+
 ;; SSH with TRAMP
 
 (use-package tramp
@@ -613,7 +605,7 @@
   ((web-mode . company-mode)
    (web-mode . emmet-mode)
    (web-mode . (lambda () (flyspell-mode 1)))
-   (web-mode . webmd-hooks)))
+   (web-mode . webmd-hooks-mine)))
 
 (defun web-mode-flyspefll-verify ()
   "Make flyspell behave correctly in web mode."
@@ -635,7 +627,7 @@
 (use-package emmet-mode
   :ensure t)
 
-(defun webmd-hooks ()
+(defun webmd-hooks-mine ()
   "Some hooks for web mode."
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)

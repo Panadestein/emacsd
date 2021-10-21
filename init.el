@@ -144,6 +144,13 @@
   :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
+(use-package minimap
+  :ensure nil
+  :config
+  (setq minimap-window-location 'right)
+  (setq minimap-minimum-width 14)
+  (setq minimap-disable-mode-line t))
+
 ;; Fancy mode line
 
 (use-package all-the-icons

@@ -148,8 +148,11 @@
   :ensure nil
   :config
   (setq minimap-window-location 'right)
-  (setq minimap-minimum-width 14)
-  (setq minimap-disable-mode-line t))
+  (setq minimap-minimum-width 10)
+  (setq minimap-dedicated-window t)
+  (setq minimap-hide-cursor t)
+  (setq minimap-hide-scroll-bar t)
+  (setq minimap-hide-fringes t))
 
 ;; Fancy mode line
 
@@ -269,6 +272,21 @@
   ([remap describe-variable] . helpful-variable)
   ([remap describe-command] . helpful-command)
   ([remap describe-key] . helpful-key))
+
+;; Code tags
+
+(use-package counsel-etags
+  :ensure t
+  :bind (("C-]" . counsel-etags-find-tag-at-point)
+	 ("C-[" . pop-tag-mark))
+  :init
+  (add-hook 'prog-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook
+			'counsel-etags-virtual-update-tags 'append 'local)))
+  :config
+  (setq counsel-etags-update-interval 60)
+  (push "build" counsel-etags-ignore-directories))
 
 ;; Completion with company
 

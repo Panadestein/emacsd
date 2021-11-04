@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: ASSERT 
-# key: ass
-# --
-ASSERT ($0)

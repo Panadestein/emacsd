@@ -1,0 +1,1056 @@
+#+TITLE: Emacs configuration
+#+PROPERTY: header-args :tangle init.el
+#+OPTIONS: toc:2
+
+* Panadestein's Emacs configuration
+
+Welcome to my literate Emacs configuration. As many specimens of the pedigree,
+this config ratifies the Newtonian aphorism involving giants. Many thanks to all the unsung
+heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
+recently had a glimpse of the enlightenment promised by so many hacker's lores. Here is one
+of my favorites by RMS: 
+
+#+BEGIN_VERSE
+In days long ago,
+When clocks were so slow,
+These basic keystrokes
+Took too long for folks,
+Unless they were writ
+In C code to flit.
+Today that's not so,
+In Lisp they can go.
+#+END_VERSE
+
+** General configuration
+
+*** Add the GNU ELPA and MELPA archives, and then ensure use-package
+
+#+begin_src emacs-lisp
+  (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+         ("melpa" . "https://melpa.org/packages/"))
+        package-quickstart t)
+
+  (unless (and (fboundp 'package-installed-p)
+         (package-installed-p 'use-package))
+    (package-initialize)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+end_src
+
+
+*** One editor to rule them all, one editor to find them
+
+Here I use the =use-package= macro to keep all Emacs internal settings organized in one single block.
+The variables have self-explanatory names, but I have added a few comments for the sake of clarity. 
+
+#+begin_src emacs-lisp
+  (use-package emacs
+    :ensure nil
+    :config
+    ;; Emacs internal options
+    (setq-default initial-scratch-message ";; Welcome Panadestein!!"
+                  ring-bell-function #'ignore
+                  user-full-name "Ramón L. Panadés-Barrueta, PhD"
+                  inhibit-startup-screen t
+                  custom-safe-themes t)
+    (setq backup-directory-alist
+          `(("." . ,(concat user-emacs-directory "backups"))))
+    (menu-bar-mode -1)
+    (tool-bar-mode -1)
+    (show-paren-mode 1)
+    (fringe-mode '(0 . 0))
+    ;; Make ESC close prompts
+    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+    ;; No scroll bar, always full screen
+    (add-to-list 'default-frame-alist
+                 '(vertical-scroll-bars . nil))
+    (add-to-list 'default-frame-alist '(fullscreen . maximized))
+    ;; Font
+    (add-to-list 'default-frame-alist '(font . "Fira Code-18"))
+    ;; Terminal transparency
+    (face-spec-set 'default
+                   '((((type tty)) :background "unspecified-bg")))
+    ;; Line numbers
+    (when (version<= "26.0.50" emacs-version)
+      (global-display-line-numbers-mode)
+      (setq display-line-numbers 'relative))
+    ;; Remember line number
+    (if (fboundp #'save-place-mode)
+        (save-place-mode +1)
+      (setq-default save-place t)))
+#+end_src
+
+*** Prevent custom from messing with my config file
+
+This helps clearing the clutter and increases reproducibility of the config
+
+#+begin_src emacs-lisp
+  (let
+      ((customization-file (expand-file-name "custom.el" user-emacs-directory)))
+    (when (file-exists-p customization-file)
+      (setq custom-file customization-file)
+      (load custom-file 'noerror)))
+#+end_src
+
+*** Only highlight programming and text buffers
+
+#+begin_src emacs-lisp
+  (use-package hl-line
+    :config
+    (global-hl-line-mode +1)
+    :hook
+    (prog-mode . hl-line-mode)
+    (text-mode . hl-line-mode))
+#+end_src
+
+*** Old habits die hard
+
+I cannot just waste years of Vim muscle memory workout. Although the Emacs keybindings
+slowly start to /klappt/.
+
+#+begin_src emacs-lisp
+  (use-package evil
+    :ensure t
+    :demand t
+    :config
+    (evil-mode 1)
+    (evil-set-undo-system 'undo-tree)
+    ;; This is the cleanest solution for vterm
+    (evil-set-initial-state 'vterm-mode 'emacs))
+#+end_src
+
+*** Linear undo system
+
+This is one of the not so awesome quirks of Emacs IMHO. Maybe one day I will understand
+its power. I keep it linear for the moment.
+
+#+begin_src emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :init
+    (global-undo-tree-mode))
+#+end_src
+
+*** Themes
+
+As Nietzsche said, the voice of beauty speaks softly; it creeps only into the most fully awakened souls.
+Ergo the importance of a visually pleasant editor. These are my top three themes:
+
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :ensure t
+    :config
+    ;; Global settings (defaults)
+    (setq doom-themes-enable-bold t
+          doom-themes-enable-italic t)
+    (load-theme 'doom-vibrant t)
+    ;; Enable flashing mode-line on errors
+    (doom-themes-visual-bell-config)
+    ;; Enable custom neotree theme (all-the-icons must be installed!)
+    (doom-themes-neotree-config)
+    ;; or for treemacs users
+    (setq doom-themes-treemacs-theme "doom-atom")
+    (doom-themes-treemacs-config)
+    ;; Corrects (and improves) org-mode's native fontification.
+    (doom-themes-org-config))
+
+  (use-package gruvbox-theme
+    :ensure t
+    :disabled
+    :init (load-theme 'gruvbox-dark-soft t))
+  
+  (use-package blackboard-theme
+    :ensure t
+    :disabled
+    :init (load-theme 'blackboard t))
+
+  ;; Highlight numbers
+
+  (use-package highlight-numbers
+    :ensure t
+    :hook
+    (prog-mode . highlight-numbers-mode))
+#+end_src
+
+*** Handle very long lines
+
+Another well-known issue of Emacs, although it rarely affects me.
+
+#+begin_src emacs-lisp
+  (use-package so-long
+    :ensure t
+    :hook
+    (after-init-hook . global-so-long-mode))
+#+end_src
+
+*** Improved parentheses
+
+This helps a lot when lisping.
+
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :hook (prog-mode . smartparens-mode))
+#+end_src
+
+*** Highlight parentheses with different color
+
+Another eye candy. Parenthesis of different colors are very helpful in Lisp though.
+
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :hook (prog-mode . rainbow-delimiters-mode))
+#+end_src
+
+*** Minimap
+
+This package implements Sublime Text's minimap in Emacs. Although I am quasi-satisfied with
+this config, I am not ready to use it on a regular basis.
+
+#+begin_src emacs-lisp
+  (use-package minimap
+    :ensure nil
+    :config
+    (setq minimap-window-location 'right)
+    (setq minimap-minimum-width 10)
+    (setq minimap-dedicated-window t)
+    (setq minimap-hide-cursor t)
+    (setq minimap-hide-scroll-bar t)
+    (setq minimap-hide-fringes t))
+#+end_src
+
+*** Fancy mode line
+
+Another gift from the Doom Emacs community. Best modeline I have seem for Emacs.
+The additional package =all-the-icons= provides awesome icons not only for the
+modeline, but also for file managers and many other packages.
+
+#+begin_src emacs-lisp
+  (use-package all-the-icons
+    ;; Needs a manual `M-x all-the-icons-install-fonts`
+    ;; :ensure t
+    :load-path "~/.emacs.d/src/all-the-icons/")
+
+  (use-package doom-modeline
+    :ensure t
+    :init (doom-modeline-mode 1)
+    :config
+    (setq doom-modeline-height 40)
+    (setq doom-modeline-buffer-file-name-style 'relative-to-project)
+    (setq doom-line-numbers-style 'relative)
+    (setq doom-modeline-major-mode-icon t)
+    (setq doom-modeline-buffer-state-icon t)
+    (setq doom-modeline-major-mode-color-icon t))
+#+end_src
+
+*** Multiple cursors support
+
+This package is very interesting, although not so ergonomic IMHO. Here are some of the
+most relevant commands:
+
+- =C-n= make and go to next match
+- =C-p= make and go to previous match
+- =g r q= stop all cursors
+
+#+begin_src emacs-lisp
+  (use-package evil-mc
+    :ensure t
+    :config
+    (global-evil-mc-mode 1))
+#+end_src
+
+*** Tabs-bar-mode
+I could not manage to use this package without side effects in Evil-mode. Here is a simple
+usage:
+
+- =C-x t f "filename"= opens file in new tab
+- =C-x t 0= closes current tab
+
+#+begin_src emacs-lisp
+  (use-package tabbar
+    :ensure t
+    :bind (("C-<right>" . tabbar-forward)))
+#+end_src
+
+** Autocompletion, syntax checking, spell checking and help
+
+*** Complete everything (but code) in Emacs with ivy
+
+The usage of ivy and their autocompletion army (swiper, counsel) has greatly increased my
+productivity. It is also very well integrated with the Doom Emacs theme I use. The swiper
+search feature (=C-s=) is far more powerful than the default Emacs counterpart. 
+
+#+begin_src emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish
+    :bind
+    (("C-s" . swiper))
+    :config
+    (setq ivy-use-virtual-buffers t)
+    (ivy-mode 1))
+
+  (use-package swiper
+    :ensure t)
+
+  (use-package counsel
+    :ensure t
+    :after ivy
+    :hook
+    (after-init . counsel-mode)
+    :config (counsel-mode)
+    :bind
+    ("M-x" . counsel-M-x)
+    ("C-x b" . counsel-ibuffer)
+    ("C-M-l" . counsel-imenu)
+    ("C-x C-f" . counsel-find-file)
+    ("<f1> v" . counsel-describe-variable)
+    ("<f1> f" . counsel-descbinds-function))
+  
+  (use-package ivy-prescient
+    :ensure t
+    :after counsel
+    :config
+    (ivy-prescient-mode 1))
+
+  (use-package ivy-rich
+    :ensure t
+    :init
+    (ivy-rich-mode 1)
+    :after counsel
+    :config
+    (setq ivy-format-function #'ivy-format-function-line)
+    (setq ivy-rich-display-transformers-list
+          (plist-put ivy-rich-display-transformers-list
+                     'ivy-switch-buffer
+                     '(:columns
+                       ((ivy-rich-candidate (:width 40))
+                        (ivy-rich-switch-buffer-indicators
+                         (:width 4 :face error :align right))
+                        (ivy-rich-switch-buffer-major-mode
+                         (:width 12 :face warning))
+                        (ivy-rich-switch-buffer-project
+                         (:width 15 :face success))
+                        (ivy-rich-switch-buffer-path
+                         (:width (lambda (x) (ivy-rich-switch-buffer-shorten-path
+                                              x (ivy-rich-minibuffer-width 0.3))))))))))
+
+  (use-package all-the-icons-ivy
+    :ensure t
+    :demand t)
+#+end_src
+
+*** Command's information with which-key
+
+Which-key is a must have to sail the raging seas of Emacs' packages keybindings. This suggestions
+come very handy when exploring a new package.
+
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :diminish
+    :custom
+    (which-key-idle-secondary-delay 0.01)
+    (which-key-dont-use-unicode t)
+    :config
+    (which-key-mode t))
+#+end_src
+
+*** Improved help system with Helpful
+
+Emacs default help system is very good. Helpful makes it awesome by adding colors and source code
+exploration.
+
+#+begin_src emacs-lisp
+  (use-package helpful
+    :custom
+    (counsel-describe-variable-function #'helpful-variable)
+    :bind
+    ("C-h f" . helpful-function)
+    ([remap describe-symbol] . helpful-symbol)
+    ([remap describe-variable] . helpful-variable)
+    ([remap describe-command] . helpful-command)
+    ([remap describe-key] . helpful-key))
+#+end_src
+
+*** Code tags
+
+Using code tags when developing in large scale codes (like electronic structure packages)
+can save your fingers from =grep= induced damage. This package uses the efficient =counsel=
+infrastructure to make tags navigation seamless.
+
+#+begin_src emacs-lisp
+  (use-package counsel-etags
+    :ensure t
+    :bind (("C-]" . counsel-etags-find-tag-at-point))
+    :init
+    (add-hook 'prog-mode-hook
+              (lambda ()
+                (add-hook 'after-save-hook
+                          'counsel-etags-virtual-update-tags 'append 'local)))
+    :config
+    (setq counsel-etags-update-interval 60)
+    (push "build" counsel-etags-ignore-directories))
+#+end_src
+
+*** Completion with company
+
+Source code completions. An all time classic.
+
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :init
+    (add-hook 'after-init-hook 'global-company-mode)
+    (setq company-minimum-prefix-length 3
+          company-selection-wrap-around t
+          company-tooltip-limit 20
+          company-tooltip-minimum-width 15
+          company-tooltip-align-annotations t))
+#+end_src
+
+*** Language serve protocol
+
+My LSP config is largely work in progress. It includes at the moment Python configuration
+and some UI improvements.
+
+#+begin_src emacs-lisp
+  (use-package lsp-mode
+    :ensure t
+    :config
+    (setq lsp-idle-delay 0.5
+          lsp-enable-symbol-highlighting t
+          lsp-enable-snippet nil
+          lsp-pyls-plugins-flake8-enabled t)
+    (lsp-register-custom-settings
+     '(("pyls.plugins.pyls_mypy.enabled" nil nil)
+       ("pyls.plugins.pyls_mypy.live_mode" nil t)
+       ("pyls.plugins.pyls_black.enabled" t t)
+       ("pyls.plugins.pyls_isort.enabled" t t)
+       ;; Disable duplicated by flake8
+       ("pyls.plugins.pycodestyle.enabled" nil t)
+       ("pyls.plugins.mccabe.enabled" nil t)
+       ("pyls.plugins.pyflakes.enabled" nil t)))
+    :hook
+    ((python-mode . lsp)
+     (lsp-mode . lsp-enable-which-key-integration)))
+
+  (use-package lsp-ui
+    :ensure t
+    :config
+    (setq lsp-ui-sideline-show-hover t
+          lsp-ui-sideline-delay 0.5
+          lsp-ui-doc-delay 5
+          lsp-ui-sideline-ignore-duplicates t
+          lsp-ui-doc-position 'bottom
+          lsp-ui-doc-alignment 'frame
+          lsp-ui-doc-header nil
+          lsp-ui-doc-include-signature t
+          lsp-ui-doc-use-childframe t)
+    :commands lsp-ui-mode)
+#+end_src
+
+*** Spell checking with FlySpell
+
+FlySpell does a lot out of the box, therefore I have a very basic config.
+
+#+begin_src emacs-lisp
+  (use-package flyspell
+    :hook
+    ((prog-mode . flyspell-prog-mode)
+     (org-mode . turn-on-flyspell))
+    :config
+    (flyspell-mode +1))
+#+end_src
+
+*** Syntax checking with Flycheck
+
+Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
+checking can harm performance, and some checkers can introduce huge penalties (I had to
+disable =mypy=). With this config I only check when saving.
+
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :init
+    (setq-default flycheck-disabled-checkers '(python-mypy))
+    :config
+    (setq flycheck-check-syntax-automatically '(save mode-enable))
+    (setq flycheck-scheme-chicken-executable "chicken-csc")
+    :hook
+    (after-init . global-flycheck-mode))
+#+end_src
+
+*** Snippets
+
+Yasnippet is a fairly complete collection of snippets with a very intuitive syntax. Painful is the absence
+of Scheme snippets. I have written some custom snippets for the IRPF90 derived mode, which I also include
+here.
+
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :config
+    (yas-global-mode 1))
+
+  (use-package yasnippet-snippets
+    :ensure t
+    :after yasnippet)
+#+end_src
+
+#+begin_src yasnippet :tangle snippets/irp-mode/irp_as
+# -*- mode: snippet -*-
+# name: ASSERT 
+# key: ass
+# --
+ASSERT ($0)%
+#+end_src
+
+#+begin_src yasnippet :tangle snippets/irp-mode/irp_doc
+# -*- mode: snippet -*-
+# name: BEGIN_DOC ... END_DOC
+# key: bc
+# --
+BEGIN_DOC
+! $0
+END_DOC%   
+#+end_src
+
+#+begin_src yasnippet :tangle snippets/irp-mode/irp_prov
+# -*- mode: snippet -*-
+# name: BEGIN_PROVIDER ... END_PROVIDER 
+# key: bp
+# --
+BEGIN_PROVIDER [${1:integer}, ${2:var}]
+    $0
+END_PROVIDER%  
+#+end_src
+
+#+begin_src yasnippet :tangle snippets/irp-mode/irp_prov
+# -*- mode: snippet -*-
+# -*- mode: snippet -*-
+# name: BEGIN_SHELL ... END_SHELL 
+# key: bsh
+# --
+BEGIN_SHELL [ ${1:/bin/bash} ]
+    $0
+END_SHELL%  
+#+end_src
+
+** File browsing and terminals
+
+*** Terminal support with Vterm
+
+This package uses a C library instead of Lisp to emulate the terminals. It is my favorite emulator
+currently, although Eshell could be an alternative.
+
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure t
+    :preface
+    (defun my/vterm-mode-hook ()
+      (hl-line-mode -1)
+      (display-line-numbers-mode -1)
+      (display-fill-column-indicator-mode -1)
+      (auto-fill-mode -1))
+    :hook
+    ((vterm-mode . my/vterm-mode-hook))
+    :custom
+    (vterm-kill-buffer-on-exit t)
+    (vterm-max-scrollback 10000)
+    :init
+    (which-key-add-key-based-replacements "C-c t" "term")
+    :config
+    ;; Add find-file-other-window to accepted commands
+    (setq vterm-shell (executable-find "zsh"))
+    (add-to-list 'vterm-eval-cmds
+                 '("find-file-other-window" find-file-other-window)))
+
+  (use-package vterm-toggle
+    :ensure t
+    :bind (("C-c p" . vterm-toggle-cd)
+           :map vterm-mode-map
+           (("<C-return>" . vterm-toggle-insert-cd)
+            ("C-M-n" . vterm-toggle-forward)
+            ("C-M-p" . vterm-toggle-backward)))
+    :custom
+    (vterm-toggle-scope 'project)
+    (vterm-toggle-project-root t)
+    (vterm-toggle-fullscreen-p nil)
+    :config
+    ;; Show at bottom
+    (add-to-list 'display-buffer-alist
+                 '((lambda(bufname _)
+                     (with-current-buffer bufname
+                       (equal major-mode 'vterm-mode)))
+                   ;; (display-buffer-reuse-window display-buffer-at-bottom)
+                   (display-buffer-reuse-window display-buffer-in-direction)
+                   ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+                   (direction . bottom)
+                   (dedicated . t) ;dedicated is supported in emacs27
+                   (reusable-frames . visible)
+                   (window-height . 0.3))))
+#+end_src
+
+*** File browsers
+
+After trying a couple of file browsers I understood that all I needed was already there.
+Dired keeps me in Emacs.
+
+#+begin_src emacs-lisp
+  (use-package ranger
+    :ensure t
+    :disabled
+    :config
+    (setq ranger-preview-file t))
+
+  (use-package neotree
+    :ensure t
+    :bind ("<f8>" . 'neotree-toggle)
+    :init
+    ;; slow rendering
+    (setq inhibit-compacting-font-caches t)
+    ;; set icons theme
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+    (setq neo-smart-open t))
+
+  (use-package all-the-icons-dired
+    :ensure t)
+
+  (use-package dired
+    ;; TIP: use ( to hide file information
+    :ensure nil
+    :custom ((dired-listing-switches "-agho --group-directories-first"))
+    :commands (dired dired-jump)
+    :bind (("C-x C-j" . dired-jump))
+    :hook
+    (dired-mode . all-the-icons-dired-mode)
+    :config
+    (evil-define-key 'normal 'dired-mode-map
+      "h" 'dired-single-up-directory
+      "l" 'dired-single-buffer))
+
+  (use-package dired-single
+    :ensure t)
+#+end_src
+
+*** PDF support
+
+Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.
+
+#+begin_src emacs-lisp
+  (use-package pdf-tools
+    :ensure t
+    :pin manual
+    :config
+    (setq-default pdf-view-display-size 'fit-page)
+    (setq pdf-annot-activate-created-annotations t)
+    (pdf-tools-install))
+#+end_src
+
+*** TRAMP
+
+Another must have of Emacs. This packages together with dired save me from configuring
+my editor all the time in obscure supercomputers around the world.
+
+#+begin_src emacs-lisp
+  (use-package tramp
+    :ensure t)
+#+end_src
+
+** Programming
+
+Here you can find my configuration for different programming languages. I will introduce in
+in a laconic manner, because this section is rather opinionated.
+
+*** Lisp stuff
+
+The language that give birth to the "Maxwell equations of software"
+
+#+begin_src emacs-lisp
+  (use-package lispy
+    :ensure t
+    :hook ((emacs-lisp-mode . lispy-mode)
+           (scheme-mode . lispy-mode)))
+
+  (use-package slime
+    :ensure t
+    :mode ("\\.lisp\\'" . lisp-mode)
+    :init
+    (setq slime-net-coding-system 'utf-8-unix
+          inferior-lisp-program "sbcl")
+    (add-to-list 'slime-contribs 'slime-fancy)
+    (add-to-list 'slime-contribs 'slime-repl))
+
+  (use-package geiser
+    :ensure t
+    :config
+    (setq geiser-active-implementations '(chicken)))
+
+  (use-package geiser-chicken
+    :ensure t
+    :init
+    (setq geiser-chicken-binary "chicken-csi"))
+
+  (use-package racket-mode
+    :ensure t)
+
+  (use-package hy-mode
+    :ensure t
+    :mode "\\.hy\\'"
+    :commands (hy-mode org-babel-execute:hy)
+    :interpreter "hy"
+    :hook
+    (hy-mode . company-mode)
+    (hy-mode . (lambda () (lispy-mode 1)))
+    :config
+    (add-hook 'hy-mode-hook #'paredit-mode)
+    (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+
+*** FORTRAN stuff
+
+FORTRAN is a major component of my job as a physicist, this package provides all I need. 
+
+#+begin_src emacs-lisp
+  (use-package f90-mode
+    :mode ("\\.f90\\'")
+    :hook
+    (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
+#+end_src
+
+*** IRPF90
+
+[[http://irpf90.ups-tlse.fr/][IRPF90]] is an environment that allows for efficient functional programming in FORTRAN
+using the Implicit Reference to Parameters (IRP) method. I have developed a derived
+mode for IRPF90:
+
+#+begin_src emacs-lisp :tangle ./lib/irp-mode.el
+  ;;; irp-mode.el --- A major mode for dealing with IRPF90 files
+
+  ;;; Commentary:
+  ;; An attempt to support Scemama's IRPF90 in Emacs
+
+  ;;; Code:
+
+  ;; Define IRPF90 extended FORTRAN syntax
+
+  (defvar irp-font-lock-keywords)
+
+  (setq irp-font-lock-keywords
+        (let* (
+               ;; Define different keywords
+               (x-keywords '("BEGIN_PROVIDER" "END_PROVIDER" "ASSERT"
+                              "FREE" "PROVIDE" "BEGIN_TEMPLATE"
+                              "END_TEMPLATE" "BEGIN_SHELL"
+                              "END_SHELL" "IRP_IF" "IRP_ELSE" "TOUCH"
+                              "SOFT_TOUCH"))
+               (x-types '("double precision" "integer"))
+               (x-comments '("BEGIN_DOC" "END_DOC"))
+
+               ;; Generate regex
+               (x-keywords-regexp (regexp-opt x-keywords 'words))
+               (x-types-regexp (regexp-opt x-types 'words))
+               (x-comments-regexp (regexp-opt x-comments 'words)))
+
+          `(
+            (,x-types-regexp . font-lock-type-face)
+            (,x-keywords-regexp . font-lock-preprocessor-face)
+            (,x-comments-regexp . font-lock-comment-face)
+            )))
+
+  ;;;###autoload
+  (define-derived-mode irp-mode f90-mode "irp mode"
+    "Major mode for editing IRPF90 files."
+    :syntax-table nil
+    :abbrev-table nil
+    (font-lock-add-keywords nil irp-font-lock-keywords))
+
+  (provide 'irp-mode)
+  ;;; irp-mode.el ends here
+#+end_src
+
+This mode can be also configured with =use-package=:
+
+#+begin_src emacs-lisp
+  (use-package irp-mode
+    :mode ("\\.irp.f\\'")
+    :load-path "~/.emacs.d/lib")
+#+end_src
+
+*** C/C++ stuff
+
+#+begin_src emacs-lisp
+  (use-package ccls
+    :ensure t
+    :hook ((c-mode c++-mode objc-mode cuda-mode) .
+           (lambda () (require 'ccls) (lsp)))
+    :config
+    (setq c-basic-offset 6)
+    (setq c-default-style '((java-mode . "java")
+                            (awk-mode . "awk")
+                            (other . "linux"))))
+#+end_src
+
+*** Python stuff
+
+#+begin_src emacs-lisp
+  (use-package python
+    :config
+    (setq python-shell-interpreter "jupyter"
+          python-shell-interpreter-args "console --simple-prompt"
+          python-shell-prompt-detect-failure-warning nil)
+    (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+
+  (use-package pyvenv
+    :ensure t
+    :demand t
+    :config
+    (setq pyvenv-workon "emacs")
+    (pyvenv-tracking-mode 1))
+
+  (use-package py-autopep8
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+#+end_src
+
+*** Cuda stuff
+
+#+begin_src emacs-lisp
+  (use-package cuda-mode
+      :mode "\\.cu\\'")
+#+end_src
+
+*** Julia stuff
+
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :mode "\\.jl\\'")
+
+  (use-package flycheck-julia
+    :hook (julia-mode . flycheck-julia-setup))
+#+end_src
+
+*** Haskell stuff
+
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :ensure t
+    :custom
+    (haskell-process-load-or-reload-prompt t)
+    (haskell-process-auto-import-loaded-modules t)
+    (haskell-process-log t)
+    (haskell-tags-on-save t))
+
+  (use-package flycheck-haskell
+    :ensure t
+    :config
+    (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
+    (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
+#+end_src
+
+*** Makefile stuff
+
+#+begin_src emacs-lisp
+  (use-package make-mode
+     :ensure nil)
+#+end_src
+
+*** Perl stuff
+
+#+begin_src emacs-lisp
+  (use-package cperl-mode
+    :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
+#+end_src
+
+*** Raku stuff
+
+#+begin_src emacs-lisp
+  (use-package raku-mode
+    :ensure t
+    :defer t
+    :mode "\\.raku\\'")
+#+end_src
+
+*** Latex
+
+Auctex provides all you will ever need to work with Latex, and more. 
+
+#+begin_src emacs-lisp
+  (use-package auctex
+    :ensure t
+    :mode ("\\.tex\\'" . latex-mode)
+    :commands (latex-mode LaTeX-mode plain-tex-mode)
+    :init
+    (progn
+      (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+      (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+      (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
+      (setq TeX-auto-save t
+            TeX-parse-self t
+            TeX-save-query nil
+            TeX-PDF-mode t)))
+#+end_src
+
+*** Org-mode stuff
+
+Org-mode is the package allowing me to have this literate configuration. Org-superstar
+makes org-mode files look gorgeous.
+
+#+begin_src emacs-lisp
+   (use-package org-tempo
+     :after org
+     :hook
+     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
+     :config
+     (add-to-list 'org-modules 'org-tempo)
+     (org-babel-do-load-languages
+      'org-babel-load-languages '((fortran . t)
+                                  (python . t)
+                                  (C . t)
+                                  (gnuplot . t)
+                                  (awk . t)
+                                  (latex . t)
+                                  (shell . t)))
+     (setq org-preview-latex-default-process 'imagemagick)
+     (setq org-startup-indented t)
+     (setq org-startup-with-inline-images t))
+
+   (use-package org-superstar
+     :ensure t
+     :config
+     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+#+end_src
+
+#+RESULTS:
+: t
+
+*** Web stuff
+
+#+begin_src emacs-lisp
+  (use-package php-mode
+    :mode ("\\.php\\'"))
+
+  (use-package web-mode
+    :ensure t
+    :defer t
+    :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'")
+    :bind (("C-c C-v" . browse-url-of-buffer))
+    :hook
+    ((web-mode . company-mode)
+     (web-mode . emmet-mode)
+     (web-mode . (lambda () (flyspell-mode 1)))
+     (web-mode . webmd-hooks-mine)))
+
+  (defun web-mode-flyspefll-verify ()
+    "Make flyspell behave correctly in web mode."
+    (let ((f (get-text-property (- (point) 1) 'face)))
+      (not (memq f '(web-mode-html-attr-value-face
+                     web-mode-html-tag-face
+                     web-mode-html-attr-name-face
+                     web-mode-doctype-face
+                     web-mode-keyword-face
+                     web-mode-function-name-face
+                     web-mode-variable-name-face
+                     web-mode-css-property-name-face
+                     web-mode-css-selector-face
+                     web-mode-css-color-face
+                     web-mode-type-face)
+                 ))))
+  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspefll-verify)
+
+  (use-package emmet-mode
+    :ensure t)
+
+  (defun webmd-hooks-mine ()
+    "Some hooks for web mode."
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2)
+    (setq web-mode-enable-current-column-highlight t)
+    (setq web-mode-enable-current-element-highlight t)
+    (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "red"))
+
+  (use-package js-mode :ensure nil
+    :mode ("\\.js\\'"))
+
+  (use-package simple-httpd
+    :ensure t)
+#+end_src
+
+*** YAML stuff
+
+#+begin_src emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    :mode "\.ya?ml\'")
+#+end_src
+
+*** Markdown stuff
+
+#+begin_src emacs-lisp
+  (use-package markdown-mode
+    :ensure t
+    :init
+    (setq-default markdown-hide-markup t))
+#+end_src
+
+*** reStructuredText stuff
+
+#+begin_src emacs-lisp
+  (use-package rst
+    :mode ("\\.rst\\'" . rst-mode)
+    :bind (:map rst-mode-map
+                ("M-a" . rst-backward-section)
+                ("M-e" . rst-forward-section))
+    :init
+    (setq rst-indent-width 2))
+#+end_src
+
+*** Lua stuff
+
+#+begin_src emacs-lisp
+  (use-package lua-mode
+    :ensure t)
+#+end_src
+
+*** JSON stuff
+
+#+begin_src emacs-lisp
+  (use-package json-mode
+    :mode "\\.json\\'")
+
+  (use-package flymake-json
+    :hook (json-mode . flymake-json-load))
+#+end_src
+
+*** Cmake stuff
+
+#+begin_src emacs-lisp
+  (use-package cmake-mode
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
+    :config
+    (add-to-list 'company-backends 'company-cmake))
+
+  (use-package eldoc-cmake
+    :after company
+    :hook (cmake-mode . eldoc-cmake-enable))
+#+end_src
+
+*** Git stuff
+
+This porcelain is more glorious than the one from Meissen
+
+#+begin_src emacs-lisp
+(use-package magit
+  :ensure t)
+#+end_src
+
+*** The heretic Vim stuff
+
+#+begin_src emacs-lisp
+(use-package vimrc-mode
+  :ensure t)
+#+end_src

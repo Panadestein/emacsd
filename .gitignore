@@ -1,14 +1,16 @@
 ac-comphist.dat
+anaconda-mode
 auto-save-list
 backups
 elpa
 elpy
 eshell
+lib
 places
 package-quickstart.el
+snippets
 tramp
 transient
-anaconda-mode
 .last-package-update-day
 .mc-lists.el
 .python-environments

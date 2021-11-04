@@ -2,6 +2,7 @@
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_HEAD: <meta name="google-site-verification" content="UnH0G3uduefQ6n9JV-YfihFU5SrKCWPHlvu6Ancvghs" />
 
 * A foreword on this config and Lisp
 

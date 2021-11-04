@@ -1,15 +1,15 @@
-#+TITLE: Emacs configuration
+#+TITLE: Emacs literate configuration
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 
-* Panadestein's Emacs configuration
+* A foreword on this config and Lisp
 
 Welcome to my literate Emacs configuration. As many specimens of the pedigree,
 this config ratifies the Newtonian aphorism involving giants. Many thanks to all the unsung
 heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
 recently had a glimpse of the enlightenment promised by so many hacker's lores. Here is one
-of my favorites by RMS: 
+of my favorites, written by RMS: 
 
 #+BEGIN_VERSE
 In days long ago,
@@ -22,9 +22,9 @@ Today that's not so,
 In Lisp they can go.
 #+END_VERSE
 
-** General configuration
+* General configuration
 
-*** Add the GNU ELPA and MELPA archives, and then ensure use-package
+** Add the GNU ELPA and MELPA archives, and then ensure use-package
 
 #+begin_src emacs-lisp
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -39,7 +39,7 @@ In Lisp they can go.
 #+end_src
 
 
-*** One editor to rule them all, one editor to find them
+** One editor to rule them all, one editor to find them
 
 Here I use the =use-package= macro to keep all Emacs internal settings organized in one single block.
 The variables have self-explanatory names, but I have added a few comments for the sake of clarity. 
@@ -81,7 +81,7 @@ The variables have self-explanatory names, but I have added a few comments for t
       (setq-default save-place t)))
 #+end_src
 
-*** Prevent custom from messing with my config file
+** Prevent custom from messing with my config file
 
 This helps clearing the clutter and increases reproducibility of the config
 
@@ -93,7 +93,7 @@ This helps clearing the clutter and increases reproducibility of the config
       (load custom-file 'noerror)))
 #+end_src
 
-*** Only highlight programming and text buffers
+** Only highlight programming and text buffers
 
 #+begin_src emacs-lisp
   (use-package hl-line
@@ -104,7 +104,7 @@ This helps clearing the clutter and increases reproducibility of the config
     (text-mode . hl-line-mode))
 #+end_src
 
-*** Old habits die hard
+** Old habits die hard
 
 I cannot just waste years of Vim muscle memory workout. Although the Emacs keybindings
 slowly start to /klappt/.
@@ -120,7 +120,7 @@ slowly start to /klappt/.
     (evil-set-initial-state 'vterm-mode 'emacs))
 #+end_src
 
-*** Linear undo system
+** Linear undo system
 
 This is one of the not so awesome quirks of Emacs IMHO. Maybe one day I will understand
 its power. I keep it linear for the moment.
@@ -132,7 +132,7 @@ its power. I keep it linear for the moment.
     (global-undo-tree-mode))
 #+end_src
 
-*** Themes
+** Themes
 
 As Nietzsche said, the voice of beauty speaks softly; it creeps only into the most fully awakened souls.
 Ergo the importance of a visually pleasant editor. These are my top three themes:
@@ -173,7 +173,7 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
     (prog-mode . highlight-numbers-mode))
 #+end_src
 
-*** Handle very long lines
+** Handle very long lines
 
 Another well-known issue of Emacs, although it rarely affects me.
 
@@ -184,7 +184,7 @@ Another well-known issue of Emacs, although it rarely affects me.
     (after-init-hook . global-so-long-mode))
 #+end_src
 
-*** Improved parentheses
+** Improved parentheses
 
 This helps a lot when lisping.
 
@@ -194,7 +194,7 @@ This helps a lot when lisping.
     :hook (prog-mode . smartparens-mode))
 #+end_src
 
-*** Highlight parentheses with different color
+** Highlight parentheses with different color
 
 Another eye candy. Parenthesis of different colors are very helpful in Lisp though.
 
@@ -204,7 +204,7 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
-*** Minimap
+** Minimap
 
 This package implements Sublime Text's minimap in Emacs. Although I am quasi-satisfied with
 this config, I am not ready to use it on a regular basis.
@@ -221,7 +221,7 @@ this config, I am not ready to use it on a regular basis.
     (setq minimap-hide-fringes t))
 #+end_src
 
-*** Fancy mode line
+** Fancy mode line
 
 Another gift from the Doom Emacs community. Best modeline I have seem for Emacs.
 The additional package =all-the-icons= provides awesome icons not only for the
@@ -245,7 +245,7 @@ modeline, but also for file managers and many other packages.
     (setq doom-modeline-major-mode-color-icon t))
 #+end_src
 
-*** Multiple cursors support
+** Multiple cursors support
 
 This package is very interesting, although not so ergonomic IMHO. Here are some of the
 most relevant commands:
@@ -261,7 +261,7 @@ most relevant commands:
     (global-evil-mc-mode 1))
 #+end_src
 
-*** Tabs-bar-mode
+** Tabs-bar-mode
 I could not manage to use this package without side effects in Evil-mode. Here is a simple
 usage:
 
@@ -274,9 +274,9 @@ usage:
     :bind (("C-<right>" . tabbar-forward)))
 #+end_src
 
-** Autocompletion, syntax checking, spell checking and help
+* Autocompletion, syntax checking, spell checking and help
 
-*** Complete everything (but code) in Emacs with ivy
+** Complete everything (but code) in Emacs with ivy
 
 The usage of ivy and their autocompletion army (swiper, counsel) has greatly increased my
 productivity. It is also very well integrated with the Doom Emacs theme I use. The swiper
@@ -342,7 +342,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     :demand t)
 #+end_src
 
-*** Command's information with which-key
+** Command's information with which-key
 
 Which-key is a must have to sail the raging seas of Emacs' packages keybindings. This suggestions
 come very handy when exploring a new package.
@@ -358,7 +358,7 @@ come very handy when exploring a new package.
     (which-key-mode t))
 #+end_src
 
-*** Improved help system with Helpful
+** Improved help system with Helpful
 
 Emacs default help system is very good. Helpful makes it awesome by adding colors and source code
 exploration.
@@ -375,7 +375,7 @@ exploration.
     ([remap describe-key] . helpful-key))
 #+end_src
 
-*** Code tags
+** Code tags
 
 Using code tags when developing in large scale codes (like electronic structure packages)
 can save your fingers from =grep= induced damage. This package uses the efficient =counsel=
@@ -395,7 +395,7 @@ infrastructure to make tags navigation seamless.
     (push "build" counsel-etags-ignore-directories))
 #+end_src
 
-*** Completion with company
+** Completion with company
 
 Source code completions. An all time classic.
 
@@ -411,7 +411,7 @@ Source code completions. An all time classic.
           company-tooltip-align-annotations t))
 #+end_src
 
-*** Language serve protocol
+** Language serve protocol
 
 My LSP config is largely work in progress. It includes at the moment Python configuration
 and some UI improvements.
@@ -452,7 +452,7 @@ and some UI improvements.
     :commands lsp-ui-mode)
 #+end_src
 
-*** Spell checking with FlySpell
+** Spell checking with FlySpell
 
 FlySpell does a lot out of the box, therefore I have a very basic config.
 
@@ -465,7 +465,7 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
     (flyspell-mode +1))
 #+end_src
 
-*** Syntax checking with Flycheck
+** Syntax checking with Flycheck
 
 Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
 checking can harm performance, and some checkers can introduce huge penalties (I had to
@@ -482,7 +482,7 @@ disable =mypy=). With this config I only check when saving.
     (after-init . global-flycheck-mode))
 #+end_src
 
-*** Snippets
+** Snippets
 
 Yasnippet is a fairly complete collection of snippets with a very intuitive syntax. Painful is the absence
 of Scheme snippets. I have written some custom snippets for the IRPF90 derived mode, which I also include
@@ -538,9 +538,9 @@ BEGIN_SHELL [ ${1:/bin/bash} ]
 END_SHELL%  
 #+end_src
 
-** File browsing and terminals
+* File browsing and terminals
 
-*** Terminal support with Vterm
+** Terminal support with Vterm
 
 This package uses a C library instead of Lisp to emulate the terminals. It is my favorite emulator
 currently, although Eshell could be an alternative.
@@ -593,7 +593,7 @@ currently, although Eshell could be an alternative.
                    (window-height . 0.3))))
 #+end_src
 
-*** File browsers
+** File browsers
 
 After trying a couple of file browsers I understood that all I needed was already there.
 Dired keeps me in Emacs.
@@ -635,7 +635,7 @@ Dired keeps me in Emacs.
     :ensure t)
 #+end_src
 
-*** PDF support
+** PDF support
 
 Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.
 
@@ -649,7 +649,7 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
     (pdf-tools-install))
 #+end_src
 
-*** TRAMP
+** TRAMP
 
 Another must have of Emacs. This packages together with dired save me from configuring
 my editor all the time in obscure supercomputers around the world.
@@ -659,12 +659,12 @@ my editor all the time in obscure supercomputers around the world.
     :ensure t)
 #+end_src
 
-** Programming
+* Programming
 
 Here you can find my configuration for different programming languages. I will introduce in
 in a laconic manner, because this section is rather opinionated.
 
-*** Lisp stuff
+** Lisp stuff
 
 The language that give birth to the "Maxwell equations of software"
 
@@ -709,7 +709,7 @@ The language that give birth to the "Maxwell equations of software"
     (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
 #+end_src
 
-*** FORTRAN stuff
+** FORTRAN stuff
 
 FORTRAN is a major component of my job as a physicist, this package provides all I need. 
 
@@ -720,7 +720,7 @@ FORTRAN is a major component of my job as a physicist, this package provides all
     (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
 #+end_src
 
-*** IRPF90
+** IRPF90
 
 [[http://irpf90.ups-tlse.fr/][IRPF90]] is an environment that allows for efficient functional programming in FORTRAN
 using the Implicit Reference to Parameters (IRP) method. I have developed a derived
@@ -779,7 +779,7 @@ This mode can be also configured with =use-package=:
     :load-path "~/.emacs.d/lib")
 #+end_src
 
-*** C/C++ stuff
+** C/C++ stuff
 
 #+begin_src emacs-lisp
   (use-package ccls
@@ -793,7 +793,7 @@ This mode can be also configured with =use-package=:
                             (other . "linux"))))
 #+end_src
 
-*** Python stuff
+** Python stuff
 
 #+begin_src emacs-lisp
   (use-package python
@@ -816,14 +816,14 @@ This mode can be also configured with =use-package=:
     (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 #+end_src
 
-*** Cuda stuff
+** Cuda stuff
 
 #+begin_src emacs-lisp
   (use-package cuda-mode
       :mode "\\.cu\\'")
 #+end_src
 
-*** Julia stuff
+** Julia stuff
 
 #+begin_src emacs-lisp
   (use-package julia-mode
@@ -833,7 +833,7 @@ This mode can be also configured with =use-package=:
     :hook (julia-mode . flycheck-julia-setup))
 #+end_src
 
-*** Haskell stuff
+** Haskell stuff
 
 #+begin_src emacs-lisp
   (use-package haskell-mode
@@ -851,21 +851,21 @@ This mode can be also configured with =use-package=:
     (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
 #+end_src
 
-*** Makefile stuff
+** Makefile stuff
 
 #+begin_src emacs-lisp
   (use-package make-mode
      :ensure nil)
 #+end_src
 
-*** Perl stuff
+** Perl stuff
 
 #+begin_src emacs-lisp
   (use-package cperl-mode
     :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 #+end_src
 
-*** Raku stuff
+** Raku stuff
 
 #+begin_src emacs-lisp
   (use-package raku-mode
@@ -874,7 +874,7 @@ This mode can be also configured with =use-package=:
     :mode "\\.raku\\'")
 #+end_src
 
-*** Latex
+** Latex
 
 Auctex provides all you will ever need to work with Latex, and more. 
 
@@ -895,7 +895,7 @@ Auctex provides all you will ever need to work with Latex, and more.
             TeX-PDF-mode t)))
 #+end_src
 
-*** Org-mode stuff
+** Org-mode stuff
 
 Org-mode is the package allowing me to have this literate configuration. Org-superstar
 makes org-mode files look gorgeous.
@@ -928,7 +928,7 @@ makes org-mode files look gorgeous.
 #+RESULTS:
 : t
 
-*** Web stuff
+** Web stuff
 
 #+begin_src emacs-lisp
   (use-package php-mode
@@ -981,7 +981,7 @@ makes org-mode files look gorgeous.
     :ensure t)
 #+end_src
 
-*** YAML stuff
+** YAML stuff
 
 #+begin_src emacs-lisp
   (use-package yaml-mode
@@ -989,7 +989,7 @@ makes org-mode files look gorgeous.
     :mode "\.ya?ml\'")
 #+end_src
 
-*** Markdown stuff
+** Markdown stuff
 
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -998,7 +998,7 @@ makes org-mode files look gorgeous.
     (setq-default markdown-hide-markup t))
 #+end_src
 
-*** reStructuredText stuff
+** reStructuredText stuff
 
 #+begin_src emacs-lisp
   (use-package rst
@@ -1010,14 +1010,14 @@ makes org-mode files look gorgeous.
     (setq rst-indent-width 2))
 #+end_src
 
-*** Lua stuff
+** Lua stuff
 
 #+begin_src emacs-lisp
   (use-package lua-mode
     :ensure t)
 #+end_src
 
-*** JSON stuff
+** JSON stuff
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -1027,7 +1027,7 @@ makes org-mode files look gorgeous.
     :hook (json-mode . flymake-json-load))
 #+end_src
 
-*** Cmake stuff
+** Cmake stuff
 
 #+begin_src emacs-lisp
   (use-package cmake-mode
@@ -1040,7 +1040,7 @@ makes org-mode files look gorgeous.
     :hook (cmake-mode . eldoc-cmake-enable))
 #+end_src
 
-*** Git stuff
+** Git stuff
 
 This porcelain is more glorious than the one from Meissen
 
@@ -1049,7 +1049,7 @@ This porcelain is more glorious than the one from Meissen
   :ensure t)
 #+end_src
 
-*** The heretic Vim stuff
+** The heretic Vim stuff
 
 #+begin_src emacs-lisp
 (use-package vimrc-mode

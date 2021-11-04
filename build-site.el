@@ -22,7 +22,9 @@
 
 (package-install 'htmlize)
 
+(require 'htmlize)
 (require 'ox-publish)
+
 (setq org-html-validation-link nil
       org-html-head-include-scripts nil
       org-html-include-default-style nil)

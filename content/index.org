@@ -22,6 +22,20 @@ Today that's not so,
 In Lisp they can go.
 #+END_VERSE
 
+The beauty of literate configurations with org-mode is that it allows for maintaining an Emacs
+config, a website, and an org-mode markup file at the same time. For example, in the header
+of this file you can find the following code:
+
+#+begin_src org-mode :tangle no
+#+TITLE: Emacs literate configuration
+#+PROPERTY: header-args :tangle ../init.el
+#+OPTIONS: toc:2 num:nil
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+end_src
+
+With this options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
+in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
+
 * General configuration
 
 ** Add the GNU ELPA and MELPA archives, and then ensure use-package
@@ -651,7 +665,7 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 ** TRAMP
 
-Another must have of Emacs. This packages together with dired save me from configuring
+Another must have of Emacs. This packages together with dired saves me from configuring
 my editor all the time in obscure supercomputers around the world.
 
 #+begin_src emacs-lisp
@@ -661,7 +675,7 @@ my editor all the time in obscure supercomputers around the world.
 
 * Programming
 
-Here you can find my configuration for different programming languages. I will introduce in
+Here you can find my configuration for different programming languages. I will introduce it
 in a laconic manner, because this section is rather opinionated.
 
 ** Lisp stuff
@@ -896,6 +910,7 @@ Auctex provides all you will ever need to work with Latex, and more.
 #+end_src
 
 ** Org-mode stuff
+<<sec:org>>
 
 Org-mode is the package allowing me to have this literate configuration. Org-superstar
 makes org-mode files look gorgeous.

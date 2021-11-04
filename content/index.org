@@ -1,5 +1,5 @@
 #+TITLE: Emacs configuration
-#+PROPERTY: header-args :tangle init.el
+#+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2
 
 * Panadestein's Emacs configuration
@@ -498,7 +498,7 @@ here.
     :after yasnippet)
 #+end_src
 
-#+begin_src yasnippet :tangle snippets/irp-mode/irp_as
+#+begin_src yasnippet :tangle ../snippets/irp-mode/irp_as
 # -*- mode: snippet -*-
 # name: ASSERT 
 # key: ass
@@ -506,7 +506,7 @@ here.
 ASSERT ($0)%
 #+end_src
 
-#+begin_src yasnippet :tangle snippets/irp-mode/irp_doc
+#+begin_src yasnippet :tangle ../snippets/irp-mode/irp_doc
 # -*- mode: snippet -*-
 # name: BEGIN_DOC ... END_DOC
 # key: bc
@@ -516,7 +516,7 @@ BEGIN_DOC
 END_DOC%   
 #+end_src
 
-#+begin_src yasnippet :tangle snippets/irp-mode/irp_prov
+#+begin_src yasnippet :tangle ../snippets/irp-mode/irp_prov
 # -*- mode: snippet -*-
 # name: BEGIN_PROVIDER ... END_PROVIDER 
 # key: bp
@@ -526,7 +526,7 @@ BEGIN_PROVIDER [${1:integer}, ${2:var}]
 END_PROVIDER%  
 #+end_src
 
-#+begin_src yasnippet :tangle snippets/irp-mode/irp_prov
+#+begin_src yasnippet :tangle ../snippets/irp-mode/irp_sh
 # -*- mode: snippet -*-
 # -*- mode: snippet -*-
 # name: BEGIN_SHELL ... END_SHELL 
@@ -725,7 +725,7 @@ FORTRAN is a major component of my job as a physicist, this package provides all
 using the Implicit Reference to Parameters (IRP) method. I have developed a derived
 mode for IRPF90:
 
-#+begin_src emacs-lisp :tangle ./lib/irp-mode.el
+#+begin_src emacs-lisp :tangle ../lib/irp-mode.el
   ;;; irp-mode.el --- A major mode for dealing with IRPF90 files
 
   ;;; Commentary:

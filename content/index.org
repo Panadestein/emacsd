@@ -1,6 +1,7 @@
 #+TITLE: Emacs configuration
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2
+#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-ReadTheOrg.setup
 
 * Panadestein's Emacs configuration
 

@@ -25,8 +25,7 @@
 (require 'ox-publish)
 (setq org-html-validation-link nil
       org-html-head-include-scripts nil
-      org-html-include-default-style nil
-      org-html-head "<link rel=\"stylesheet\" href=\"https://cdn.simplecss.org/simple.min.css\" />")
+      org-html-include-default-style nil)
 
 ;; Define the project to be published
 

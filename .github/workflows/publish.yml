@@ -3,7 +3,7 @@ name: Publish the Gihub Pages of my literate Emacs config
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   publish:

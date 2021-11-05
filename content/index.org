@@ -7,7 +7,7 @@
 * A foreword on this config and Lisp
 
 Welcome to my literate Emacs configuration. As many specimens of the pedigree,
-this config ratifies the Newtonian aphorism involving giants. Many thanks to all the unsung
+this config ratifies that Newtonian aphorism involving giants. Many thanks to all the unsung
 heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
 recently had a glimpse of the enlightenment promised by so many hacker's lores. Here is one
 of my favorites, written by RMS: 
@@ -23,7 +23,7 @@ Today that's not so,
 In Lisp they can go.
 #+END_VERSE
 
-The beauty of literate configurations with org-mode is that it allows for maintaining an Emacs
+The beauty of literate configuration with org-mode is that it allows for maintaining an Emacs
 config, a website, and an org-mode markup file at the same time. For example, in the header
 of this file you can find the following code:
 
@@ -34,7 +34,7 @@ of this file you can find the following code:
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+end_src
 
-With this options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
+With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
 in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
 
 * General configuration
@@ -121,7 +121,7 @@ This helps clearing the clutter and increases reproducibility of the config
 
 ** Old habits die hard
 
-I cannot just waste years of Vim muscle memory workout. Although the Emacs keybindings
+I cannot just trash years of Vim muscle memory workout. Although the Emacs keybindings
 slowly start to /klappt/.
 
 #+begin_src emacs-lisp
@@ -359,7 +359,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
 
 ** Command's information with which-key
 
-Which-key is a must have to sail the raging seas of Emacs' packages keybindings. This suggestions
+Which-key is a must have to sail the raging seas of Emacs' packages keybindings. These suggestions
 come very handy when exploring a new package.
 
 #+begin_src emacs-lisp
@@ -666,7 +666,7 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 ** TRAMP
 
-Another must have of Emacs. This packages together with dired saves me from configuring
+Another must have of Emacs. This package together with dired saves me from configuring
 my editor all the time in obscure supercomputers around the world.
 
 #+begin_src emacs-lisp

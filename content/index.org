@@ -6,7 +6,7 @@
 
 * A foreword on this config and Lisp
 
-Welcome to my literate Emacs configuration. As many specimens of the pedigree,
+Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. As many specimens of the pedigree,
 this config ratifies that Newtonian aphorism involving giants. Many thanks to all the unsung
 heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
 recently had a glimpse of the enlightenment promised by so many hacker's lores. Here is one

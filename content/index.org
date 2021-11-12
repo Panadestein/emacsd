@@ -194,7 +194,7 @@ Another well-known issue of Emacs, although it rarely affects me.
 
 #+begin_src emacs-lisp
   (use-package so-long
-    :ensure t
+    :ensure nil
     :hook
     (after-init-hook . global-so-long-mode))
 #+end_src
@@ -475,7 +475,7 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
   (use-package flyspell
     :hook
     ((prog-mode . flyspell-prog-mode)
-     (org-mode . turn-on-flyspell))
+     (text-mode . turn-on-flyspell))
     :config
     (flyspell-mode +1))
 #+end_src
@@ -681,7 +681,7 @@ in a laconic manner, because this section is rather opinionated.
 
 ** Lisp stuff
 
-The language that give birth to the "Maxwell equations of software"
+The language that gave birth to the "Maxwell equations of software"
 
 #+begin_src emacs-lisp
   (use-package lispy
@@ -722,6 +722,16 @@ The language that give birth to the "Maxwell equations of software"
     :config
     (add-hook 'hy-mode-hook #'paredit-mode)
     (add-hook 'hy-mode-hook #'rainbow-delimiters-mode))
+#+end_src
+
+Sometimes it is very useful to expand Emacs Lisp macros to better understand their functionality.
+For this, the =macrostep= package comes very handy.
+
+#+begin_src emacs-lisp
+  (use-package macrostep
+    :ensure t
+    :bind (:map emacs-lisp-mode-map
+                ("C-c e" . macrostep-expand)))
 #+end_src
 
 ** FORTRAN stuff
@@ -868,9 +878,39 @@ This mode can be also configured with =use-package=:
 
 ** Makefile stuff
 
+Here it is important to mention that the following =use-package= declaration exists solely
+for aesthetic and organizational purposes. If we =macrostep-expand= it, we can convince ourselves: 
+
 #+begin_src emacs-lisp
   (use-package make-mode
      :ensure nil)
+#+end_src
+
+which expands to
+
+#+begin_src emacs-lisp :tangle no
+  (progn
+    (use-package-ensure-elpa 'make-mode
+                             '(nil)
+                             'nil)
+    (defvar use-package--warning79
+      (function
+       (lambda
+         (keyword err)
+         (let
+             ((msg
+               (format "%s/%s: %s" 'make-mode keyword
+                       (error-message-string err))))
+           (display-warning 'use-package msg :error)))))
+    (condition-case-unless-debug err
+        (if
+            (not
+             (require 'make-mode nil t))
+            (display-warning 'use-package
+                             (format "Cannot load %s" 'make-mode)
+                             :error))
+      (error
+       (funcall use-package--warning79 :catch err))))
 #+end_src
 
 ** Perl stuff
@@ -1046,14 +1086,27 @@ makes org-mode files look gorgeous.
 ** Cmake stuff
 
 #+begin_src emacs-lisp
-  (use-package cmake-mode
-    :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
-    :config
-    (add-to-list 'company-backends 'company-cmake))
+   (use-package cmake-mode
+     :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
+     :config
+     (add-to-list 'company-backends 'company-cmake))
 
-  (use-package eldoc-cmake
-    :after company
-    :hook (cmake-mode . eldoc-cmake-enable))
+   (use-package eldoc-cmake
+     :after company
+     :hook (cmake-mode . eldoc-cmake-enable))
+
+  ;; Thanks to Jimmy Aguilar Mena (Ergus) for this suggestio
+
+   (use-package cmake-font-lock
+     :ensure t
+     :preface
+     (defun my/cmake-font-lock ()
+       (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
+         (cmake-font-lock-activate)
+         (when auto-refresh-defaults
+     (font-lock-refresh-defaults))))
+     :init
+     (add-hook 'cmake-mode-hook #'my/cmake-font-lock))
 #+end_src
 
 ** Git stuff
@@ -1061,13 +1114,19 @@ makes org-mode files look gorgeous.
 This porcelain is more glorious than the one from Meissen
 
 #+begin_src emacs-lisp
-(use-package magit
-  :ensure t)
+  (use-package magit
+    :ensure t)
+
+  (use-package git-modes
+    :ensure t
+    :mode (("\\.gitattributes\\'" . gitattributes-mode)
+     ("\\.gitconfig\\'" . gitconfig-mode)
+     ("\\.gitignore\\'" . gitignore-mode)))
 #+end_src
 
 ** The heretic Vim stuff
 
 #+begin_src emacs-lisp
-(use-package vimrc-mode
-  :ensure t)
+  (use-package vimrc-mode
+    :ensure t)
 #+end_src

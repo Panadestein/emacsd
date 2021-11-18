@@ -454,6 +454,7 @@ and some UI improvements.
 
   (use-package lsp-ui
     :ensure t
+    :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-show-hover t
           lsp-ui-sideline-delay 0.5
@@ -656,7 +657,7 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :ensure t
+    :ensure nil
     :pin manual
     :config
     (setq-default pdf-view-display-size 'fit-page)
@@ -957,32 +958,30 @@ Org-mode is the package allowing me to have this literate configuration. Org-sup
 makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
-   (use-package org-tempo
-     :after org
-     :hook
-     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
-     :config
-     (add-to-list 'org-modules 'org-tempo)
-     (org-babel-do-load-languages
-      'org-babel-load-languages '((fortran . t)
-                                  (python . t)
-                                  (C . t)
-                                  (gnuplot . t)
-                                  (awk . t)
-                                  (latex . t)
-                                  (shell . t)))
-     (setq org-preview-latex-default-process 'imagemagick)
-     (setq org-startup-indented t)
-     (setq org-startup-with-inline-images t))
+  (use-package org-tempo
+    :after org
+    :hook
+    (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
+    :config
+    (require 'ox-beamer)
+    (add-to-list 'org-modules 'org-tempo)
+    (org-babel-do-load-languages
+     'org-babel-load-languages '((fortran . t)
+                                 (python . t)
+                                 (C . t)
+                                 (gnuplot . t)
+                                 (awk . t)
+                                 (latex . t)
+                                 (shell . t)))
+    (setq org-preview-latex-default-process 'imagemagick)
+    (setq org-startup-indented t)
+    (setq org-startup-with-inline-images t))
 
-   (use-package org-superstar
-     :ensure t
-     :config
-     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+  (use-package org-superstar
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 #+end_src
-
-#+RESULTS:
-: t
 
 ** Web stuff
 

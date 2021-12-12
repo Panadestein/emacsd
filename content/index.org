@@ -245,8 +245,7 @@ modeline, but also for file managers and many other packages.
 #+begin_src emacs-lisp
   (use-package all-the-icons
     ;; Needs a manual `M-x all-the-icons-install-fonts`
-    ;; :ensure t
-    :load-path "~/.emacs.d/src/all-the-icons/")
+    :ensure t)
 
   (use-package doom-modeline
     :ensure t
@@ -287,6 +286,15 @@ usage:
   (use-package tabbar
     :ensure t
     :bind (("C-<right>" . tabbar-forward)))
+#+end_src
+
+** Fancy HTML exports
+
+This package ensures that some of the =org-mode= babel exports have proper syntax highlighting.
+
+#+begin_src emacs-lisp
+  (use-package htmlize
+    :ensure t)
 #+end_src
 
 * Autocompletion, syntax checking, spell checking and help
@@ -981,6 +989,14 @@ makes org-mode files look gorgeous.
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+
+  (use-package ox-reveal
+    :ensure t
+    :after org
+    :custom
+    (org-reveal-root "file:///home/loren/bin/reveal.js")
+    :config
+    (setq org-reveal-mathjax t))
 #+end_src
 
 ** Web stuff

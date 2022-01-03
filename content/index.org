@@ -972,6 +972,7 @@ makes org-mode files look gorgeous.
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
     :config
     (require 'ox-beamer)
+    (require 'ol-bibtex)
     (add-to-list 'org-modules 'org-tempo)
     (org-babel-do-load-languages
      'org-babel-load-languages '((fortran . t)
@@ -981,6 +982,7 @@ makes org-mode files look gorgeous.
                                  (awk . t)
                                  (latex . t)
                                  (shell . t)))
+    (setq org-latex-pdf-process '("latexmk -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)
     (setq org-startup-indented t)
     (setq org-startup-with-inline-images t))

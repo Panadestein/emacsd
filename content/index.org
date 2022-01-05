@@ -1000,6 +1000,7 @@ makes org-mode files look gorgeous.
     (setq org-preview-latex-default-process 'imagemagick)
     (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))
     (setq org-startup-indented t)
+    (setq org-latex-listings t)
     (setq org-startup-with-inline-images t))
 
   (use-package org-superstar

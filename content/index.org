@@ -489,6 +489,20 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
     (flyspell-mode +1))
 #+end_src
 
+** Grammar checking with LanguageTool
+
+This is a free and open-source multilingual grammar checker that supports more than thirty languages.
+A must-have if you write papers in LaTeX or org-mode. For the Emacs package to work one needs to install
+the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP server for example as a systemd unit.
+
+#+begin_src emacs-lisp
+  (use-package langtool
+    :ensure t
+    :init
+    (setq langtool-http-server-host "localhost" 
+      langtool-http-server-port 8081))
+#+end_src
+
 ** Syntax checking with Flycheck
 
 Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
@@ -984,6 +998,7 @@ makes org-mode files look gorgeous.
                                  (shell . t)))
     (setq org-latex-pdf-process '("latexmk -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)
+    (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))
     (setq org-startup-indented t)
     (setq org-startup-with-inline-images t))
 

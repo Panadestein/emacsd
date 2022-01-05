@@ -500,7 +500,7 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
     :ensure t
     :init
     (setq langtool-http-server-host "localhost" 
-      langtool-http-server-port 8081))
+          langtool-http-server-port 8081))
 #+end_src
 
 ** Syntax checking with Flycheck
@@ -996,11 +996,12 @@ makes org-mode files look gorgeous.
                                  (awk . t)
                                  (latex . t)
                                  (shell . t)))
-    (setq org-latex-pdf-process '("latexmk -pdf -outdir=%o %f"))
+    (setq org-latex-pdf-process '("latexmk -shell-escape -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)
     (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))
     (setq org-startup-indented t)
-    (setq org-latex-listings t)
+    (setq org-latex-listings 'minted
+          org-latex-packages-alist '(("" "minted")))
     (setq org-startup-with-inline-images t))
 
   (use-package org-superstar

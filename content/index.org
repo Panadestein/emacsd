@@ -226,7 +226,7 @@ this config, I am not ready to use it on a regular basis.
 
 #+begin_src emacs-lisp
   (use-package minimap
-    :ensure nil
+    :ensure t
     :config
     (setq minimap-window-location 'right)
     (setq minimap-minimum-width 10)
@@ -679,8 +679,8 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :ensure nil
-    :pin manual
+    :ensure t
+    ;:pin manual
     :config
     (setq-default pdf-view-display-size 'fit-page)
     (setq pdf-annot-activate-created-annotations t)
@@ -1163,4 +1163,14 @@ This porcelain is more glorious than the one from Meissen
 #+begin_src emacs-lisp
   (use-package vimrc-mode
     :ensure t)
+#+end_src
+
+** Nix stuff
+
+Syntax highlighting for Nix expressions language files
+ 
+#+begin_src emacs-lisp
+  (use-package nix-mode
+    :ensure t
+    :mode "\\.nix\\'")
 #+end_src

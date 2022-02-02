@@ -193,81 +193,82 @@
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org261e2a2">A foreword on this config and Lisp</a></li>
-<li><a href="#org3f226e8">General configuration</a>
+<li><a href="#org2aa5a32">A foreword on this config and Lisp</a></li>
+<li><a href="#org60ee727">General configuration</a>
 <ul>
-<li><a href="#orga32efd3">Add the GNU ELPA and MELPA archives, and then ensure use-package</a></li>
-<li><a href="#org6c23b61">One editor to rule them all, one editor to find them</a></li>
-<li><a href="#org7272bc3">Prevent custom from messing with my config file</a></li>
-<li><a href="#org2cd1f51">Only highlight programming and text buffers</a></li>
-<li><a href="#org1102584">Old habits die hard</a></li>
-<li><a href="#org0828cbc">Linear undo system</a></li>
-<li><a href="#org04bc812">Themes</a></li>
-<li><a href="#org778be37">Handle very long lines</a></li>
-<li><a href="#org3274097">Improved parentheses</a></li>
-<li><a href="#org53d09cb">Highlight parentheses with different color</a></li>
-<li><a href="#org8d55d10">Minimap</a></li>
-<li><a href="#org2a6ce98">Fancy mode line</a></li>
-<li><a href="#org54075b8">Multiple cursors support</a></li>
-<li><a href="#orgf38d627">Tabs-bar-mode</a></li>
-<li><a href="#org2a78674">Fancy HTML exports</a></li>
+<li><a href="#orgdf08de4">Add the GNU ELPA and MELPA archives, and then ensure use-package</a></li>
+<li><a href="#org0a96f2e">One editor to rule them all, one editor to find them</a></li>
+<li><a href="#org0119f44">Prevent custom from messing with my config file</a></li>
+<li><a href="#org090d860">Only highlight programming and text buffers</a></li>
+<li><a href="#org63996d6">Old habits die hard</a></li>
+<li><a href="#orgaf2a348">Linear undo system</a></li>
+<li><a href="#org8ed72b6">Themes</a></li>
+<li><a href="#org6dc9a4c">Handle very long lines</a></li>
+<li><a href="#orga772009">Improved parentheses</a></li>
+<li><a href="#org5efcdf1">Highlight parentheses with different color</a></li>
+<li><a href="#org9dc4c91">Minimap</a></li>
+<li><a href="#org3c56d05">Fancy mode line</a></li>
+<li><a href="#org3f5fab1">Multiple cursors support</a></li>
+<li><a href="#org51f85a3">Tabs-bar-mode</a></li>
+<li><a href="#org8aee839">Fancy HTML exports</a></li>
 </ul>
 </li>
-<li><a href="#org99c8e5e">Autocompletion, syntax checking, spell checking and help</a>
+<li><a href="#orgc7ac539">Autocompletion, syntax checking, spell checking and help</a>
 <ul>
-<li><a href="#org177a8b8">Complete everything (but code) in Emacs with ivy</a></li>
-<li><a href="#orgbddc429">Command's information with which-key</a></li>
-<li><a href="#org37aecdd">Improved help system with Helpful</a></li>
-<li><a href="#orgb55568e">Code tags</a></li>
-<li><a href="#orgea9e88d">Completion with company</a></li>
-<li><a href="#org03fb3a5">Language serve protocol</a></li>
-<li><a href="#org3d942a9">Spell checking with FlySpell</a></li>
-<li><a href="#orga1788bc">Grammar checking with LanguageTool</a></li>
-<li><a href="#org7fd631f">Syntax checking with Flycheck</a></li>
-<li><a href="#org15e189f">Snippets</a></li>
+<li><a href="#org8345e29">Complete everything (but code) in Emacs with ivy</a></li>
+<li><a href="#org5cd3491">Command's information with which-key</a></li>
+<li><a href="#org4bd716c">Improved help system with Helpful</a></li>
+<li><a href="#org9de0b17">Code tags</a></li>
+<li><a href="#org2e2a2b8">Completion with company</a></li>
+<li><a href="#orga265d42">Language serve protocol</a></li>
+<li><a href="#org471f1d7">Spell checking with FlySpell</a></li>
+<li><a href="#org0e48372">Grammar checking with LanguageTool</a></li>
+<li><a href="#orgc39e309">Syntax checking with Flycheck</a></li>
+<li><a href="#org3209512">Snippets</a></li>
 </ul>
 </li>
-<li><a href="#org520941f">File browsing and terminals</a>
+<li><a href="#orgd8f595a">File browsing and terminals</a>
 <ul>
-<li><a href="#orga518aac">Terminal support with Vterm</a></li>
-<li><a href="#org03baa31">File browsers</a></li>
-<li><a href="#orgf4a4f2d">PDF support</a></li>
-<li><a href="#org6651449">TRAMP</a></li>
+<li><a href="#org5faa520">Terminal support with Vterm</a></li>
+<li><a href="#orgad8b7ce">File browsers</a></li>
+<li><a href="#org5449c05">PDF support</a></li>
+<li><a href="#orgd6e8234">TRAMP</a></li>
 </ul>
 </li>
-<li><a href="#orgf2c9eed">Programming</a>
+<li><a href="#org9eb7963">Programming</a>
 <ul>
-<li><a href="#orgca1bbef">Lisp stuff</a></li>
-<li><a href="#org550010b">FORTRAN stuff</a></li>
-<li><a href="#orgfd9cc6b">IRPF90</a></li>
-<li><a href="#orga79d9e0">C/C++ stuff</a></li>
-<li><a href="#org84f9e62">Python stuff</a></li>
-<li><a href="#org9997b17">Cuda stuff</a></li>
-<li><a href="#org6ef8c0c">Julia stuff</a></li>
-<li><a href="#org35286f2">Haskell stuff</a></li>
-<li><a href="#org304fc3f">Makefile stuff</a></li>
-<li><a href="#org6f8a397">Perl stuff</a></li>
-<li><a href="#orgdabbff7">Raku stuff</a></li>
-<li><a href="#orgdf21336">Latex</a></li>
-<li><a href="#orgcd2b703">Org-mode stuff</a></li>
-<li><a href="#org9252545">Web stuff</a></li>
-<li><a href="#org965a4a4">YAML stuff</a></li>
-<li><a href="#org0c8093a">Markdown stuff</a></li>
-<li><a href="#org5d00528">reStructuredText stuff</a></li>
-<li><a href="#org7689ca5">Lua stuff</a></li>
-<li><a href="#org287229a">JSON stuff</a></li>
-<li><a href="#orged47903">Cmake stuff</a></li>
-<li><a href="#orge43de0e">Git stuff</a></li>
-<li><a href="#org81ea540">The heretic Vim stuff</a></li>
+<li><a href="#orgb4d90aa">Lisp stuff</a></li>
+<li><a href="#orgd63ea9c">FORTRAN stuff</a></li>
+<li><a href="#orgadb4715">IRPF90</a></li>
+<li><a href="#org589e35c">C/C++ stuff</a></li>
+<li><a href="#org2c6acd2">Python stuff</a></li>
+<li><a href="#org07866cd">Cuda stuff</a></li>
+<li><a href="#orga31205a">Julia stuff</a></li>
+<li><a href="#org7484d9d">Haskell stuff</a></li>
+<li><a href="#org11c534e">Makefile stuff</a></li>
+<li><a href="#org0d1217a">Perl stuff</a></li>
+<li><a href="#org48adda5">Raku stuff</a></li>
+<li><a href="#org2a1093b">Latex</a></li>
+<li><a href="#orgd649193">Org-mode stuff</a></li>
+<li><a href="#orgc03de78">Web stuff</a></li>
+<li><a href="#org04acbff">YAML stuff</a></li>
+<li><a href="#org81ab1b2">Markdown stuff</a></li>
+<li><a href="#orge10acaf">reStructuredText stuff</a></li>
+<li><a href="#org2b9e042">Lua stuff</a></li>
+<li><a href="#org595458e">JSON stuff</a></li>
+<li><a href="#org4ed7acc">Cmake stuff</a></li>
+<li><a href="#org2dff41d">Git stuff</a></li>
+<li><a href="#org0e32ff5">The heretic Vim stuff</a></li>
+<li><a href="#org1a53fa3">Nix stuff</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org261e2a2" class="outline-2">
-<h2 id="org261e2a2">A foreword on this config and Lisp</h2>
-<div class="outline-text-2" id="text-org261e2a2">
+<div id="outline-container-org2aa5a32" class="outline-2">
+<h2 id="org2aa5a32">A foreword on this config and Lisp</h2>
+<div class="outline-text-2" id="text-org2aa5a32">
 <p>
 Welcome to my literate <a href="https://github.com/Panadestein/emacsd">Emacs configuration</a>. As many specimens of the pedigree,
 this config ratifies that Newtonian aphorism involving giants. Many thanks to all the unsung
@@ -302,19 +303,19 @@ of this file you can find the following code:
 </div>
 
 <p>
-With these options, I tangle (every time I save, see the org-mode <a href="#org67bf250">hook</a>) the source code blocks
+With these options, I tangle (every time I save, see the org-mode <a href="#orge8bf3c4">hook</a>) the source code blocks
 in this config to my Emacs <code>init.el</code>, and I set up the ReadTheOrg theme that the website uses.
 </p>
 </div>
 </div>
 
-<div id="outline-container-org3f226e8" class="outline-2">
-<h2 id="org3f226e8">General configuration</h2>
-<div class="outline-text-2" id="text-org3f226e8">
+<div id="outline-container-org60ee727" class="outline-2">
+<h2 id="org60ee727">General configuration</h2>
+<div class="outline-text-2" id="text-org60ee727">
 </div>
-<div id="outline-container-orga32efd3" class="outline-3">
-<h3 id="orga32efd3">Add the GNU ELPA and MELPA archives, and then ensure use-package</h3>
-<div class="outline-text-3" id="text-orga32efd3">
+<div id="outline-container-orgdf08de4" class="outline-3">
+<h3 id="orgdf08de4">Add the GNU ELPA and MELPA archives, and then ensure use-package</h3>
+<div class="outline-text-3" id="text-orgdf08de4">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(<span style="color: #a020f0;">setq</span> package-archives '((<span style="color: #8b2252;">"gnu"</span> . <span style="color: #8b2252;">"https://elpa.gnu.org/packages/"</span>)
        (<span style="color: #8b2252;">"melpa"</span> . <span style="color: #8b2252;">"https://melpa.org/packages/"</span>))
@@ -331,9 +332,9 @@ in this config to my Emacs <code>init.el</code>, and I set up the ReadTheOrg the
 </div>
 
 
-<div id="outline-container-org6c23b61" class="outline-3">
-<h3 id="org6c23b61">One editor to rule them all, one editor to find them</h3>
-<div class="outline-text-3" id="text-org6c23b61">
+<div id="outline-container-org0a96f2e" class="outline-3">
+<h3 id="org0a96f2e">One editor to rule them all, one editor to find them</h3>
+<div class="outline-text-3" id="text-org0a96f2e">
 <p>
 Here I use the <code>use-package</code> macro to keep all Emacs internal settings organized in one single block.
 The variables have self-explanatory names, but I have added a few comments for the sake of clarity. 
@@ -379,9 +380,9 @@ The variables have self-explanatory names, but I have added a few comments for t
 </div>
 </div>
 
-<div id="outline-container-org7272bc3" class="outline-3">
-<h3 id="org7272bc3">Prevent custom from messing with my config file</h3>
-<div class="outline-text-3" id="text-org7272bc3">
+<div id="outline-container-org0119f44" class="outline-3">
+<h3 id="org0119f44">Prevent custom from messing with my config file</h3>
+<div class="outline-text-3" id="text-org0119f44">
 <p>
 This helps clearing the clutter and increases reproducibility of the config
 </p>
@@ -397,9 +398,9 @@ This helps clearing the clutter and increases reproducibility of the config
 </div>
 </div>
 
-<div id="outline-container-org2cd1f51" class="outline-3">
-<h3 id="org2cd1f51">Only highlight programming and text buffers</h3>
-<div class="outline-text-3" id="text-org2cd1f51">
+<div id="outline-container-org090d860" class="outline-3">
+<h3 id="org090d860">Only highlight programming and text buffers</h3>
+<div class="outline-text-3" id="text-org090d860">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package hl-line
   <span style="color: #483d8b;">:config</span>
@@ -412,9 +413,9 @@ This helps clearing the clutter and increases reproducibility of the config
 </div>
 </div>
 
-<div id="outline-container-org1102584" class="outline-3">
-<h3 id="org1102584">Old habits die hard</h3>
-<div class="outline-text-3" id="text-org1102584">
+<div id="outline-container-org63996d6" class="outline-3">
+<h3 id="org63996d6">Old habits die hard</h3>
+<div class="outline-text-3" id="text-org63996d6">
 <p>
 I cannot just trash years of Vim muscle memory workout. Although the Emacs keybindings
 slowly start to <i>klappt</i>.
@@ -434,9 +435,9 @@ slowly start to <i>klappt</i>.
 </div>
 </div>
 
-<div id="outline-container-org0828cbc" class="outline-3">
-<h3 id="org0828cbc">Linear undo system</h3>
-<div class="outline-text-3" id="text-org0828cbc">
+<div id="outline-container-orgaf2a348" class="outline-3">
+<h3 id="orgaf2a348">Linear undo system</h3>
+<div class="outline-text-3" id="text-orgaf2a348">
 <p>
 This is one of the not so awesome quirks of Emacs IMHO. Maybe one day I will understand
 its power. I keep it linear for the moment.
@@ -452,9 +453,9 @@ its power. I keep it linear for the moment.
 </div>
 </div>
 
-<div id="outline-container-org04bc812" class="outline-3">
-<h3 id="org04bc812">Themes</h3>
-<div class="outline-text-3" id="text-org04bc812">
+<div id="outline-container-org8ed72b6" class="outline-3">
+<h3 id="org8ed72b6">Themes</h3>
+<div class="outline-text-3" id="text-org8ed72b6">
 <p>
 As Nietzsche said, the voice of beauty speaks softly; it creeps only into the most fully awakened souls.
 Ergo the importance of a visually pleasant editor. These are my top three themes:
@@ -499,9 +500,9 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
 </div>
 </div>
 
-<div id="outline-container-org778be37" class="outline-3">
-<h3 id="org778be37">Handle very long lines</h3>
-<div class="outline-text-3" id="text-org778be37">
+<div id="outline-container-org6dc9a4c" class="outline-3">
+<h3 id="org6dc9a4c">Handle very long lines</h3>
+<div class="outline-text-3" id="text-org6dc9a4c">
 <p>
 Another well-known issue of Emacs, although it rarely affects me.
 </p>
@@ -516,9 +517,9 @@ Another well-known issue of Emacs, although it rarely affects me.
 </div>
 </div>
 
-<div id="outline-container-org3274097" class="outline-3">
-<h3 id="org3274097">Improved parentheses</h3>
-<div class="outline-text-3" id="text-org3274097">
+<div id="outline-container-orga772009" class="outline-3">
+<h3 id="orga772009">Improved parentheses</h3>
+<div class="outline-text-3" id="text-orga772009">
 <p>
 This helps a lot when lisping.
 </p>
@@ -532,9 +533,9 @@ This helps a lot when lisping.
 </div>
 </div>
 
-<div id="outline-container-org53d09cb" class="outline-3">
-<h3 id="org53d09cb">Highlight parentheses with different color</h3>
-<div class="outline-text-3" id="text-org53d09cb">
+<div id="outline-container-org5efcdf1" class="outline-3">
+<h3 id="org5efcdf1">Highlight parentheses with different color</h3>
+<div class="outline-text-3" id="text-org5efcdf1">
 <p>
 Another eye candy. Parenthesis of different colors are very helpful in Lisp though.
 </p>
@@ -548,9 +549,9 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 </div>
 </div>
 
-<div id="outline-container-org8d55d10" class="outline-3">
-<h3 id="org8d55d10">Minimap</h3>
-<div class="outline-text-3" id="text-org8d55d10">
+<div id="outline-container-org9dc4c91" class="outline-3">
+<h3 id="org9dc4c91">Minimap</h3>
+<div class="outline-text-3" id="text-org9dc4c91">
 <p>
 This package implements Sublime Text's minimap in Emacs. Although I am quasi-satisfied with
 this config, I am not ready to use it on a regular basis.
@@ -558,7 +559,7 @@ this config, I am not ready to use it on a regular basis.
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package minimap
-  <span style="color: #483d8b;">:ensure</span> nil
+  <span style="color: #483d8b;">:ensure</span> t
   <span style="color: #483d8b;">:config</span>
   (<span style="color: #a020f0;">setq</span> minimap-window-location 'right)
   (<span style="color: #a020f0;">setq</span> minimap-minimum-width 10)
@@ -571,9 +572,9 @@ this config, I am not ready to use it on a regular basis.
 </div>
 </div>
 
-<div id="outline-container-org2a6ce98" class="outline-3">
-<h3 id="org2a6ce98">Fancy mode line</h3>
-<div class="outline-text-3" id="text-org2a6ce98">
+<div id="outline-container-org3c56d05" class="outline-3">
+<h3 id="org3c56d05">Fancy mode line</h3>
+<div class="outline-text-3" id="text-org3c56d05">
 <p>
 Another gift from the Doom Emacs community. Best modeline I have seem for Emacs.
 The additional package <code>all-the-icons</code> provides awesome icons not only for the
@@ -600,9 +601,9 @@ modeline, but also for file managers and many other packages.
 </div>
 </div>
 
-<div id="outline-container-org54075b8" class="outline-3">
-<h3 id="org54075b8">Multiple cursors support</h3>
-<div class="outline-text-3" id="text-org54075b8">
+<div id="outline-container-org3f5fab1" class="outline-3">
+<h3 id="org3f5fab1">Multiple cursors support</h3>
+<div class="outline-text-3" id="text-org3f5fab1">
 <p>
 This package is very interesting, although not so ergonomic IMHO. Here are some of the
 most relevant commands:
@@ -624,9 +625,9 @@ most relevant commands:
 </div>
 </div>
 
-<div id="outline-container-orgf38d627" class="outline-3">
-<h3 id="orgf38d627">Tabs-bar-mode</h3>
-<div class="outline-text-3" id="text-orgf38d627">
+<div id="outline-container-org51f85a3" class="outline-3">
+<h3 id="org51f85a3">Tabs-bar-mode</h3>
+<div class="outline-text-3" id="text-org51f85a3">
 <p>
 I could not manage to use this package without side effects in Evil-mode. Here is a simple
 usage:
@@ -646,9 +647,9 @@ usage:
 </div>
 </div>
 
-<div id="outline-container-org2a78674" class="outline-3">
-<h3 id="org2a78674">Fancy HTML exports</h3>
-<div class="outline-text-3" id="text-org2a78674">
+<div id="outline-container-org8aee839" class="outline-3">
+<h3 id="org8aee839">Fancy HTML exports</h3>
+<div class="outline-text-3" id="text-org8aee839">
 <p>
 This package ensures that some of the <code>org-mode</code> babel exports have proper syntax highlighting.
 </p>
@@ -662,13 +663,13 @@ This package ensures that some of the <code>org-mode</code> babel exports have p
 </div>
 </div>
 
-<div id="outline-container-org99c8e5e" class="outline-2">
-<h2 id="org99c8e5e">Autocompletion, syntax checking, spell checking and help</h2>
-<div class="outline-text-2" id="text-org99c8e5e">
+<div id="outline-container-orgc7ac539" class="outline-2">
+<h2 id="orgc7ac539">Autocompletion, syntax checking, spell checking and help</h2>
+<div class="outline-text-2" id="text-orgc7ac539">
 </div>
-<div id="outline-container-org177a8b8" class="outline-3">
-<h3 id="org177a8b8">Complete everything (but code) in Emacs with ivy</h3>
-<div class="outline-text-3" id="text-org177a8b8">
+<div id="outline-container-org8345e29" class="outline-3">
+<h3 id="org8345e29">Complete everything (but code) in Emacs with ivy</h3>
+<div class="outline-text-3" id="text-org8345e29">
 <p>
 The usage of ivy and their autocompletion army (swiper, counsel) has greatly increased my
 productivity. It is also very well integrated with the Doom Emacs theme I use. The swiper
@@ -738,9 +739,9 @@ search feature (<code>C-s</code>) is far more powerful than the default Emacs co
 </div>
 </div>
 
-<div id="outline-container-orgbddc429" class="outline-3">
-<h3 id="orgbddc429">Command's information with which-key</h3>
-<div class="outline-text-3" id="text-orgbddc429">
+<div id="outline-container-org5cd3491" class="outline-3">
+<h3 id="org5cd3491">Command's information with which-key</h3>
+<div class="outline-text-3" id="text-org5cd3491">
 <p>
 Which-key is a must have to sail the raging seas of Emacs' packages keybindings. These suggestions
 come very handy when exploring a new package.
@@ -760,9 +761,9 @@ come very handy when exploring a new package.
 </div>
 </div>
 
-<div id="outline-container-org37aecdd" class="outline-3">
-<h3 id="org37aecdd">Improved help system with Helpful</h3>
-<div class="outline-text-3" id="text-org37aecdd">
+<div id="outline-container-org4bd716c" class="outline-3">
+<h3 id="org4bd716c">Improved help system with Helpful</h3>
+<div class="outline-text-3" id="text-org4bd716c">
 <p>
 Emacs default help system is very good. Helpful makes it awesome by adding colors and source code
 exploration.
@@ -783,9 +784,9 @@ exploration.
 </div>
 </div>
 
-<div id="outline-container-orgb55568e" class="outline-3">
-<h3 id="orgb55568e">Code tags</h3>
-<div class="outline-text-3" id="text-orgb55568e">
+<div id="outline-container-org9de0b17" class="outline-3">
+<h3 id="org9de0b17">Code tags</h3>
+<div class="outline-text-3" id="text-org9de0b17">
 <p>
 Using code tags when developing in large scale codes (like electronic structure packages)
 can save your fingers from <code>grep</code> induced damage. This package uses the efficient <code>counsel</code>
@@ -809,9 +810,9 @@ infrastructure to make tags navigation seamless.
 </div>
 </div>
 
-<div id="outline-container-orgea9e88d" class="outline-3">
-<h3 id="orgea9e88d">Completion with company</h3>
-<div class="outline-text-3" id="text-orgea9e88d">
+<div id="outline-container-org2e2a2b8" class="outline-3">
+<h3 id="org2e2a2b8">Completion with company</h3>
+<div class="outline-text-3" id="text-org2e2a2b8">
 <p>
 Source code completions. An all time classic.
 </p>
@@ -831,9 +832,9 @@ Source code completions. An all time classic.
 </div>
 </div>
 
-<div id="outline-container-org03fb3a5" class="outline-3">
-<h3 id="org03fb3a5">Language serve protocol</h3>
-<div class="outline-text-3" id="text-org03fb3a5">
+<div id="outline-container-orga265d42" class="outline-3">
+<h3 id="orga265d42">Language serve protocol</h3>
+<div class="outline-text-3" id="text-orga265d42">
 <p>
 My LSP config is largely work in progress. It includes at the moment Python configuration
 and some UI improvements.
@@ -879,9 +880,9 @@ and some UI improvements.
 </div>
 </div>
 
-<div id="outline-container-org3d942a9" class="outline-3">
-<h3 id="org3d942a9">Spell checking with FlySpell</h3>
-<div class="outline-text-3" id="text-org3d942a9">
+<div id="outline-container-org471f1d7" class="outline-3">
+<h3 id="org471f1d7">Spell checking with FlySpell</h3>
+<div class="outline-text-3" id="text-org471f1d7">
 <p>
 FlySpell does a lot out of the box, therefore I have a very basic config.
 </p>
@@ -898,9 +899,9 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
 </div>
 </div>
 
-<div id="outline-container-orga1788bc" class="outline-3">
-<h3 id="orga1788bc">Grammar checking with LanguageTool</h3>
-<div class="outline-text-3" id="text-orga1788bc">
+<div id="outline-container-org0e48372" class="outline-3">
+<h3 id="org0e48372">Grammar checking with LanguageTool</h3>
+<div class="outline-text-3" id="text-org0e48372">
 <p>
 This is a free and open-source multilingual grammar checker that supports more than thirty languages.
 A must-have if you write papers in LaTeX or org-mode. For the Emacs package to work one needs to install
@@ -918,9 +919,9 @@ the <a href="https://languagetool.org/">LanguageTool</a> package, and start the 
 </div>
 </div>
 
-<div id="outline-container-org7fd631f" class="outline-3">
-<h3 id="org7fd631f">Syntax checking with Flycheck</h3>
-<div class="outline-text-3" id="text-org7fd631f">
+<div id="outline-container-orgc39e309" class="outline-3">
+<h3 id="orgc39e309">Syntax checking with Flycheck</h3>
+<div class="outline-text-3" id="text-orgc39e309">
 <p>
 Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
 checking can harm performance, and some checkers can introduce huge penalties (I had to
@@ -941,9 +942,9 @@ disable <code>mypy</code>). With this config I only check when saving.
 </div>
 </div>
 
-<div id="outline-container-org15e189f" class="outline-3">
-<h3 id="org15e189f">Snippets</h3>
-<div class="outline-text-3" id="text-org15e189f">
+<div id="outline-container-org3209512" class="outline-3">
+<h3 id="org3209512">Snippets</h3>
+<div class="outline-text-3" id="text-org3209512">
 <p>
 Yasnippet is a fairly complete collection of snippets with a very intuitive syntax. Painful is the absence
 of Scheme snippets. I have written some custom snippets for the IRPF90 derived mode, which I also include
@@ -1008,13 +1009,13 @@ END_SHELL%
 </div>
 </div>
 
-<div id="outline-container-org520941f" class="outline-2">
-<h2 id="org520941f">File browsing and terminals</h2>
-<div class="outline-text-2" id="text-org520941f">
+<div id="outline-container-orgd8f595a" class="outline-2">
+<h2 id="orgd8f595a">File browsing and terminals</h2>
+<div class="outline-text-2" id="text-orgd8f595a">
 </div>
-<div id="outline-container-orga518aac" class="outline-3">
-<h3 id="orga518aac">Terminal support with Vterm</h3>
-<div class="outline-text-3" id="text-orga518aac">
+<div id="outline-container-org5faa520" class="outline-3">
+<h3 id="org5faa520">Terminal support with Vterm</h3>
+<div class="outline-text-3" id="text-org5faa520">
 <p>
 This package uses a C library instead of Lisp to emulate the terminals. It is my favorite emulator
 currently, although Eshell could be an alternative.
@@ -1071,9 +1072,9 @@ currently, although Eshell could be an alternative.
 </div>
 </div>
 
-<div id="outline-container-org03baa31" class="outline-3">
-<h3 id="org03baa31">File browsers</h3>
-<div class="outline-text-3" id="text-org03baa31">
+<div id="outline-container-orgad8b7ce" class="outline-3">
+<h3 id="orgad8b7ce">File browsers</h3>
+<div class="outline-text-3" id="text-orgad8b7ce">
 <p>
 After trying a couple of file browsers I understood that all I needed was already there.
 Dired keeps me in Emacs.
@@ -1119,17 +1120,17 @@ Dired keeps me in Emacs.
 </div>
 </div>
 
-<div id="outline-container-orgf4a4f2d" class="outline-3">
-<h3 id="orgf4a4f2d">PDF support</h3>
-<div class="outline-text-3" id="text-orgf4a4f2d">
+<div id="outline-container-org5449c05" class="outline-3">
+<h3 id="org5449c05">PDF support</h3>
+<div class="outline-text-3" id="text-org5449c05">
 <p>
 Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.
 </p>
 
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package pdf-tools
-  <span style="color: #483d8b;">:ensure</span> nil
-  <span style="color: #483d8b;">:pin</span> manual
+  <span style="color: #483d8b;">:ensure</span> t
+  ;<span style="color: #b22222;">:pin manual</span>
   <span style="color: #483d8b;">:config</span>
   (<span style="color: #a020f0;">setq-default</span> pdf-view-display-size 'fit-page)
   (<span style="color: #a020f0;">setq</span> pdf-annot-activate-created-annotations t)
@@ -1139,9 +1140,9 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 </div>
 </div>
 
-<div id="outline-container-org6651449" class="outline-3">
-<h3 id="org6651449">TRAMP</h3>
-<div class="outline-text-3" id="text-org6651449">
+<div id="outline-container-orgd6e8234" class="outline-3">
+<h3 id="orgd6e8234">TRAMP</h3>
+<div class="outline-text-3" id="text-orgd6e8234">
 <p>
 Another must have of Emacs. This package together with dired saves me from configuring
 my editor all the time in obscure supercomputers around the world.
@@ -1156,18 +1157,18 @@ my editor all the time in obscure supercomputers around the world.
 </div>
 </div>
 
-<div id="outline-container-orgf2c9eed" class="outline-2">
-<h2 id="orgf2c9eed">Programming</h2>
-<div class="outline-text-2" id="text-orgf2c9eed">
+<div id="outline-container-org9eb7963" class="outline-2">
+<h2 id="org9eb7963">Programming</h2>
+<div class="outline-text-2" id="text-org9eb7963">
 <p>
 Here you can find my configuration for different programming languages. I will introduce it
 in a laconic manner, because this section is rather opinionated.
 </p>
 </div>
 
-<div id="outline-container-orgca1bbef" class="outline-3">
-<h3 id="orgca1bbef">Lisp stuff</h3>
-<div class="outline-text-3" id="text-orgca1bbef">
+<div id="outline-container-orgb4d90aa" class="outline-3">
+<h3 id="orgb4d90aa">Lisp stuff</h3>
+<div class="outline-text-3" id="text-orgb4d90aa">
 <p>
 The language that gave birth to the "Maxwell equations of software"
 </p>
@@ -1229,9 +1230,9 @@ For this, the <code>macrostep</code> package comes very handy.
 </div>
 </div>
 
-<div id="outline-container-org550010b" class="outline-3">
-<h3 id="org550010b">FORTRAN stuff</h3>
-<div class="outline-text-3" id="text-org550010b">
+<div id="outline-container-orgd63ea9c" class="outline-3">
+<h3 id="orgd63ea9c">FORTRAN stuff</h3>
+<div class="outline-text-3" id="text-orgd63ea9c">
 <p>
 FORTRAN is a major component of my job as a physicist, this package provides all I need. 
 </p>
@@ -1246,9 +1247,9 @@ FORTRAN is a major component of my job as a physicist, this package provides all
 </div>
 </div>
 
-<div id="outline-container-orgfd9cc6b" class="outline-3">
-<h3 id="orgfd9cc6b">IRPF90</h3>
-<div class="outline-text-3" id="text-orgfd9cc6b">
+<div id="outline-container-orgadb4715" class="outline-3">
+<h3 id="orgadb4715">IRPF90</h3>
+<div class="outline-text-3" id="text-orgadb4715">
 <p>
 <a href="http://irpf90.ups-tlse.fr/">IRPF90</a> is an environment that allows for efficient functional programming in FORTRAN
 using the Implicit Reference to Parameters (IRP) method. I have developed a derived
@@ -1314,9 +1315,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-orga79d9e0" class="outline-3">
-<h3 id="orga79d9e0">C/C++ stuff</h3>
-<div class="outline-text-3" id="text-orga79d9e0">
+<div id="outline-container-org589e35c" class="outline-3">
+<h3 id="org589e35c">C/C++ stuff</h3>
+<div class="outline-text-3" id="text-org589e35c">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package ccls
   <span style="color: #483d8b;">:ensure</span> t
@@ -1332,9 +1333,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-org84f9e62" class="outline-3">
-<h3 id="org84f9e62">Python stuff</h3>
-<div class="outline-text-3" id="text-org84f9e62">
+<div id="outline-container-org2c6acd2" class="outline-3">
+<h3 id="org2c6acd2">Python stuff</h3>
+<div class="outline-text-3" id="text-org2c6acd2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package python
   <span style="color: #483d8b;">:config</span>
@@ -1359,9 +1360,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-org9997b17" class="outline-3">
-<h3 id="org9997b17">Cuda stuff</h3>
-<div class="outline-text-3" id="text-org9997b17">
+<div id="outline-container-org07866cd" class="outline-3">
+<h3 id="org07866cd">Cuda stuff</h3>
+<div class="outline-text-3" id="text-org07866cd">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package cuda-mode
     <span style="color: #483d8b;">:mode</span> <span style="color: #8b2252;">"\\.cu\\'"</span>)
@@ -1370,9 +1371,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-org6ef8c0c" class="outline-3">
-<h3 id="org6ef8c0c">Julia stuff</h3>
-<div class="outline-text-3" id="text-org6ef8c0c">
+<div id="outline-container-orga31205a" class="outline-3">
+<h3 id="orga31205a">Julia stuff</h3>
+<div class="outline-text-3" id="text-orga31205a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package julia-mode
   <span style="color: #483d8b;">:mode</span> <span style="color: #8b2252;">"\\.jl\\'"</span>)
@@ -1384,9 +1385,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-org35286f2" class="outline-3">
-<h3 id="org35286f2">Haskell stuff</h3>
-<div class="outline-text-3" id="text-org35286f2">
+<div id="outline-container-org7484d9d" class="outline-3">
+<h3 id="org7484d9d">Haskell stuff</h3>
+<div class="outline-text-3" id="text-org7484d9d">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package haskell-mode
   <span style="color: #483d8b;">:ensure</span> t
@@ -1406,9 +1407,9 @@ This mode can be also configured with <code>use-package</code>:
 </div>
 </div>
 
-<div id="outline-container-org304fc3f" class="outline-3">
-<h3 id="org304fc3f">Makefile stuff</h3>
-<div class="outline-text-3" id="text-org304fc3f">
+<div id="outline-container-org11c534e" class="outline-3">
+<h3 id="org11c534e">Makefile stuff</h3>
+<div class="outline-text-3" id="text-org11c534e">
 <p>
 Here it is important to mention that the following <code>use-package</code> declaration exists solely
 for aesthetic and organizational purposes. If we <code>macrostep-expand</code> it, we can convince ourselves: 
@@ -1452,9 +1453,9 @@ which expands to
 </div>
 </div>
 
-<div id="outline-container-org6f8a397" class="outline-3">
-<h3 id="org6f8a397">Perl stuff</h3>
-<div class="outline-text-3" id="text-org6f8a397">
+<div id="outline-container-org0d1217a" class="outline-3">
+<h3 id="org0d1217a">Perl stuff</h3>
+<div class="outline-text-3" id="text-org0d1217a">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package cperl-mode
   <span style="color: #483d8b;">:mode</span> (<span style="color: #8b2252;">"\\.</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">(</span><span style="color: #8b2252;">[pP][Llm]</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">|</span><span style="color: #8b2252;">al</span><span style="color: #8b2252; font-weight: bold;">\\</span><span style="color: #8b2252; font-weight: bold;">)</span><span style="color: #8b2252;">\\'"</span> . cperl-mode))
@@ -1463,9 +1464,9 @@ which expands to
 </div>
 </div>
 
-<div id="outline-container-orgdabbff7" class="outline-3">
-<h3 id="orgdabbff7">Raku stuff</h3>
-<div class="outline-text-3" id="text-orgdabbff7">
+<div id="outline-container-org48adda5" class="outline-3">
+<h3 id="org48adda5">Raku stuff</h3>
+<div class="outline-text-3" id="text-org48adda5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package raku-mode
   <span style="color: #483d8b;">:ensure</span> t
@@ -1476,9 +1477,9 @@ which expands to
 </div>
 </div>
 
-<div id="outline-container-orgdf21336" class="outline-3">
-<h3 id="orgdf21336">Latex</h3>
-<div class="outline-text-3" id="text-orgdf21336">
+<div id="outline-container-org2a1093b" class="outline-3">
+<h3 id="org2a1093b">Latex</h3>
+<div class="outline-text-3" id="text-org2a1093b">
 <p>
 Auctex provides all you will ever need to work with Latex, and more. 
 </p>
@@ -1503,11 +1504,11 @@ Auctex provides all you will ever need to work with Latex, and more.
 </div>
 </div>
 
-<div id="outline-container-orgcd2b703" class="outline-3">
-<h3 id="orgcd2b703">Org-mode stuff</h3>
-<div class="outline-text-3" id="text-orgcd2b703">
+<div id="outline-container-orgd649193" class="outline-3">
+<h3 id="orgd649193">Org-mode stuff</h3>
+<div class="outline-text-3" id="text-orgd649193">
 <p>
-<a id="org67bf250"></a>
+<a id="orge8bf3c4"></a>
 </p>
 
 <p>
@@ -1557,9 +1558,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org9252545" class="outline-3">
-<h3 id="org9252545">Web stuff</h3>
-<div class="outline-text-3" id="text-org9252545">
+<div id="outline-container-orgc03de78" class="outline-3">
+<h3 id="orgc03de78">Web stuff</h3>
+<div class="outline-text-3" id="text-orgc03de78">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package php-mode
   <span style="color: #483d8b;">:mode</span> (<span style="color: #8b2252;">"\\.php\\'"</span>))
@@ -1614,9 +1615,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org965a4a4" class="outline-3">
-<h3 id="org965a4a4">YAML stuff</h3>
-<div class="outline-text-3" id="text-org965a4a4">
+<div id="outline-container-org04acbff" class="outline-3">
+<h3 id="org04acbff">YAML stuff</h3>
+<div class="outline-text-3" id="text-org04acbff">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package yaml-mode
   <span style="color: #483d8b;">:ensure</span> t
@@ -1626,9 +1627,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org0c8093a" class="outline-3">
-<h3 id="org0c8093a">Markdown stuff</h3>
-<div class="outline-text-3" id="text-org0c8093a">
+<div id="outline-container-org81ab1b2" class="outline-3">
+<h3 id="org81ab1b2">Markdown stuff</h3>
+<div class="outline-text-3" id="text-org81ab1b2">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package markdown-mode
   <span style="color: #483d8b;">:ensure</span> t
@@ -1639,9 +1640,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org5d00528" class="outline-3">
-<h3 id="org5d00528">reStructuredText stuff</h3>
-<div class="outline-text-3" id="text-org5d00528">
+<div id="outline-container-orge10acaf" class="outline-3">
+<h3 id="orge10acaf">reStructuredText stuff</h3>
+<div class="outline-text-3" id="text-orge10acaf">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package rst
   <span style="color: #483d8b;">:mode</span> (<span style="color: #8b2252;">"\\.rst\\'"</span> . rst-mode)
@@ -1655,9 +1656,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org7689ca5" class="outline-3">
-<h3 id="org7689ca5">Lua stuff</h3>
-<div class="outline-text-3" id="text-org7689ca5">
+<div id="outline-container-org2b9e042" class="outline-3">
+<h3 id="org2b9e042">Lua stuff</h3>
+<div class="outline-text-3" id="text-org2b9e042">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package lua-mode
   <span style="color: #483d8b;">:ensure</span> t)
@@ -1666,9 +1667,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-org287229a" class="outline-3">
-<h3 id="org287229a">JSON stuff</h3>
-<div class="outline-text-3" id="text-org287229a">
+<div id="outline-container-org595458e" class="outline-3">
+<h3 id="org595458e">JSON stuff</h3>
+<div class="outline-text-3" id="text-org595458e">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package json-mode
   <span style="color: #483d8b;">:mode</span> <span style="color: #8b2252;">"\\.json\\'"</span>)
@@ -1680,9 +1681,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-orged47903" class="outline-3">
-<h3 id="orged47903">Cmake stuff</h3>
-<div class="outline-text-3" id="text-orged47903">
+<div id="outline-container-org4ed7acc" class="outline-3">
+<h3 id="org4ed7acc">Cmake stuff</h3>
+<div class="outline-text-3" id="text-org4ed7acc">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp"> (use-package cmake-mode
    <span style="color: #483d8b;">:mode</span> (<span style="color: #8b2252;">"CMakeLists\\.txt\\'"</span> <span style="color: #8b2252;">"\\.cmake</span><span style="color: #ff0000;">\</span><span style="color: #8b2252;">(.in</span><span style="color: #ff0000;">\</span><span style="color: #8b2252;">)?\\'"</span>)
@@ -1710,9 +1711,9 @@ makes org-mode files look gorgeous.
 </div>
 </div>
 
-<div id="outline-container-orge43de0e" class="outline-3">
-<h3 id="orge43de0e">Git stuff</h3>
-<div class="outline-text-3" id="text-orge43de0e">
+<div id="outline-container-org2dff41d" class="outline-3">
+<h3 id="org2dff41d">Git stuff</h3>
+<div class="outline-text-3" id="text-org2dff41d">
 <p>
 This porcelain is more glorious than the one from Meissen
 </p>
@@ -1731,12 +1732,28 @@ This porcelain is more glorious than the one from Meissen
 </div>
 </div>
 
-<div id="outline-container-org81ea540" class="outline-3">
-<h3 id="org81ea540">The heretic Vim stuff</h3>
-<div class="outline-text-3" id="text-org81ea540">
+<div id="outline-container-org0e32ff5" class="outline-3">
+<h3 id="org0e32ff5">The heretic Vim stuff</h3>
+<div class="outline-text-3" id="text-org0e32ff5">
 <div class="org-src-container">
 <pre class="src src-emacs-lisp">(use-package vimrc-mode
   <span style="color: #483d8b;">:ensure</span> t)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1a53fa3" class="outline-3">
+<h3 id="org1a53fa3">Nix stuff</h3>
+<div class="outline-text-3" id="text-org1a53fa3">
+<p>
+Syntax highlighting for Nix expressions language files
+</p>
+
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(use-package nix-mode
+  <span style="color: #483d8b;">:ensure</span> t
+  <span style="color: #483d8b;">:mode</span> <span style="color: #8b2252;">"\\.nix\\'"</span>)
 </pre>
 </div>
 </div>

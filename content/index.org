@@ -515,7 +515,7 @@ disable =mypy=). With this config I only check when saving.
     (setq-default flycheck-disabled-checkers '(python-mypy))
     :config
     (setq flycheck-check-syntax-automatically '(save mode-enable))
-    (setq flycheck-scheme-chicken-executable "chicken-csc")
+    (setq flycheck-scheme-chicken-executable "csc")
     :hook
     (after-init . global-flycheck-mode))
 #+end_src
@@ -729,7 +729,7 @@ The language that gave birth to the "Maxwell equations of software"
   (use-package geiser-chicken
     :ensure t
     :init
-    (setq geiser-chicken-binary "chicken-csi"))
+    (setq geiser-chicken-binary "csi"))
 
   (use-package racket-mode
     :ensure t)

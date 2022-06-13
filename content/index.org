@@ -864,6 +864,13 @@ This mode can be also configured with =use-package=:
     (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
 #+end_src
 
+Additional support for Jupyter notebooks:
+
+#+begin_src emacs-lisp
+  (use-package ein
+    :ensure t)
+#+end_src
+
 ** Cuda stuff
 
 #+begin_src emacs-lisp
@@ -991,6 +998,7 @@ makes org-mode files look gorgeous.
     (org-babel-do-load-languages
      'org-babel-load-languages '((fortran . t)
                                  (python . t)
+                                 (ein . t)
                                  (C . t)
                                  (gnuplot . t)
                                  (awk . t)
@@ -1002,6 +1010,7 @@ makes org-mode files look gorgeous.
     (setq org-startup-indented t)
     (setq org-latex-listings 'minted
           org-latex-packages-alist '(("" "minted")))
+    (plist-put org-format-latex-options :scale 3.0)
     (setq org-startup-with-inline-images t))
 
   (use-package org-superstar

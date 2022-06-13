@@ -867,7 +867,7 @@ This mode can be also configured with =use-package=:
 Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
-  (use-package ein
+  (use-package jupyter
     :ensure t)
 #+end_src
 
@@ -998,7 +998,7 @@ makes org-mode files look gorgeous.
     (org-babel-do-load-languages
      'org-babel-load-languages '((fortran . t)
                                  (python . t)
-                                 (ein . t)
+                                 (jupyter . t)
                                  (C . t)
                                  (gnuplot . t)
                                  (awk . t)

@@ -1010,8 +1010,9 @@ makes org-mode files look gorgeous.
     (setq org-startup-indented t)
     (setq org-latex-listings 'minted
           org-latex-packages-alist '(("" "minted")))
+    (setq org-startup-with-inline-images t)
     (plist-put org-format-latex-options :scale 3.0)
-    (setq org-startup-with-inline-images t))
+    (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 
   (use-package org-superstar
     :ensure t

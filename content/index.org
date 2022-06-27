@@ -860,8 +860,7 @@ This mode can be also configured with =use-package=:
 
   (use-package py-autopep8
     :ensure t
-    :config
-    (add-hook 'python-mode-hook 'py-autopep8-enable-on-save))
+    :hook ((python-mode) . py-autopep8-mode))
 #+end_src
 
 Additional support for Jupyter notebooks:

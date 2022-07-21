@@ -9,7 +9,7 @@
 Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. As many specimens of the pedigree,
 this config ratifies that Newtonian aphorism involving giants. Many thanks to all the unsung
 heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
-recently had a glimpse of the enlightenment promised by so many hacker's lores. Here is one
+recently had a glimpse of the enlightenment promised by so many hacker's lore. Here is one
 of my favorites, written by RMS: 
 
 #+BEGIN_VERSE
@@ -269,7 +269,7 @@ this config, I am not ready to use it on a regular basis.
 
 ** Fancy mode line
 
-Another gift from the Doom Emacs community. Best modeline I have seen for Emacs.,
+Another gift from the Doom Emacs community. Best modeline I have seen for Emacs.
 The additional package =all-the-icons= provides awesome icons not only for the
 modeline, but also for file managers and many other packages.
 
@@ -328,7 +328,7 @@ This package ensures that some =org-mode= babel exports have proper syntax highl
     :ensure t)
 #+end_src
 
-* Autocompletion, syntax checking, spell checking and help
+* IDE features and help
 
 ** Complete everything (but code) in Emacs with ivy
 

@@ -474,8 +474,10 @@ Source code completions. An all-time classic.
 
 ** Language serve protocol
 
-My LSP config is largely work in progress. It includes at the moment Python configuration
-and some UI improvements.
+Microsoft's Language Service Protocol ([[https://microsoft.github.io/language-server-protocol/][LSP]])
+is a great tool to provide IDE features to Emacs. I use two major-modes for managing the lsp servers,
+namely =lsp-mode= and =eglot=. The latter maximizes the use of already existing Emacs infrastructure,
+and works better with TRAMP.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -499,6 +501,11 @@ and some UI improvements.
                         :major-modes '(f90-mode)
                         :remote? t
                         :server-id 'fortls-remote))
+    (lsp-register-client
+       (make-lsp-client :new-connection (lsp-tramp-connection "<pyls>")
+                        :major-modes '(python-mode)
+                        :remote? t
+                        :server-id 'pyls-remote))
     :hook
     ((python-mode . lsp)
      (f90-mode . lsp)
@@ -518,6 +525,16 @@ and some UI improvements.
           lsp-ui-doc-include-signature t
           lsp-ui-doc-use-childframe t)
     :commands lsp-ui-mode)
+
+    (use-package lsp-treemacs
+      :after treemacs lsp
+      :ensure t)
+
+    (use-package eglot
+      :ensure t
+      :defer t
+      :init
+      (setq-default eglot-stay-out-of '(eldoc)))
 #+end_src
 
 ** Spell checking with FlySpell
@@ -689,12 +706,6 @@ a custom prompt that resembles my Zsh one.
       (concat
         "(" (user-login-name) " . "
         (car (reverse (split-string (eshell/pwd) "/"))) ") "))
-
-    (defun eshell/clear ()
-    "Clear the eshell buffer."
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (eshell-send-input)))
     :hook
     ((eshell-mode . (lambda () 
                       (add-to-list 'eshell-visual-commands "ssh")
@@ -714,6 +725,11 @@ a custom prompt that resembles my Zsh one.
     (eshell-prompt-regexp "^[^\)]*[\)] ")
     (eshell-prompt-function #'my-eshell-prompt)
     :config
+    (defun eshell/clear ()
+    "Clear the eshell buffer."
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (eshell-send-input)))
     (setenv "PAGER" "cat"))
   
   (use-package eshell-toggle
@@ -728,8 +744,7 @@ a custom prompt that resembles my Zsh one.
 
 ** File browsers
 
-After trying a couple of file browsers I understood that all I needed was already there.
-Dired keeps me in Emacs.
+After trying a couple of file browsers I understood that all I needed was already there: =dired=.
 
 #+begin_src emacs-lisp
   (use-package ranger
@@ -741,7 +756,7 @@ Dired keeps me in Emacs.
   (use-package neotree
     :ensure t
     :disabled
-    :bind ("<f8>" . 'neotree-toggle)
+    :bind ("<f9>" . 'neotree-toggle)
     :init
     ;; slow rendering
     (setq inhibit-compacting-font-caches t)
@@ -751,7 +766,10 @@ Dired keeps me in Emacs.
 
   (use-package treemacs
     :ensure t
-    :defer t)
+    :defer t
+    :bind
+    (:map global-map
+	        ("<f8>" . treemacs)))
 
   (use-package treemacs-evil
     :after (treemacs evil)
@@ -814,7 +832,7 @@ in a laconic manner, because this section is rather opinionated.
 
 ** Lisp stuff
 
-The language that gave birth to the "Maxwell equations of software"
+The language that gave birth to the "Maxwell equations of software".
 
 #+begin_src emacs-lisp
   (use-package lispy
@@ -1124,7 +1142,7 @@ makes org-mode files look gorgeous.
     (setq org-startup-with-inline-images t)
     (setq org-todo-keywords
       '((sequence "TODO(t)" "BROKEN(b)" "FEEDBACK(f)" "VERIFY(v)" "URGENT(u)"
-         "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVAT(i)")))
+         "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
     (plist-put org-format-latex-options :scale 3.0)
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 
@@ -1153,40 +1171,40 @@ makes org-mode files look gorgeous.
     :defer t
     :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'")
     :bind (("C-c C-v" . browse-url-of-buffer))
+    :init
+    (defun webmd-hooks-mine ()
+      "Some hooks for web mode."
+      (setq web-mode-markup-indent-offset 2)
+      (setq web-mode-css-indent-offset 2)
+      (setq web-mode-code-indent-offset 2)
+      (setq web-mode-enable-current-column-highlight t)
+      (setq web-mode-enable-current-element-highlight t)
+      (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "red"))
+
+    (defun web-mode-flyspell-verify ()
+      "Make flyspell behave correctly in web mode."
+      (let ((f (get-text-property (- (point) 1) 'face)))
+        (not (memq f '(web-mode-html-attr-value-face
+                       web-mode-html-tag-face
+                       web-mode-html-attr-name-face
+                       web-mode-doctype-face
+                       web-mode-keyword-face
+                       web-mode-function-name-face
+                       web-mode-variable-name-face
+                       web-mode-css-property-name-face
+                       web-mode-css-selector-face
+                       web-mode-css-color-face
+                       web-mode-type-face)
+                   ))))
+    (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspell-verify)
     :hook
     ((web-mode . company-mode)
      (web-mode . emmet-mode)
      (web-mode . (lambda () (flyspell-mode 1)))
      (web-mode . webmd-hooks-mine)))
 
-  (defun web-mode-flyspefll-verify ()
-    "Make flyspell behave correctly in web mode."
-    (let ((f (get-text-property (- (point) 1) 'face)))
-      (not (memq f '(web-mode-html-attr-value-face
-                     web-mode-html-tag-face
-                     web-mode-html-attr-name-face
-                     web-mode-doctype-face
-                     web-mode-keyword-face
-                     web-mode-function-name-face
-                     web-mode-variable-name-face
-                     web-mode-css-property-name-face
-                     web-mode-css-selector-face
-                     web-mode-css-color-face
-                     web-mode-type-face)
-                 ))))
-  (put 'web-mode 'flyspell-mode-predicate 'web-mode-flyspefll-verify)
-
   (use-package emmet-mode
     :ensure t)
-
-  (defun webmd-hooks-mine ()
-    "Some hooks for web mode."
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-enable-current-column-highlight t)
-    (setq web-mode-enable-current-element-highlight t)
-    (set-face-attribute 'web-mode-html-tag-bracket-face nil :foreground "red"))
 
   (use-package js-mode :ensure nil
     :mode ("\\.js\\'"))
@@ -1253,23 +1271,21 @@ makes org-mode files look gorgeous.
      :after company
      :hook (cmake-mode . eldoc-cmake-enable))
 
-  ;; Thanks to Jimmy Aguilar Mena (Ergus) for this suggestio
-
    (use-package cmake-font-lock
      :ensure t
      :preface
-     (defun my/cmake-font-lock ()
+     (defun my-cmake-font-lock ()
        (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
          (cmake-font-lock-activate)
          (when auto-refresh-defaults
      (font-lock-refresh-defaults))))
      :init
-     (add-hook 'cmake-mode-hook #'my/cmake-font-lock))
+     (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
 #+end_src
 
 ** Git stuff
 
-This porcelain is more glorious than the one from Meissen
+A porcelain as glorious as the one from Meißen:
 
 #+begin_src emacs-lisp
   (use-package magit

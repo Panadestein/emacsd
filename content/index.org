@@ -98,7 +98,7 @@ The variables have self-explanatory names, but I have added a few comments for t
 
 ** Prevent custom from messing with my config file
 
-This helps clearing the clutter and increases reproducibility of the config
+This helps to clear the clutter and increases reproducibility of the config
 
 #+begin_src emacs-lisp
   (let
@@ -144,7 +144,9 @@ its power. I keep it linear for the moment.
   (use-package undo-tree
     :ensure t
     :init
-    (global-undo-tree-mode))
+    (global-undo-tree-mode)
+    :config
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
 #+end_src
 
 ** Themes
@@ -238,7 +240,7 @@ this config, I am not ready to use it on a regular basis.
 
 ** Fancy mode line
 
-Another gift from the Doom Emacs community. Best modeline I have seem for Emacs.
+Another gift from the Doom Emacs community. Best modeline I have seen for Emacs.,
 The additional package =all-the-icons= provides awesome icons not only for the
 modeline, but also for file managers and many other packages.
 
@@ -290,7 +292,7 @@ usage:
 
 ** Fancy HTML exports
 
-This package ensures that some of the =org-mode= babel exports have proper syntax highlighting.
+This package ensures that some =org-mode= babel exports have proper syntax highlighting.
 
 #+begin_src emacs-lisp
   (use-package htmlize
@@ -367,7 +369,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
 
 ** Command's information with which-key
 
-Which-key is a must have to sail the raging seas of Emacs' packages keybindings. These suggestions
+Which-key is a must-have to sail the raging seas of Emacs' packages keybindings. These suggestions
 come very handy when exploring a new package.
 
 #+begin_src emacs-lisp
@@ -388,6 +390,7 @@ exploration.
 
 #+begin_src emacs-lisp
   (use-package helpful
+    :ensure t
     :custom
     (counsel-describe-variable-function #'helpful-variable)
     :bind
@@ -401,12 +404,18 @@ exploration.
 ** Code tags
 
 Using code tags when developing in large scale codes (like electronic structure packages)
-can save your fingers from =grep= induced damage. This package uses the efficient =counsel=
-infrastructure to make tags navigation seamless.
+can save your fingers from =grep= induced damage. I use the minimalistic =gtags-mode= that
+relies as much as possible on already existing Emacs tools. I also have configured the =counsel-etags=
+package, though its approach of parsing the TAGS file makes it very slow when used with TRAMP.
 
 #+begin_src emacs-lisp
+  (use-package gtags-mode
+    :ensure t
+    :hook ((emacs-startup . gtags-mode)))
+
   (use-package counsel-etags
     :ensure t
+    :disabled
     :bind (("C-]" . counsel-etags-find-tag-at-point))
     :init
     (add-hook 'prog-mode-hook
@@ -420,7 +429,7 @@ infrastructure to make tags navigation seamless.
 
 ** Completion with company
 
-Source code completions. An all time classic.
+Source code completions. An all-time classic.
 
 #+begin_src emacs-lisp
   (use-package company
@@ -458,6 +467,7 @@ and some UI improvements.
        ("pyls.plugins.pyflakes.enabled" nil t)))
     :hook
     ((python-mode . lsp)
+     (f90-mode . lsp)
      (lsp-mode . lsp-enable-which-key-integration)))
 
   (use-package lsp-ui
@@ -581,7 +591,7 @@ END_SHELL%
 ** Terminal support with Vterm
 
 This package uses a C library instead of Lisp to emulate the terminals. It is my favorite emulator
-currently, although Eshell could be an alternative.
+currently.
 
 #+begin_src emacs-lisp
   (use-package vterm
@@ -597,17 +607,17 @@ currently, although Eshell could be an alternative.
     :custom
     (vterm-kill-buffer-on-exit t)
     (vterm-max-scrollback 10000)
+    (vterm-tramp-shells '(("ssh" "/bin/bash")))
     :init
     (which-key-add-key-based-replacements "C-c t" "term")
     :config
     ;; Add find-file-other-window to accepted commands
-    (setq vterm-shell (executable-find "zsh"))
     (add-to-list 'vterm-eval-cmds
                  '("find-file-other-window" find-file-other-window)))
 
   (use-package vterm-toggle
     :ensure t
-    :bind (("C-c p" . vterm-toggle-cd)
+    :bind (("C-`" . vterm-toggle-cd)
            :map vterm-mode-map
            (("<C-return>" . vterm-toggle-insert-cd)
             ("C-M-n" . vterm-toggle-forward)
@@ -631,6 +641,57 @@ currently, although Eshell could be an alternative.
                    (window-height . 0.3))))
 #+end_src
 
+** Terminal support with Eshell
+This is a command shell written purely in Emacs Lisp. While not being POSIX compliant,
+it is still a powerful tool for remote editing due to its native TRAMP support. Here I define
+a custom prompt that resembles my Zsh one.
+
+#+begin_src emacs-lisp
+  (use-package eshell
+    :ensure nil
+    :preface
+    (defun my-eshell-prompt ()
+      "A nice prompt"
+      (concat
+        "(" (user-login-name) " . "
+        (car (reverse (split-string (eshell/pwd) "/"))) ") "))
+
+    (defun eshell/clear ()
+    "Clear the eshell buffer."
+      (let ((inhibit-read-only t))
+        (erase-buffer)
+        (eshell-send-input)))
+    :hook
+    ((eshell-mode . (lambda () 
+                      (add-to-list 'eshell-visual-commands "ssh")
+                      (add-to-list 'eshell-visual-commands "tail")
+                      (add-to-list 'eshell-visual-commands "top")
+                      (eshell/alias "e" "find-file-other-window $1")
+                      (eshell/alias "d" "dired-other-window $1") 
+                      (eshell/alias "mgu" "magit-diff-unstaged")
+                      (eshell/alias "mg" "magit-diff-staged"))))
+    :custom
+    (eshell-banner-message (shell-command-to-string "figlet Eshell"))
+    (eshell-history-size 10000)
+    (eshell-hist-ignore-dups t)
+    (eshell-buffer-maximum-lines 10000)
+    (eshell-scroll-to-bottom-on-input t)
+    (eshell-destroy-buffer-when-process-dies t)
+    (eshell-prompt-regexp "^[^\)]*[\)] ")
+    (eshell-prompt-function #'my-eshell-prompt)
+    :config
+    (setenv "PAGER" "cat"))
+  
+  (use-package eshell-toggle
+    :custom
+    (eshell-toggle-size-fraction 3)
+    (eshell-toggle-use-projectile-root t)
+    (eshell-toggle-run-command nil)
+    (eshell-toggle-init-function #'eshell-toggle-init-eshell)
+    :bind
+    ("C-c p" . eshell-toggle))
+#+end_src
+
 ** File browsers
 
 After trying a couple of file browsers I understood that all I needed was already there.
@@ -645,6 +706,7 @@ Dired keeps me in Emacs.
 
   (use-package neotree
     :ensure t
+    :disabled
     :bind ("<f8>" . 'neotree-toggle)
     :init
     ;; slow rendering
@@ -652,6 +714,18 @@ Dired keeps me in Emacs.
     ;; set icons theme
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-smart-open t))
+
+  (use-package treemacs
+    :ensure t
+    :defer t)
+
+  (use-package treemacs-evil
+    :after (treemacs evil)
+    :ensure t)
+  
+  (use-package treemacs-magit
+    :after (treemacs magit)
+    :ensure t)
 
   (use-package all-the-icons-dired
     :ensure t)
@@ -998,7 +1072,9 @@ makes org-mode files look gorgeous.
      'org-babel-load-languages '((fortran . t)
                                  (python . t)
                                  (jupyter . t)
+                                 (emacs-lisp . t)
                                  (C . t)
+                                 (org . t)
                                  (gnuplot . t)
                                  (awk . t)
                                  (latex . t)
@@ -1010,6 +1086,9 @@ makes org-mode files look gorgeous.
     (setq org-latex-listings 'minted
           org-latex-packages-alist '(("" "minted")))
     (setq org-startup-with-inline-images t)
+    (setq org-todo-keywords
+      '((sequence "TODO(t)" "BROKEN(b)" "FEEDBACK(f)" "VERIFY(v)" "URGENT(u)"
+         "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVAT(i)")))
     (plist-put org-format-latex-options :scale 3.0)
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 
@@ -1176,7 +1255,7 @@ This porcelain is more glorious than the one from Meissen
 
 ** Nix stuff
 
-Syntax highlighting for Nix expressions language files
+Syntax highlighting for Nix expression's language files
  
 #+begin_src emacs-lisp
   (use-package nix-mode

@@ -37,6 +37,33 @@ of this file you can find the following code:
 With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
 in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
 
+** Automatic configuration with Nix
+
+Although it is possible to [[https://nixos.org/manual/nixos/stable/index.html#module-services-emacs][configure Emacs with Nix]],
+I prefer to use the native configuration. The latter is version controlled with git and can be [[https://github.com/Panadestein/nixos-config][automatically]] set up with =home-manager= like this: 
+
+#+begin_src nix :tangle no
+# Emacs configuration
+home.file.".emacs.d/" = {
+  source = pkgs.fetchFromGitHub {
+    owner = "Panadestein";
+    repo = "emacsd";
+    rev = "282082f3df4f815f485f80d0cb24aa2dad85d67e";
+    sha256 = "1i9bk6k4naai6w845zqnzp7606h7jwdp5cfa6j8zk3505sg0ia3a";
+  };
+  recursive = true;
+  onChange = builtins.readFile /etc/nixos/dotfiles/set_emacs.sh;
+};
+#+end_src
+
+#+begin_src shell :tangle no
+#!/usr/bin/env bash
+
+cd "$HOME"/.emacs.d
+mkdir -p ./lib ./snippets/irp-mode ./undo
+emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/index.org")'
+#+end_src
+
 * General configuration
 
 ** Add the GNU ELPA and MELPA archives, and then ensure use-package

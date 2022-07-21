@@ -474,7 +474,7 @@ Source code completions. An all-time classic.
 
 ** Language serve protocol
 
-Microsoft's Language Service Protocol ([[https://microsoft.github.io/language-server-protocol/][LSP]])
+Microsoft's Language Server Protocol ([[https://microsoft.github.io/language-server-protocol/][LSP]])
 is a great tool to provide IDE features to Emacs. I use two major-modes for managing the lsp servers,
 namely =lsp-mode= and =eglot=. The latter maximizes the use of already existing Emacs infrastructure,
 and works better with TRAMP.

@@ -159,6 +159,7 @@ slowly start to /klappt/.
     (evil-mode 1)
     (evil-set-undo-system 'undo-tree)
     ;; This is the cleanest solution for vterm
+    (evil-set-initial-state 'eshell-mode 'emacs)
     (evil-set-initial-state 'vterm-mode 'emacs))
 #+end_src
 
@@ -195,6 +196,7 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
     (doom-themes-neotree-config)
     ;; or for treemacs users
     (setq doom-themes-treemacs-theme "doom-atom")
+    (setq doom-themes-treemacs-enable-variable-pitch nil)
     (doom-themes-treemacs-config)
     ;; Corrects (and improves) org-mode's native fontification.
     (doom-themes-org-config))
@@ -492,6 +494,11 @@ and some UI improvements.
        ("pyls.plugins.pycodestyle.enabled" nil t)
        ("pyls.plugins.mccabe.enabled" nil t)
        ("pyls.plugins.pyflakes.enabled" nil t)))
+    (lsp-register-client
+       (make-lsp-client :new-connection (lsp-tramp-connection "<fortls>")
+                        :major-modes '(f90-mode)
+                        :remote? t
+                        :server-id 'fortls-remote))
     :hook
     ((python-mode . lsp)
      (f90-mode . lsp)
@@ -712,7 +719,7 @@ a custom prompt that resembles my Zsh one.
   (use-package eshell-toggle
     :custom
     (eshell-toggle-size-fraction 3)
-    (eshell-toggle-use-projectile-root t)
+    (eshell-toggle-use-projectile-root nil)
     (eshell-toggle-run-command nil)
     (eshell-toggle-init-function #'eshell-toggle-init-eshell)
     :bind
@@ -795,7 +802,9 @@ my editor all the time in obscure supercomputers around the world.
 
 #+begin_src emacs-lisp
   (use-package tramp
-    :ensure t)
+    :ensure nil
+    :config
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 #+end_src
 
 * Programming

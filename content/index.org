@@ -99,14 +99,20 @@ emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/
 
 #+begin_src emacs-lisp
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-         ("melpa" . "https://melpa.org/packages/"))
-        package-quickstart t)
+                           ("melpa" . "https://melpa.org/packages/"))
+        package-quickstart nil)
 
-  (unless (and (fboundp 'package-installed-p)
-         (package-installed-p 'use-package))
-    (package-initialize)
-    (package-refresh-contents)
-    (package-install 'use-package))
+  (eval-and-compile
+    (unless (and (fboundp 'package-installed-p)
+           (package-installed-p 'use-package))
+      (package-refresh-contents)
+      (package-install 'use-package))
+    (if init-file-debug  
+      (setq use-package-compute-statistics t)
+      (setq use-package-compute-statistics nil))
+    (setq use-package-always-ensure t)
+    (setq use-package-expand-minimally t)
+    (require 'use-package))
 #+end_src
 
 
@@ -127,6 +133,9 @@ The variables have self-explanatory names, but I have added a few comments for t
                   custom-safe-themes t)
     (setq backup-directory-alist
           `(("." . ,(concat user-emacs-directory "backups"))))
+    (if init-file-debug
+      (setq warning-minimum-level :debug)
+      (setq warning-minimum-level :emergency))
     (menu-bar-mode -1)
     (tool-bar-mode -1)
     (show-paren-mode 1)
@@ -168,6 +177,7 @@ This helps to clear the clutter and increases reproducibility of the config
 
 #+begin_src emacs-lisp
   (use-package hl-line
+    :ensure nil
     :config
     (global-hl-line-mode +1)
     :hook
@@ -572,6 +582,7 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
 
 #+begin_src emacs-lisp
   (use-package flyspell
+    :ensure nil
     :hook
     ((prog-mode . flyspell-prog-mode)
      (text-mode . turn-on-flyspell))
@@ -589,7 +600,7 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
   (use-package langtool
     :ensure t
     :init
-    (setq langtool-http-server-host "localhost" 
+    (setq langtool-http-server-host "localhost"
           langtool-http-server-port 8081))
 #+end_src
 
@@ -724,7 +735,8 @@ currently.
 ** Terminal support with Eshell
 This is a command shell written purely in Emacs Lisp. While not being POSIX compliant,
 it is still a powerful tool for remote editing due to its native TRAMP support. Here I define
-a custom prompt that resembles my Zsh one.
+a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behaviour of
+=bash='s clear function.
 
 #+begin_src emacs-lisp
   (use-package eshell
@@ -754,11 +766,6 @@ a custom prompt that resembles my Zsh one.
     (eshell-prompt-regexp "^[^\)]*[\)] ")
     (eshell-prompt-function #'my-eshell-prompt)
     :config
-    (defun eshell/clear ()
-    "Clear the eshell buffer."
-      (let ((inhibit-read-only t))
-        (erase-buffer)
-        (eshell-send-input)))
     (setenv "PAGER" "cat"))
   
   (use-package eshell-toggle
@@ -920,6 +927,7 @@ FORTRAN is a major component of my job as a physicist, this package provides all
 
 #+begin_src emacs-lisp
   (use-package f90-mode
+    :ensure nil
     :mode ("\\.f90\\'")
     :hook
     (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
@@ -1002,6 +1010,7 @@ This mode can be also configured with =use-package=:
 
 #+begin_src emacs-lisp
   (use-package python
+    :ensure nil
     :config
     (setq python-shell-interpreter "jupyter"
           python-shell-interpreter-args "console --simple-prompt"
@@ -1103,6 +1112,7 @@ which expands to
 
 #+begin_src emacs-lisp
   (use-package cperl-mode
+    :ensure nil
     :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 #+end_src
 
@@ -1144,6 +1154,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package org-tempo
+    :ensure nil
     :after org
     :hook
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
@@ -1263,6 +1274,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package rst
+    :ensure nil
     :mode ("\\.rst\\'" . rst-mode)
     :bind (:map rst-mode-map
                 ("M-a" . rst-backward-section)

@@ -47,8 +47,8 @@ of this file you can find the following code:
 
 With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
 in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
-Another important aspect is the syntax highlighting when using Emacs in batch mode, which be
-challenging without the proper configuration. The following code block does the trick:
+A somehow tricky aspect is to get syntax highlighting when exporting to HTML
+with =org-mode= using Emacs in batch mode. The following code block ensures this:
 
 #+bind: org-html-htmlize-output-type css
 #+BEGIN_SRC emacs-lisp :var css-file="code.css" :tangle no :results raw
@@ -62,8 +62,8 @@ challenging without the proper configuration. The following code block does the 
 
 ** Automatic configuration with Nix
 
-Although it is possible to [[https://nixos.org/manual/nixos/stable/index.html#module-services-emacs][configure Emacs with Nix]], I prefer to use the Elisp configuration. However, I do use
-the following overlay, together with [[https://app.cachix.org/cache/nix-community][Cachix]] to have the latest commits of the Emacs' master branch:
+Although it is possible to configure Emacs with Nix, I prefer to use the Elisp configuration. However, I do use
+the following overlay, together with Cachix to have the latest commits of the Emacs' master branch:
 
 #+begin_src nix :tangle no
   nixpkgs.overlays = [
@@ -78,7 +78,8 @@ the following overlay, together with [[https://app.cachix.org/cache/nix-communit
   ];
 #+end_src
 
-The latter is version controlled with git and can be [[https://github.com/Panadestein/nixos-config][automatically]] set up with =home-manager= like this: 
+My [[https://github.com/Panadestein/nixos-config][NixOS configuration]] is version controlled with git, and can automatically
+deploy my Emacs distribution with =home-manager=: 
 
 #+begin_src nix :tangle no
 # Emacs configuration
@@ -522,7 +523,7 @@ Source code completions. An all-time classic.
 
 ** Language serve protocol
 
-Microsoft's Language Server Protocol ([[https://microsoft.github.io/language-server-protocol/][LSP]])
+Microsoft's Language Server Protocol (LSP)
 is a great tool to provide IDE features to Emacs. I use two major-modes for managing the lsp servers,
 namely =lsp-mode= and =eglot=. The latter maximizes the use of already existing Emacs infrastructure,
 and works better with TRAMP.

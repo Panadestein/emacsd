@@ -521,16 +521,20 @@ Source code completions. An all-time classic.
           company-tooltip-align-annotations t))
 #+end_src
 
-** Language serve protocol
+** Language server protocol
 
-Microsoft's Language Server Protocol (LSP)
-is a great tool to provide IDE features to Emacs. I use two major-modes for managing the lsp servers,
-namely =lsp-mode= and =eglot=. The latter maximizes the use of already existing Emacs infrastructure,
-and works better with TRAMP.
+Microsoft's Language Server Protocol (LSP) is a great tool to provide IDE features to Emacs.
+I use two major-modes for managing the lsp servers, namely =lsp-mode= and =eglot=.
+The latter maximizes the use of already existing Emacs infrastructure.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
     :ensure t
+    :init
+    (defun my-lsp-hook ()                      
+      "Do not use lsp-mode with tramp"         
+      (unless (file-remote-p default-directory)
+        (lsp)))                                
     :config
     (setq lsp-idle-delay 0.5
           lsp-enable-symbol-highlighting t
@@ -545,19 +549,9 @@ and works better with TRAMP.
        ("pyls.plugins.pycodestyle.enabled" nil t)
        ("pyls.plugins.mccabe.enabled" nil t)
        ("pyls.plugins.pyflakes.enabled" nil t)))
-    (lsp-register-client
-       (make-lsp-client :new-connection (lsp-tramp-connection "<fortls>")
-                        :major-modes '(f90-mode)
-                        :remote? t
-                        :server-id 'fortls-remote))
-    (lsp-register-client
-       (make-lsp-client :new-connection (lsp-tramp-connection "<pyls>")
-                        :major-modes '(python-mode)
-                        :remote? t
-                        :server-id 'pyls-remote))
     :hook
-    ((python-mode . lsp)
-     (f90-mode . lsp)
+    ((python-mode . my-lsp-hook)
+     (f90-mode . my-lsp-hook)
      (lsp-mode . lsp-enable-which-key-integration)))
 
   (use-package lsp-ui
@@ -578,12 +572,32 @@ and works better with TRAMP.
     (use-package lsp-treemacs
       :after treemacs lsp
       :ensure t)
+#+end_src
 
-    (use-package eglot
-      :ensure t
-      :defer t
-      :init
-      (setq-default eglot-stay-out-of '(eldoc)))
+It is possible to create =lsp-mode= clients that should work over ssh.
+An example for Fortran and Python:
+
+#+begin_src emacs-lisp :tangle no
+  (lsp-register-client
+     (make-lsp-client :new-connection (lsp-tramp-connection "<fortls>")
+                      :major-modes '(f90-mode)
+                      :remote? t
+                      :server-id 'fortls-remote))
+  (lsp-register-client
+     (make-lsp-client :new-connection (lsp-tramp-connection "<pyls>")
+                      :major-modes '(python-mode)
+                      :remote? t
+                      :server-id 'pyls-remote))
+#+end_src
+
+On my experience however, =eglot= has better support for editing with TRAMP:
+
+#+begin_src emacs-lisp
+  (use-package eglot
+    :ensure t
+    :defer t
+    :init
+    (setq-default eglot-stay-out-of '(eldoc)))
 #+end_src
 
 ** Spell checking with FlySpell
@@ -865,9 +879,21 @@ Another must have of Emacs. This package together with dired saves me from confi
 my editor all the time in obscure supercomputers around the world.
 
 #+begin_src emacs-lisp
-  (use-package tramp
-    :ensure nil
+  (use-package tramp                                        
+    :ensure nil                                             
+    :custom                                                 
+    (tramp-default-method "ssh")                           
     :config
+    (setq remote-file-name-inhibit-cache nil)
+    (setq vc-ignore-dir-regexp               
+          (format "%s\\|%s"                  
+                  vc-ignore-dir-regexp       
+                  tramp-file-name-regexp))   
+    (setq tramp-verbose 1))                  
+                                                          
+  (use-package tramp-sh                                     
+    :ensure nil                                             
+    :config                                                 
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 #+end_src
 

@@ -48,17 +48,9 @@ of this file you can find the following code:
 With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
 in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
 A somehow tricky aspect is to get syntax highlighting when exporting to HTML
-with =org-mode= using Emacs in batch mode. The following code block ensures this:
-
-#+bind: org-html-htmlize-output-type css
-#+BEGIN_SRC emacs-lisp :var css-file="code.css" :tangle no :results raw
-  (unless noninteractive
-    (org-html-htmlize-generate-css)
-    (with-current-buffer "*html*"
-      (write-file css-file))
-    (format "#+html_head_extra: <link rel=\"stylesheet\" type=\"text/css\" href=\"%s\"/>"
-        css-file))
-#+END_SRC
+with =org-mode= using Emacs in batch mode. You can take a look to my =build-site.el=
+script in the source [[https://github.com/Panadestein/emacsd][repo]] to see how I achieve
+this in practice.
 
 ** Automatic configuration with Nix
 
@@ -1217,8 +1209,13 @@ makes org-mode files look gorgeous.
           org-latex-packages-alist '(("" "minted")))
     (setq org-startup-with-inline-images t)
     (setq org-todo-keywords
-      '((sequence "TODO(t)" "BROKEN(b)" "FEEDBACK(f)" "VERIFY(v)" "URGENT(u)"
-         "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
+          '((sequence "TODO(t)" "BROKEN(b)" "FEEDBACK(f)" "VERIFY(v)" "URGENT(u)"
+                      "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
+    (setq org-todo-keyword-faces
+	        '(("BROKEN" . "red") ("FEEDBACK" . "yellow")
+	          ("VERIFY" . "goldenrod") ("URGENT" . "orange")
+	          ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
+	          ("DELEGATED" . "aquamarine3")))
     (plist-put org-format-latex-options :scale 3.0)
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 

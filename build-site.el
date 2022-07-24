@@ -18,21 +18,30 @@
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; Install htmlize to get color highlighting, and add nix support
+;; Install packages needed for HTML export
 
 (package-install 'htmlize)
 (package-install 'nix-mode)
+(package-install 'color-theme)
 
 (require 'htmlize)
 (require 'nix-mode)
 (require 'ox-publish)
 (require 'font-lock)
 
+;; Using this library is a work-around to get color in HTML exports.
+;; Otherwise Emacs in batch mode cannot get the correct faces
+
+(require 'color-theme)
+(color-theme-initialize)
+(color-theme-greiner)
+
+;; Set some variables for the export
+
 (global-font-lock-mode t)
 (setq org-html-validation-link nil
       org-html-head-include-scripts nil
       org-html-include-default-style nil
-      org-export-allow-bind-keywords t
       org-src-fontify-natively t)
 
 ;; Define the project to be published

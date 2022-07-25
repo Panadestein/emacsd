@@ -582,14 +582,14 @@ An example for Fortran and Python:
                       :server-id 'pyls-remote))
 #+end_src
 
-On my experience however, =eglot= has better support for editing with TRAMP:
+On my experience however, =eglot= has better support for editing with TRAMP. As you
+can see, there is little configuration here, as most of the defaults are optimal
+for my workflow.
 
 #+begin_src emacs-lisp
   (use-package eglot
     :ensure t
-    :defer t
-    :init
-    (setq-default eglot-stay-out-of '(eldoc)))
+    :defer t)
 #+end_src
 
 ** Spell checking with FlySpell

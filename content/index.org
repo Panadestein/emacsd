@@ -1209,11 +1209,11 @@ makes org-mode files look gorgeous.
           org-latex-packages-alist '(("" "minted")))
     (setq org-startup-with-inline-images t)
     (setq org-todo-keywords
-          '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(f)" "VERIFY(v)" "URGENT(u)"
+          '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(f)" "VERIFY(v)" "URGENT(u)" "PARTIAL(p)"
                       "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
     (setq org-todo-keyword-faces
 	        '(("BROKEN" . "red") ("RUNNING" . "yellow")
-	          ("VERIFY" . "goldenrod") ("URGENT" . "orange")
+	          ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")
 	          ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
 	          ("DELEGATED" . "aquamarine3")))
     (plist-put org-format-latex-options :scale 3.0)

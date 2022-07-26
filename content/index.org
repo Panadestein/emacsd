@@ -916,12 +916,12 @@ The language that gave birth to the "Maxwell equations of software".
   (use-package geiser
     :ensure t
     :config
-    (setq geiser-active-implementations '(chicken)))
+    (setq geiser-active-implementations '(chez)))
 
-  (use-package geiser-chicken
+  (use-package geiser-chez
     :ensure t
     :init
-    (setq geiser-chicken-binary "csi"))
+    (setq geiser-chez-binary "scheme"))
 
   (use-package racket-mode
     :ensure t)

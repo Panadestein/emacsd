@@ -1194,6 +1194,7 @@ makes org-mode files look gorgeous.
      'org-babel-load-languages '((fortran . t)
                                  (python . t)
                                  (jupyter . t)
+                                 (scheme . t)
                                  (emacs-lisp . t)
                                  (C . t)
                                  (org . t)

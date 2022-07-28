@@ -1241,6 +1241,7 @@ makes org-mode files look gorgeous.
                                  (python . t)
                                  (jupyter . t)
                                  (scheme . t)
+                                 (racket . t)
                                  (emacs-lisp . t)
                                  (C . t)
                                  (org . t)
@@ -1278,6 +1279,20 @@ makes org-mode files look gorgeous.
     (org-reveal-root "file:///home/loren/bin/reveal.js")
     :config
     (setq org-reveal-mathjax t))
+#+end_src
+
+The current Geiser implementation does not play well with =org-babel=, so I have decided to use =ob-racket=
+for evaluating the Scheme code blocks:
+
+#+begin_src emacs-lisp
+  (use-package ob-racket
+    :after org
+    :config
+    (add-hook 'ob-racket-pre-runtime-library-load-hook
+		#'ob-racket-raco-make-runtime-library)
+    :straight (ob-racket
+		 :type git :host github :repo "hasu/emacs-ob-racket"
+		 :files ("*.el" "*.rkt")))
 #+end_src
 
 ** Web stuff

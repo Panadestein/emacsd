@@ -97,9 +97,56 @@ emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/
 
 * General configuration
 
-** Add the GNU ELPA and MELPA archives, and then ensure use-package
+** Setting up a package manager
+
+One of the cornerstones of any Emacs distribution is the package manager. In my case, I was mostly a happy user
+of =use-package= with the =package.el= backend. However, I did find myself in the need of using a more recent
+version of some packages (like =org-mode=). While there are tools like =Quelpa= that allow this without
+ditching =package.el=, I decided to go for the option that ensures reproductibility: [[https://github.com/radian-software/straight.el][straight.el]]. With this
+purely functional package manager, I feel closer to the high ideals of the Nix community.
 
 #+begin_src emacs-lisp
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+#+end_src
+
+In order to use =straight.el= properly, we need to add the following content to our =early-init.el= file:
+
+#+begin_src emacs-lisp :tangle ../early-init.el
+  ;;; early-init.el --- Emacs early init file
+  ;;; Commentary:
+  ;; Code to run before init.el is loaded.
+  ;;; Code:
+
+  ;; Disable package.el
+  (setq package-enable-at-startup nil)
+
+  (provide 'early-init)
+  ;;; early-init.el ends here
+#+end_src
+
+We can also have a nice integration with =use-package=:
+
+#+begin_src emacs-lisp
+  (straight-use-package 'use-package)
+  (use-package straight
+               :custom (straight-use-package-by-default t))
+#+end_src
+
+For reference, I still show here how to set =use-package= with =package.el=. First we add the the GNU ELPA
+and MELPA archives, and then ensure use-package:
+
+#+begin_src emacs-lisp :tangle no
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                            ("melpa" . "https://melpa.org/packages/"))
         package-quickstart nil)
@@ -117,7 +164,6 @@ emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/
     (require 'use-package))
 #+end_src
 
-
 ** One editor to rule them all, one editor to find them
 
 Here I use the =use-package= macro to keep all Emacs internal settings organized in one single block.
@@ -125,7 +171,7 @@ The variables have self-explanatory names, but I have added a few comments for t
 
 #+begin_src emacs-lisp
   (use-package emacs
-    :ensure nil
+    :straight nil
     :config
     ;; Emacs internal options
     (setq-default initial-scratch-message ";; Welcome Panadestein!!"
@@ -179,7 +225,7 @@ This helps to clear the clutter and increases reproducibility of the config
 
 #+begin_src emacs-lisp
   (use-package hl-line
-    :ensure nil
+    :straight nil
     :config
     (global-hl-line-mode +1)
     :hook
@@ -194,7 +240,7 @@ slowly start to /klappt/.
 
 #+begin_src emacs-lisp
   (use-package evil
-    :ensure t
+    :straight t
     :demand t
     :config
     (evil-mode 1)
@@ -211,7 +257,7 @@ its power. I keep it linear for the moment.
 
 #+begin_src emacs-lisp
   (use-package undo-tree
-    :ensure t
+    :straight t
     :init
     (global-undo-tree-mode)
     :config
@@ -225,7 +271,7 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
 
 #+begin_src emacs-lisp
   (use-package doom-themes
-    :ensure t
+    :straight t
     :config
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t
@@ -243,19 +289,19 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
     (doom-themes-org-config))
 
   (use-package gruvbox-theme
-    :ensure t
+    :straight t
     :disabled
     :init (load-theme 'gruvbox-dark-soft t))
   
   (use-package blackboard-theme
-    :ensure t
+    :straight t
     :disabled
     :init (load-theme 'blackboard t))
 
   ;; Highlight numbers
 
   (use-package highlight-numbers
-    :ensure t
+    :straight t
     :hook
     (prog-mode . highlight-numbers-mode))
 #+end_src
@@ -266,7 +312,7 @@ Another well-known issue of Emacs, although it rarely affects me.
 
 #+begin_src emacs-lisp
   (use-package so-long
-    :ensure nil
+    :straight nil
     :hook
     (after-init-hook . global-so-long-mode))
 #+end_src
@@ -277,7 +323,7 @@ This helps a lot when lisping.
 
 #+begin_src emacs-lisp
   (use-package smartparens
-    :ensure t
+    :straight t
     :hook (prog-mode . smartparens-mode))
 #+end_src
 
@@ -287,7 +333,7 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
-    :ensure t
+    :straight t
     :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
@@ -298,7 +344,7 @@ this config, I am not ready to use it on a regular basis.
 
 #+begin_src emacs-lisp
   (use-package minimap
-    :ensure t
+    :straight t
     :config
     (setq minimap-window-location 'right)
     (setq minimap-minimum-width 10)
@@ -317,10 +363,10 @@ modeline, but also for file managers and many other packages.
 #+begin_src emacs-lisp
   (use-package all-the-icons
     ;; Needs a manual `M-x all-the-icons-install-fonts`
-    :ensure t)
+    :straight t)
 
   (use-package doom-modeline
-    :ensure t
+    :straight t
     :init (doom-modeline-mode 1)
     :config
     (setq doom-modeline-height 40)
@@ -342,7 +388,7 @@ most relevant commands:
 
 #+begin_src emacs-lisp
   (use-package evil-mc
-    :ensure t
+    :straight t
     :config
     (global-evil-mc-mode 1))
 #+end_src
@@ -356,7 +402,7 @@ usage:
 
 #+begin_src emacs-lisp
   (use-package tabbar
-    :ensure t
+    :straight t
     :bind (("C-<right>" . tabbar-forward)))
 #+end_src
 
@@ -366,7 +412,7 @@ This package ensures that some =org-mode= babel exports have proper syntax highl
 
 #+begin_src emacs-lisp
   (use-package htmlize
-    :ensure t)
+    :straight t)
 #+end_src
 
 * IDE features and help
@@ -379,7 +425,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
 
 #+begin_src emacs-lisp
   (use-package ivy
-    :ensure t
+    :straight t
     :diminish
     :bind
     (("C-s" . swiper))
@@ -388,10 +434,10 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     (ivy-mode 1))
 
   (use-package swiper
-    :ensure t)
+    :straight t)
 
   (use-package counsel
-    :ensure t
+    :straight t
     :after ivy
     :hook
     (after-init . counsel-mode)
@@ -405,13 +451,13 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     ("<f1> f" . counsel-descbinds-function))
   
   (use-package ivy-prescient
-    :ensure t
+    :straight t
     :after counsel
     :config
     (ivy-prescient-mode 1))
 
   (use-package ivy-rich
-    :ensure t
+    :straight t
     :init
     (ivy-rich-mode 1)
     :after counsel
@@ -433,7 +479,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
                                               x (ivy-rich-minibuffer-width 0.3))))))))))
 
   (use-package all-the-icons-ivy
-    :ensure t
+    :straight t
     :demand t)
 #+end_src
 
@@ -444,7 +490,7 @@ come very handy when exploring a new package.
 
 #+begin_src emacs-lisp
   (use-package which-key
-    :ensure t
+    :straight t
     :diminish
     :custom
     (which-key-idle-secondary-delay 0.01)
@@ -460,7 +506,7 @@ exploration.
 
 #+begin_src emacs-lisp
   (use-package helpful
-    :ensure t
+    :straight t
     :custom
     (counsel-describe-variable-function #'helpful-variable)
     :bind
@@ -480,11 +526,11 @@ package, though its approach of parsing the TAGS file makes it very slow when us
 
 #+begin_src emacs-lisp
   (use-package gtags-mode
-    :ensure t
+    :straight t
     :hook ((emacs-startup . gtags-mode)))
 
   (use-package counsel-etags
-    :ensure t
+    :straight t
     :disabled
     :bind (("C-]" . counsel-etags-find-tag-at-point))
     :init
@@ -503,7 +549,7 @@ Source code completions. An all-time classic.
 
 #+begin_src emacs-lisp
   (use-package company
-    :ensure t
+    :straight t
     :init
     (add-hook 'after-init-hook 'global-company-mode)
     (setq company-minimum-prefix-length 3
@@ -521,7 +567,7 @@ The latter maximizes the use of already existing Emacs infrastructure.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
-    :ensure t
+    :straight t
     :init
     (defun my-lsp-hook ()                      
       "Do not use lsp-mode with tramp"         
@@ -547,7 +593,7 @@ The latter maximizes the use of already existing Emacs infrastructure.
      (lsp-mode . lsp-enable-which-key-integration)))
 
   (use-package lsp-ui
-    :ensure t
+    :straight t
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-show-hover t
@@ -563,7 +609,7 @@ The latter maximizes the use of already existing Emacs infrastructure.
 
     (use-package lsp-treemacs
       :after treemacs lsp
-      :ensure t)
+      :straight t)
 #+end_src
 
 It is possible to create =lsp-mode= clients that should work over ssh.
@@ -588,7 +634,7 @@ for my workflow.
 
 #+begin_src emacs-lisp
   (use-package eglot
-    :ensure t
+    :straight t
     :defer t)
 #+end_src
 
@@ -598,7 +644,7 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
 
 #+begin_src emacs-lisp
   (use-package flyspell
-    :ensure nil
+    :straight nil
     :hook
     ((prog-mode . flyspell-prog-mode)
      (text-mode . turn-on-flyspell))
@@ -614,7 +660,7 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
 
 #+begin_src emacs-lisp
   (use-package langtool
-    :ensure t
+    :straight t
     :init
     (setq langtool-http-server-host "localhost"
           langtool-http-server-port 8081))
@@ -645,12 +691,12 @@ here.
 
 #+begin_src emacs-lisp
   (use-package yasnippet
-    :ensure t
+    :straight t
     :config
     (yas-global-mode 1))
 
   (use-package yasnippet-snippets
-    :ensure t
+    :straight t
     :after yasnippet)
 #+end_src
 
@@ -702,7 +748,7 @@ currently.
 
 #+begin_src emacs-lisp
   (use-package vterm
-    :ensure t
+    :straight t
     :preface
     (defun my/vterm-mode-hook ()
       (hl-line-mode -1)
@@ -723,7 +769,7 @@ currently.
                  '("find-file-other-window" find-file-other-window)))
 
   (use-package vterm-toggle
-    :ensure t
+    :straight t
     :bind (("C-`" . vterm-toggle-cd)
            :map vterm-mode-map
            (("<C-return>" . vterm-toggle-insert-cd)
@@ -756,7 +802,7 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
 
 #+begin_src emacs-lisp
   (use-package eshell
-    :ensure nil
+    :straight nil
     :preface
     (defun my-eshell-prompt ()
       "A nice prompt"
@@ -800,13 +846,13 @@ After trying a couple of file browsers I understood that all I needed was alread
 
 #+begin_src emacs-lisp
   (use-package ranger
-    :ensure t
+    :straight t
     :disabled
     :config
     (setq ranger-preview-file t))
 
   (use-package neotree
-    :ensure t
+    :straight t
     :disabled
     :bind ("<f9>" . 'neotree-toggle)
     :init
@@ -817,7 +863,7 @@ After trying a couple of file browsers I understood that all I needed was alread
     (setq neo-smart-open t))
 
   (use-package treemacs
-    :ensure t
+    :straight t
     :defer t
     :bind
     (:map global-map
@@ -825,18 +871,18 @@ After trying a couple of file browsers I understood that all I needed was alread
 
   (use-package treemacs-evil
     :after (treemacs evil)
-    :ensure t)
+    :straight t)
   
   (use-package treemacs-magit
     :after (treemacs magit)
-    :ensure t)
+    :straight t)
 
   (use-package all-the-icons-dired
-    :ensure t)
+    :straight t)
 
   (use-package dired
     ;; TIP: use ( to hide file information
-    :ensure nil
+    :straight nil
     :custom ((dired-listing-switches "-agho --group-directories-first"))
     :commands (dired dired-jump)
     :bind (("C-x C-j" . dired-jump))
@@ -848,7 +894,7 @@ After trying a couple of file browsers I understood that all I needed was alread
       "l" 'dired-single-buffer))
 
   (use-package dired-single
-    :ensure t)
+    :straight t)
 #+end_src
 
 ** PDF support
@@ -857,7 +903,7 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
-    :ensure t
+    :straight t
     ;:pin manual
     :config
     (setq-default pdf-view-display-size 'fit-page)
@@ -872,7 +918,7 @@ my editor all the time in obscure supercomputers around the world.
 
 #+begin_src emacs-lisp
   (use-package tramp                                        
-    :ensure nil                                             
+    :straight nil                                             
     :custom                                                 
     (tramp-default-method "ssh")                           
     :config
@@ -884,7 +930,7 @@ my editor all the time in obscure supercomputers around the world.
     (setq tramp-verbose 1))                  
                                                           
   (use-package tramp-sh                                     
-    :ensure nil                                             
+    :straight nil                                             
     :config                                                 
     (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 #+end_src
@@ -900,12 +946,12 @@ The language that gave birth to the "Maxwell equations of software".
 
 #+begin_src emacs-lisp
   (use-package lispy
-    :ensure t
+    :straight t
     :hook ((emacs-lisp-mode . lispy-mode)
            (scheme-mode . lispy-mode)))
 
   (use-package slime
-    :ensure t
+    :straight t
     :mode ("\\.lisp\\'" . lisp-mode)
     :init
     (setq slime-net-coding-system 'utf-8-unix
@@ -914,20 +960,20 @@ The language that gave birth to the "Maxwell equations of software".
     (add-to-list 'slime-contribs 'slime-repl))
 
   (use-package geiser
-    :ensure t
+    :straight t
     :config
     (setq geiser-active-implementations '(chez)))
 
   (use-package geiser-chez
-    :ensure t
+    :straight t
     :init
     (setq geiser-chez-binary "scheme"))
 
   (use-package racket-mode
-    :ensure t)
+    :straight t)
 
   (use-package hy-mode
-    :ensure t
+    :straight t
     :mode "\\.hy\\'"
     :commands (hy-mode org-babel-execute:hy)
     :interpreter "hy"
@@ -944,7 +990,7 @@ For this, the =macrostep= package comes very handy.
 
 #+begin_src emacs-lisp
   (use-package macrostep
-    :ensure t
+    :straight t
     :bind (:map emacs-lisp-mode-map
                 ("C-c e" . macrostep-expand)))
 #+end_src
@@ -955,7 +1001,7 @@ FORTRAN is a major component of my job as a physicist, this package provides all
 
 #+begin_src emacs-lisp
   (use-package f90-mode
-    :ensure nil
+    :straight nil
     :mode ("\\.f90\\'")
     :hook
     (f90-mode . (lambda () (setq flycheck-gfortran-args "-ffree-form"))))
@@ -1016,6 +1062,7 @@ This mode can be also configured with =use-package=:
 
 #+begin_src emacs-lisp
   (use-package irp-mode
+    :straight nil
     :mode ("\\.irp.f\\'")
     :load-path "~/.emacs.d/lib")
 #+end_src
@@ -1024,7 +1071,7 @@ This mode can be also configured with =use-package=:
 
 #+begin_src emacs-lisp
   (use-package ccls
-    :ensure t
+    :straight t
     :hook ((c-mode c++-mode objc-mode cuda-mode) .
            (lambda () (require 'ccls) (lsp)))
     :config
@@ -1038,7 +1085,7 @@ This mode can be also configured with =use-package=:
 
 #+begin_src emacs-lisp
   (use-package python
-    :ensure nil
+    :straight nil
     :config
     (setq python-shell-interpreter "jupyter"
           python-shell-interpreter-args "console --simple-prompt"
@@ -1046,14 +1093,14 @@ This mode can be also configured with =use-package=:
     (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
 
   (use-package pyvenv
-    :ensure t
+    :straight t
     :demand t
     :config
     (setq pyvenv-workon "emacs")
     (pyvenv-tracking-mode 1))
 
   (use-package py-autopep8
-    :ensure t
+    :straight t
     :hook ((python-mode) . py-autopep8-mode))
 #+end_src
 
@@ -1061,7 +1108,7 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package jupyter
-    :ensure t)
+    :straight t)
 #+end_src
 
 ** Cuda stuff
@@ -1085,7 +1132,7 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package haskell-mode
-    :ensure t
+    :straight t
     :custom
     (haskell-process-load-or-reload-prompt t)
     (haskell-process-auto-import-loaded-modules t)
@@ -1093,7 +1140,7 @@ Additional support for Jupyter notebooks:
     (haskell-tags-on-save t))
 
   (use-package flycheck-haskell
-    :ensure t
+    :straight t
     :config
     (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
     (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
@@ -1106,7 +1153,7 @@ for aesthetic and organizational purposes. If we =macrostep-expand= it, we can c
 
 #+begin_src emacs-lisp
   (use-package make-mode
-     :ensure nil)
+     :straight nil)
 #+end_src
 
 which expands to
@@ -1140,7 +1187,7 @@ which expands to
 
 #+begin_src emacs-lisp
   (use-package cperl-mode
-    :ensure nil
+    :straight nil
     :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 #+end_src
 
@@ -1148,7 +1195,7 @@ which expands to
 
 #+begin_src emacs-lisp
   (use-package raku-mode
-    :ensure t
+    :straight t
     :defer t
     :mode "\\.raku\\'")
 #+end_src
@@ -1159,7 +1206,7 @@ Auctex provides all you will ever need to work with Latex, and more.
 
 #+begin_src emacs-lisp
   (use-package auctex
-    :ensure t
+    :straight t
     :mode ("\\.tex\\'" . latex-mode)
     :commands (latex-mode LaTeX-mode plain-tex-mode)
     :init
@@ -1181,9 +1228,8 @@ Org-mode is the package allowing me to have this literate configuration. Org-sup
 makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
-  (use-package org-tempo
-    :ensure nil
-    :after org
+  (use-package org
+    :straight nil
     :hook
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
     :config
@@ -1213,20 +1259,20 @@ makes org-mode files look gorgeous.
           '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(f)" "VERIFY(v)" "URGENT(u)" "PARTIAL(p)"
                       "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
     (setq org-todo-keyword-faces
-	        '(("BROKEN" . "red") ("RUNNING" . "yellow")
-	          ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")
-	          ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
-	          ("DELEGATED" . "aquamarine3")))
+                '(("BROKEN" . "red") ("RUNNING" . "yellow")
+                  ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")
+                  ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
+                  ("DELEGATED" . "aquamarine3")))
     (plist-put org-format-latex-options :scale 3.0)
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 
   (use-package org-superstar
-    :ensure t
+    :straight t
     :config
     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 
   (use-package ox-reveal
-    :ensure t
+    :straight t
     :after org
     :custom
     (org-reveal-root "file:///home/loren/bin/reveal.js")
@@ -1241,7 +1287,7 @@ makes org-mode files look gorgeous.
     :mode ("\\.php\\'"))
 
   (use-package web-mode
-    :ensure t
+    :straight t
     :defer t
     :mode ("\\.html\\'" "\\.htm\\'" "\\.css\\'")
     :bind (("C-c C-v" . browse-url-of-buffer))
@@ -1278,20 +1324,20 @@ makes org-mode files look gorgeous.
      (web-mode . webmd-hooks-mine)))
 
   (use-package emmet-mode
-    :ensure t)
+    :straight t)
 
-  (use-package js-mode :ensure nil
+  (use-package js-mode :straight nil
     :mode ("\\.js\\'"))
 
   (use-package simple-httpd
-    :ensure t)
+    :straight t)
 #+end_src
 
 ** YAML stuff
 
 #+begin_src emacs-lisp
   (use-package yaml-mode
-    :ensure t
+    :straight t
     :mode "\.ya?ml\'")
 #+end_src
 
@@ -1299,7 +1345,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package markdown-mode
-    :ensure t
+    :straight t
     :init
     (setq-default markdown-hide-markup t))
 #+end_src
@@ -1308,7 +1354,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package rst
-    :ensure nil
+    :straight nil
     :mode ("\\.rst\\'" . rst-mode)
     :bind (:map rst-mode-map
                 ("M-a" . rst-backward-section)
@@ -1321,7 +1367,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package lua-mode
-    :ensure t)
+    :straight t)
 #+end_src
 
 ** JSON stuff
@@ -1347,7 +1393,7 @@ makes org-mode files look gorgeous.
      :hook (cmake-mode . eldoc-cmake-enable))
 
    (use-package cmake-font-lock
-     :ensure t
+     :straight t
      :preface
      (defun my-cmake-font-lock ()
        (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
@@ -1364,10 +1410,10 @@ A porcelain as glorious as the one from Meißen:
 
 #+begin_src emacs-lisp
   (use-package magit
-    :ensure t)
+    :straight t)
 
   (use-package git-modes
-    :ensure t
+    :straight t
     :mode (("\\.gitattributes\\'" . gitattributes-mode)
      ("\\.gitconfig\\'" . gitconfig-mode)
      ("\\.gitignore\\'" . gitignore-mode)))
@@ -1377,7 +1423,7 @@ A porcelain as glorious as the one from Meißen:
 
 #+begin_src emacs-lisp
   (use-package vimrc-mode
-    :ensure t)
+    :straight t)
 #+end_src
 
 ** Nix stuff
@@ -1386,6 +1432,6 @@ Syntax highlighting for Nix expression's language files
  
 #+begin_src emacs-lisp
   (use-package nix-mode
-    :ensure t
+    :straight t
     :mode "\\.nix\\'")
 #+end_src

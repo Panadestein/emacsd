@@ -1241,7 +1241,6 @@ makes org-mode files look gorgeous.
                                  (python . t)
                                  (jupyter . t)
                                  (scheme . t)
-                                 (racket . t)
                                  (emacs-lisp . t)
                                  (C . t)
                                  (org . t)

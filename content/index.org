@@ -1,4 +1,5 @@
 #+TITLE: Emacs literate configuration
+#+AUTHOR: [[https://panadestein.github.io/][Panadestein]]
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup

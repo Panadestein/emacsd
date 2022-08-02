@@ -102,7 +102,7 @@ emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/
 One of the cornerstones of any Emacs distribution is the package manager. In my case, I was mostly a happy user
 of =use-package= with the =package.el= backend. However, I did find myself in the need of using a more recent
 version of some packages (like =org-mode=). While there are tools like =Quelpa= that allow this without
-ditching =package.el=, I decided to go for the option that ensures reproductibility: [[https://github.com/radian-software/straight.el][straight.el]]. With this
+ditching =package.el=, I decided to go for the option that ensures reproducibility: [[https://github.com/radian-software/straight.el][straight.el]]. With this
 purely functional package manager, I feel closer to the high ideals of the Nix community.
 
 #+begin_src emacs-lisp

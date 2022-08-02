@@ -665,7 +665,7 @@
                                (python . t)
                                (jupyter . t)
                                (scheme . t)
-                               (racket . t)
+                               (lisp . t)
                                (emacs-lisp . t)
                                (C . t)
                                (org . t)
@@ -681,8 +681,8 @@
         org-latex-packages-alist '(("" "minted")))
   (setq org-startup-with-inline-images t)
   (setq org-todo-keywords
-        '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(f)" "VERIFY(v)" "URGENT(u)" "PARTIAL(p)"
-                    "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(d)" "IRRELEVANT(i)")))
+        '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(r)" "VERIFY(v)" "URGENT(u)" "PARTIAL(p)"
+                    "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(e)" "IRRELEVANT(i)")))
   (setq org-todo-keyword-faces
               '(("BROKEN" . "red") ("RUNNING" . "yellow")
                 ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")

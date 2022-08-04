@@ -98,10 +98,12 @@ deploy my Emacs distribution with =home-manager=:
 
 * General configuration
 
-To comply with the code style of Emacs lisp, the tangled =init.el= must have the following header and [[sec:foot][footer]]:
+To comply with the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/elisp/Library-Headers.html][conventions]] for libraries, the tangled =init.el= must have the following header and [[sec:foot][footer]]:
 
 #+begin_src emacs-lisp
   ;;; init.el --- Panadestein's Emacs configuration
+
+  ;; Author: Ramón L. Panadés Barrueta <rpana92@gmail.com>
 
   ;;; Commentary:
   ;; Automatically generated tangling https://panadestein.github.io/emacsd/
@@ -1468,12 +1470,14 @@ Syntax highlighting for Nix expression's language files
 #+end_src
 
 * Footer of Emacs package
-:PROPERTIES:
-:NOTOC: t
-:END:
 <<sec:foot>>
 
+Thank you for reading 'till the end or for being interested on how to end an Emacs package. If you would
+like to try my configuration, feel free to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub. So that's it, let's gracefully finish tangling
+everything:
+
 #+begin_src emacs-lisp
+  
   (provide 'init.el)
   ;;; init.el ends here
 #+end_src

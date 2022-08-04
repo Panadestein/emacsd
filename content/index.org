@@ -75,28 +75,39 @@ My [[https://github.com/Panadestein/nixos-config][NixOS configuration]] is versi
 deploy my Emacs distribution with =home-manager=: 
 
 #+begin_src nix :tangle no
-# Emacs configuration
-home.file.".emacs.d/" = {
-  source = pkgs.fetchFromGitHub {
-    owner = "Panadestein";
-    repo = "emacsd";
-    rev = "abd98c10e5dc66756a678096c7d7564e1435ea01";
-    sha256 = "0ppkvz6dkmgc774q0g7i6jjja1683gja3068kif3mrwn242gfaj5";
+  # Emacs configuration
+  home.file.".emacs.d/" = {
+    source = pkgs.fetchFromGitHub {
+      owner = "Panadestein";
+      repo = "emacsd";
+      rev = "f0713755fda2578638246ddb99e0cf26763cdd47";
+      sha256 = "00230dm4ssjxyn5crw7qjazs0zk8y2s3ir7ddq5p7rb7x4glgxh4";
+    };
+    recursive = true;
+    onChange = builtins.readFile /etc/nixos/dotfiles/set_emacs.sh;
   };
-  recursive = true;
-  onChange = builtins.readFile /etc/nixos/dotfiles/set_emacs.sh;
-};
 #+end_src
 
 #+begin_src shell :tangle no
-#!/usr/bin/env bash
+  #!/usr/bin/env bash
 
-cd "$HOME"/.emacs.d
-mkdir -p ./lib ./snippets/irp-mode ./undo
-emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/index.org")'
+  cd "$HOME"/.emacs.d
+  mkdir -p ./lib ./snippets/irp-mode ./undo
+  emacs --batch --eval "(require 'org)" --eval '(org-babel-tangle-file "./content/index.org")'
 #+end_src
 
 * General configuration
+
+To comply with the code style of Emacs lisp, the tangled =init.el= must have the following header and [[sec:foot][footer]]:
+
+#+begin_src emacs-lisp
+  ;;; init.el --- Panadestein's Emacs configuration
+
+  ;;; Commentary:
+  ;; Automatically generated tangling https://panadestein.github.io/emacsd/
+
+  ;;; Code:
+#+end_src
 
 ** Setting up a package manager
 
@@ -141,7 +152,7 @@ We can also have a nice integration with =use-package=:
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (use-package straight
-               :custom (straight-use-package-by-default t))
+    :custom (straight-use-package-by-default t))
 #+end_src
 
 For reference, I still show here how to set =use-package= with =package.el=. First we add the GNU ELPA
@@ -154,11 +165,11 @@ and MELPA archives, and then require =use-package=:
 
   (eval-and-compile
     (unless (and (fboundp 'package-installed-p)
-           (package-installed-p 'use-package))
+                 (package-installed-p 'use-package))
       (package-refresh-contents)
       (package-install 'use-package))
     (if init-file-debug  
-      (setq use-package-compute-statistics t)
+        (setq use-package-compute-statistics t)
       (setq use-package-compute-statistics nil))
     (setq use-package-always-ensure t)
     (setq use-package-expand-minimally t)
@@ -183,7 +194,7 @@ The variables have self-explanatory names, but I have added a few comments for t
     (setq backup-directory-alist
           `(("." . ,(concat user-emacs-directory "backups"))))
     (if init-file-debug
-      (setq warning-minimum-level :debug)
+        (setq warning-minimum-level :debug)
       (setq warning-minimum-level :emergency))
     (menu-bar-mode -1)
     (tool-bar-mode -1)
@@ -293,14 +304,16 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
     :straight t
     :disabled
     :init (load-theme 'gruvbox-dark-soft t))
-  
+
   (use-package blackboard-theme
     :straight t
     :disabled
     :init (load-theme 'blackboard t))
+#+end_src
 
-  ;; Highlight numbers
+And of course, highlight numbers in source code:
 
+#+begin_src emacs-lisp
   (use-package highlight-numbers
     :straight t
     :hook
@@ -450,7 +463,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     ("C-x C-f" . counsel-find-file)
     ("<f1> v" . counsel-describe-variable)
     ("<f1> f" . counsel-descbinds-function))
-  
+
   (use-package ivy-prescient
     :straight t
     :after counsel
@@ -608,9 +621,9 @@ The latter maximizes the use of already existing Emacs infrastructure.
           lsp-ui-doc-use-childframe t)
     :commands lsp-ui-mode)
 
-    (use-package lsp-treemacs
-      :after treemacs lsp
-      :straight t)
+  (use-package lsp-treemacs
+    :after treemacs lsp
+    :straight t)
 #+end_src
 
 It is possible to create =lsp-mode= clients that should work over ssh.
@@ -618,15 +631,15 @@ An example for Fortran and Python:
 
 #+begin_src emacs-lisp :tangle no
   (lsp-register-client
-     (make-lsp-client :new-connection (lsp-tramp-connection "<fortls>")
-                      :major-modes '(f90-mode)
-                      :remote? t
-                      :server-id 'fortls-remote))
+   (make-lsp-client :new-connection (lsp-tramp-connection "<fortls>")
+                    :major-modes '(f90-mode)
+                    :remote? t
+                    :server-id 'fortls-remote))
   (lsp-register-client
-     (make-lsp-client :new-connection (lsp-tramp-connection "<pyls>")
-                      :major-modes '(python-mode)
-                      :remote? t
-                      :server-id 'pyls-remote))
+   (make-lsp-client :new-connection (lsp-tramp-connection "<pyls>")
+                    :major-modes '(python-mode)
+                    :remote? t
+                    :server-id 'pyls-remote))
 #+end_src
 
 On my experience however, =eglot= has better support for editing with TRAMP. As you
@@ -808,8 +821,8 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (defun my-eshell-prompt ()
       "A nice prompt"
       (concat
-        "(" (user-login-name) " . "
-        (car (reverse (split-string (eshell/pwd) "/"))) ") "))
+       "(" (user-login-name) " . "
+       (car (reverse (split-string (eshell/pwd) "/"))) ") "))
     :hook
     ((eshell-mode . (lambda () 
                       (add-to-list 'eshell-visual-commands "ssh")
@@ -830,7 +843,7 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (eshell-prompt-function #'my-eshell-prompt)
     :config
     (setenv "PAGER" "cat"))
-  
+
   (use-package eshell-toggle
     :custom
     (eshell-toggle-size-fraction 3)
@@ -868,12 +881,12 @@ After trying a couple of file browsers I understood that all I needed was alread
     :defer t
     :bind
     (:map global-map
-	        ("<f8>" . treemacs)))
+          ("<f8>" . treemacs)))
 
   (use-package treemacs-evil
     :after (treemacs evil)
     :straight t)
-  
+
   (use-package treemacs-magit
     :after (treemacs magit)
     :straight t)
@@ -905,7 +918,6 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :straight t
-    ;:pin manual
     :config
     (setq-default pdf-view-display-size 'fit-page)
     (setq pdf-annot-activate-created-annotations t)
@@ -929,7 +941,7 @@ my editor all the time in obscure supercomputers around the world.
                   vc-ignore-dir-regexp       
                   tramp-file-name-regexp))   
     (setq tramp-verbose 1))                  
-                                                          
+
   (use-package tramp-sh                                     
     :straight nil                                             
     :config                                                 
@@ -1030,10 +1042,10 @@ mode for IRPF90:
         (let* (
                ;; Define different keywords
                (x-keywords '("BEGIN_PROVIDER" "END_PROVIDER" "ASSERT"
-                              "FREE" "PROVIDE" "BEGIN_TEMPLATE"
-                              "END_TEMPLATE" "BEGIN_SHELL"
-                              "END_SHELL" "IRP_IF" "IRP_ELSE" "TOUCH"
-                              "SOFT_TOUCH"))
+                             "FREE" "PROVIDE" "BEGIN_TEMPLATE"
+                             "END_TEMPLATE" "BEGIN_SHELL"
+                             "END_SHELL" "IRP_IF" "IRP_ELSE" "TOUCH"
+                             "SOFT_TOUCH"))
                (x-types '("double precision" "integer"))
                (x-comments '("BEGIN_DOC" "END_DOC"))
 
@@ -1116,7 +1128,7 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package cuda-mode
-      :mode "\\.cu\\'")
+    :mode "\\.cu\\'")
 #+end_src
 
 ** Julia stuff
@@ -1154,7 +1166,7 @@ for aesthetic and organizational purposes. If we =macrostep-expand= it, we can c
 
 #+begin_src emacs-lisp
   (use-package make-mode
-     :straight nil)
+    :straight nil)
 #+end_src
 
 which expands to
@@ -1239,12 +1251,15 @@ makes org-mode files look gorgeous.
     (add-to-list 'org-modules 'org-tempo)
     (org-babel-do-load-languages
      'org-babel-load-languages '((fortran . t)
+                                 (julia . t)
                                  (python . t)
                                  (jupyter . t)
                                  (scheme . t)
+                                 (haskell . t)
                                  (lisp . t)
                                  (emacs-lisp . t)
                                  (C . t)
+                                 (cpp . t)
                                  (org . t)
                                  (gnuplot . t)
                                  (awk . t)
@@ -1261,10 +1276,10 @@ makes org-mode files look gorgeous.
           '((sequence "TODO(t)" "BROKEN(b)" "RUNNING(r)" "VERIFY(v)" "URGENT(u)" "PARTIAL(p)"
                       "|" "DONE(d)" "OPTIONAL(o)" "DELEGATED(e)" "IRRELEVANT(i)")))
     (setq org-todo-keyword-faces
-                '(("BROKEN" . "red") ("RUNNING" . "yellow")
-                  ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")
-                  ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
-                  ("DELEGATED" . "aquamarine3")))
+          '(("BROKEN" . "red") ("RUNNING" . "yellow")
+            ("VERIFY" . "light goldenrod") ("URGENT" . "orange") ("PARTIAL" . "burlywood")
+            ("OPTIONAL" . "green") ("IRRELEVANT" . "LightBlue1")
+            ("DELEGATED" . "aquamarine3")))
     (plist-put org-format-latex-options :scale 3.0)
     (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images))
 
@@ -1290,10 +1305,10 @@ for evaluating the Scheme code blocks:
     :after org
     :config
     (add-hook 'ob-racket-pre-runtime-library-load-hook
-		#'ob-racket-raco-make-runtime-library)
+              #'ob-racket-raco-make-runtime-library)
     :straight (ob-racket
-		 :type git :host github :repo "hasu/emacs-ob-racket"
-		 :files ("*.el" "*.rkt")))
+               :type git :host github :repo "hasu/emacs-ob-racket"
+               :files ("*.el" "*.rkt")))
 #+end_src
 
 ** Web stuff
@@ -1399,25 +1414,25 @@ for evaluating the Scheme code blocks:
 ** Cmake stuff
 
 #+begin_src emacs-lisp
-   (use-package cmake-mode
-     :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
-     :config
-     (add-to-list 'company-backends 'company-cmake))
+  (use-package cmake-mode
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
+    :config
+    (add-to-list 'company-backends 'company-cmake))
 
-   (use-package eldoc-cmake
-     :after company
-     :hook (cmake-mode . eldoc-cmake-enable))
+  (use-package eldoc-cmake
+    :after company
+    :hook (cmake-mode . eldoc-cmake-enable))
 
-   (use-package cmake-font-lock
-     :straight t
-     :preface
-     (defun my-cmake-font-lock ()
-       (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
-         (cmake-font-lock-activate)
-         (when auto-refresh-defaults
-     (font-lock-refresh-defaults))))
-     :init
-     (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
+  (use-package cmake-font-lock
+    :straight t
+    :preface
+    (defun my-cmake-font-lock ()
+      (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
+        (cmake-font-lock-activate)
+        (when auto-refresh-defaults
+          (font-lock-refresh-defaults))))
+    :init
+    (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
 #+end_src
 
 ** Git stuff
@@ -1431,8 +1446,8 @@ A porcelain as glorious as the one from Meißen:
   (use-package git-modes
     :straight t
     :mode (("\\.gitattributes\\'" . gitattributes-mode)
-     ("\\.gitconfig\\'" . gitconfig-mode)
-     ("\\.gitignore\\'" . gitignore-mode)))
+           ("\\.gitconfig\\'" . gitconfig-mode)
+           ("\\.gitignore\\'" . gitignore-mode)))
 #+end_src
 
 ** The heretic Vim stuff
@@ -1450,4 +1465,15 @@ Syntax highlighting for Nix expression's language files
   (use-package nix-mode
     :straight t
     :mode "\\.nix\\'")
+#+end_src
+
+* Footer of Emacs package
+<<sec:foot>>
+:PROPERTIES:
+:UNNUMBERED: notoc
+:END:
+
+#+begin_src emacs-lisp
+  (provide 'init.el)
+  ;;; init.el ends here
 #+end_src

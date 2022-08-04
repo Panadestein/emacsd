@@ -1468,10 +1468,10 @@ Syntax highlighting for Nix expression's language files
 #+end_src
 
 * Footer of Emacs package
-<<sec:foot>>
 :PROPERTIES:
 :UNNUMBERED: notoc
 :END:
+<<sec:foot>>
 
 #+begin_src emacs-lisp
   (provide 'init.el)

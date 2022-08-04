@@ -1261,7 +1261,6 @@ makes org-mode files look gorgeous.
                                  (lisp . t)
                                  (emacs-lisp . t)
                                  (C . t)
-                                 (cpp . t)
                                  (org . t)
                                  (gnuplot . t)
                                  (awk . t)
@@ -1469,7 +1468,7 @@ Syntax highlighting for Nix expression's language files
     :mode "\\.nix\\'")
 #+end_src
 
-* Footer of Emacs package
+* Footer of the Emacs package
 <<sec:foot>>
 
 Thank you for reading 'till the end or for being interested on how to end an Emacs package. If you would

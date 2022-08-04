@@ -1469,7 +1469,7 @@ Syntax highlighting for Nix expression's language files
 
 * Footer of Emacs package
 :PROPERTIES:
-:UNNUMBERED: notoc
+:NOTOC: t
 :END:
 <<sec:foot>>
 

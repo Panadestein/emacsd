@@ -1244,7 +1244,7 @@ makes org-mode files look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package org
-    :straight nil
+    :straight t
     :hook
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
     :config

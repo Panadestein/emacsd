@@ -103,10 +103,14 @@ To comply with the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/e
 #+begin_src emacs-lisp
   ;;; init.el --- Panadestein's Emacs configuration -*- lexical-binding: t -*-
 
+  ;; Copyright (C) 2020-2022 Ramón L. Panadés Barrueta
+
   ;; Author: Ramón L. Panadés Barrueta <rpana92@gmail.com>
+  ;; Keywords: internal
+  ;; URL: https://panadestein.github.io/emacsd/
 
   ;;; Commentary:
-  ;; Automatically generated tangling https://panadestein.github.io/emacsd/
+  ;; A fully fledged, reproducible Emacs configuration
 
   ;;; Code:
 #+end_src

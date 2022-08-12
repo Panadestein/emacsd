@@ -1281,6 +1281,7 @@ makes org-mode files look gorgeous.
                                  (awk . t)
                                  (latex . t)
                                  (shell . t)))
+    (setq org-babel-clojure-backend 'cider)
     (setq org-latex-pdf-process '("latexmk -shell-escape -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)
     (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))

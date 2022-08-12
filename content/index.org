@@ -1274,6 +1274,7 @@ makes org-mode files look gorgeous.
                                  (haskell . t)
                                  (lisp . t)
                                  (emacs-lisp . t)
+                                 (clojure . t)
                                  (C . t)
                                  (org . t)
                                  (gnuplot . t)

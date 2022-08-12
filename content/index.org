@@ -996,7 +996,7 @@ The language that gave birth to the "Maxwell equations of software".
 
   (use-package cider
     :straight t
-    :config:
+    :config
     (setq nrepl-log-messages t
           cider-font-lock-dynamically '(macro core function var)
           cider-overlays-use-font-lock t))

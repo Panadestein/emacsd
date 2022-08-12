@@ -991,6 +991,16 @@ The language that gave birth to the "Maxwell equations of software".
   (use-package racket-mode
     :straight t)
 
+  (use-package clojure-mode
+    :straight t)
+
+  (use-package cider
+    :straight t
+    :config:
+    (setq nrepl-log-messages t
+          cider-font-lock-dynamically '(macro core function var)
+          cider-overlays-use-font-lock t))
+
   (use-package hy-mode
     :straight t
     :mode "\\.hy\\'"

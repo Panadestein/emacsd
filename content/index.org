@@ -297,7 +297,9 @@ its power. I keep it linear for the moment.
     :init
     (global-undo-tree-mode)
     :config
-    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo"))))
+    (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t))
 #+end_src
 
 ** Themes
@@ -482,7 +484,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     :config (counsel-mode)
     :bind
     ("M-x" . counsel-M-x)
-    ("C-x b" . counsel-ibuffer)
+    ("C-x b" . counsel-switch-buffer)
     ("C-M-l" . counsel-imenu)
     ("C-x C-f" . counsel-find-file)
     ("<f1> v" . counsel-describe-variable)
@@ -519,6 +521,18 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
   (use-package all-the-icons-ivy
     :straight t
     :demand t)
+#+end_src
+
+** Jump anywhere in Emacs with avy
+
+This powerful package comes with tons of features for jumping to visible text
+using a char-based decision tree. I have a minimal configuration, as =avy-goto-char-timer=
+achieves most of the functionality I need:
+
+#+begin_src emacs-lisp
+  (use-package avy
+    :straight t
+    :bind (("M-j" . avy-goto-char-timer)))
 #+end_src
 
 ** Command's information with which-key

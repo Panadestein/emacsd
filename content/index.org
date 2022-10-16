@@ -242,7 +242,12 @@ The variables have self-explanatory names, but I have added a few comments for t
     ;; Remember line number
     (if (fboundp #'save-place-mode)
         (save-place-mode +1)
-      (setq-default save-place t)))
+      (setq-default save-place t))
+    ;; Additional functions
+    (defun my-reload-emacs ()
+      "Reload the Emacs configuration"
+      (interactive)
+      (load-file "~/.emacs.d/init.el")))
 #+end_src
 
 ** Prevent custom from messing with my config file
@@ -485,6 +490,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     :bind
     ("M-x" . counsel-M-x)
     ("C-x b" . counsel-switch-buffer)
+    ("C-c f" . counsel-recentf)
     ("C-M-l" . counsel-imenu)
     ("C-x C-f" . counsel-find-file)
     ("<f1> v" . counsel-describe-variable)
@@ -1337,7 +1343,6 @@ makes org-mode files look gorgeous.
     :hook
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
     :config
-    (require 'ox-hugo)
     (require 'ox-beamer)
     (require 'ol-bibtex)
     (add-to-list 'org-modules 'org-tempo)
@@ -1388,6 +1393,10 @@ makes org-mode files look gorgeous.
     (org-reveal-root "file:///home/loren/bin/reveal.js")
     :config
     (setq org-reveal-mathjax t))
+
+  (use-package ox-hugo
+    :straight t
+    :after org)
 #+end_src
 
 The current Geiser implementation does not play well with =org-babel=, so I have decided to use =ob-racket=
@@ -1549,10 +1558,6 @@ Syntax highlighting for Nix expression's language files
     :straight t
     :mode "\\.nix\\'")
 #+end_src
-
-
-
-
 
 
 * Footer of the Emacs package

@@ -1024,7 +1024,7 @@ my editor all the time in obscure supercomputers around the world.
 Here you can find my configuration for different programming languages. I will introduce it
 in a laconic manner, because this section is rather opinionated.
 
-** Lisp stuff
+** Lisp
 
 The language that gave birth to the "Maxwell equations of software".
 
@@ -1089,9 +1089,9 @@ For this, the =macrostep= package comes very handy.
                 ("C-c e" . macrostep-expand)))
 #+end_src
 
-** FORTRAN stuff
+** Fortran
 
-FORTRAN is a major component of my job as a physicist, this package provides all I need. 
+Fortran is a major component of my job as a physicist, this package provides all I need. 
 
 #+begin_src emacs-lisp
   (use-package f90-mode
@@ -1161,7 +1161,7 @@ This mode can be also configured with =use-package=:
     :load-path "~/.emacs.d/lib")
 #+end_src
 
-** C/C++ stuff
+** C and C++
 
 #+begin_src emacs-lisp
   (use-package ccls
@@ -1175,72 +1175,7 @@ This mode can be also configured with =use-package=:
                             (other . "linux"))))
 #+end_src
 
-** Python stuff
-
-#+begin_src emacs-lisp
-  (use-package python
-    :straight nil
-    :config
-    (setq python-shell-interpreter "jupyter"
-          python-shell-interpreter-args "console --simple-prompt"
-          python-shell-prompt-detect-failure-warning nil)
-    (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
-
-  (use-package pyvenv
-    :straight t
-    :demand t
-    :config
-    (setq pyvenv-workon "emacs")
-    (pyvenv-tracking-mode 1))
-
-  (use-package py-autopep8
-    :straight t
-    :hook ((python-mode) . py-autopep8-mode))
-#+end_src
-
-Additional support for Jupyter notebooks:
-
-#+begin_src emacs-lisp
-  (use-package jupyter
-    :straight t)
-#+end_src
-
-** Cuda stuff
-
-#+begin_src emacs-lisp
-  (use-package cuda-mode
-    :mode "\\.cu\\'")
-#+end_src
-
-** Julia stuff
-
-#+begin_src emacs-lisp
-  (use-package julia-mode
-    :mode "\\.jl\\'")
-
-  (use-package flycheck-julia
-    :hook (julia-mode . flycheck-julia-setup))
-#+end_src
-
-** Haskell stuff
-
-#+begin_src emacs-lisp
-  (use-package haskell-mode
-    :straight t
-    :custom
-    (haskell-process-load-or-reload-prompt t)
-    (haskell-process-auto-import-loaded-modules t)
-    (haskell-process-log t)
-    (haskell-tags-on-save t))
-
-  (use-package flycheck-haskell
-    :straight t
-    :config
-    (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
-    (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
-#+end_src
-
-** Makefile stuff
+** Makefile
 
 Here it is important to mention that the following =use-package= declaration exists solely
 for aesthetic and organizational purposes. If we =macrostep-expand= it, we can convince ourselves: 
@@ -1277,7 +1212,96 @@ which expands to
        (funcall use-package--warning79 :catch err))))
 #+end_src
 
-** Perl stuff
+** Cmake
+
+#+begin_src emacs-lisp
+  (use-package cmake-mode
+    :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
+    :config
+    (add-to-list 'company-backends 'company-cmake))
+
+  (use-package eldoc-cmake
+    :after company
+    :hook (cmake-mode . eldoc-cmake-enable))
+
+  (use-package cmake-font-lock
+    :straight t
+    :preface
+    (defun my-cmake-font-lock ()
+      (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
+        (cmake-font-lock-activate)
+        (when auto-refresh-defaults
+          (font-lock-refresh-defaults))))
+    :init
+    (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
+#+end_src
+
+** Cuda
+
+#+begin_src emacs-lisp
+  (use-package cuda-mode
+    :mode "\\.cu\\'")
+#+end_src
+
+** Python
+
+#+begin_src emacs-lisp
+  (use-package python
+    :straight nil
+    :config
+    (setq python-shell-interpreter "jupyter"
+          python-shell-interpreter-args "console --simple-prompt"
+          python-shell-prompt-detect-failure-warning nil)
+    (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
+
+  (use-package pyvenv
+    :straight t
+    :demand t
+    :config
+    (setq pyvenv-workon "emacs")
+    (pyvenv-tracking-mode 1))
+
+  (use-package py-autopep8
+    :straight t
+    :hook ((python-mode) . py-autopep8-mode))
+#+end_src
+
+Additional support for Jupyter notebooks:
+
+#+begin_src emacs-lisp
+  (use-package jupyter
+    :straight t)
+#+end_src
+
+** Julia
+
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :mode "\\.jl\\'")
+
+  (use-package flycheck-julia
+    :hook (julia-mode . flycheck-julia-setup))
+#+end_src
+
+** Haskell
+
+#+begin_src emacs-lisp
+  (use-package haskell-mode
+    :straight t
+    :custom
+    (haskell-process-load-or-reload-prompt t)
+    (haskell-process-auto-import-loaded-modules t)
+    (haskell-process-log t)
+    (haskell-tags-on-save t))
+
+  (use-package flycheck-haskell
+    :straight t
+    :config
+    (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
+    (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
+#+end_src
+
+** Perl
 
 #+begin_src emacs-lisp
   (use-package cperl-mode
@@ -1285,7 +1309,7 @@ which expands to
     :mode ("\\.\\([pP][Llm]\\|al\\)\\'" . cperl-mode))
 #+end_src
 
-** Raku stuff
+** Raku
 
 #+begin_src emacs-lisp
   (use-package raku-mode
@@ -1294,28 +1318,14 @@ which expands to
     :mode "\\.raku\\'")
 #+end_src
 
-** Latex
-
-Auctex provides all you will ever need to work with Latex, and more. 
+** Lua
 
 #+begin_src emacs-lisp
-  (use-package auctex
-    :straight t
-    :mode ("\\.tex\\'" . latex-mode)
-    :commands (latex-mode LaTeX-mode plain-tex-mode)
-    :init
-    (progn
-      (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
-      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-      (add-hook 'LaTeX-mode-hook #'flyspell-mode)
-      (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
-      (setq TeX-auto-save t
-            TeX-parse-self t
-            TeX-save-query nil
-            TeX-PDF-mode t)))
+  (use-package lua-mode
+    :straight t)
 #+end_src
 
-** Org-mode stuff
+** Org-mode
 <<sec:org>>
 
 Org-mode is the package allowing me to have this literate configuration. Org-superstar
@@ -1327,6 +1337,7 @@ makes org-mode files look gorgeous.
     :hook
     (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
     :config
+    (require 'ox-hugo)
     (require 'ox-beamer)
     (require 'ol-bibtex)
     (add-to-list 'org-modules 'org-tempo)
@@ -1393,7 +1404,28 @@ for evaluating the Scheme code blocks:
                :files ("*.el" "*.rkt")))
 #+end_src
 
-** Web stuff
+** Latex
+
+Auctex provides all you will ever need to work with Latex, and more. 
+
+#+begin_src emacs-lisp
+  (use-package auctex
+    :straight t
+    :mode ("\\.tex\\'" . latex-mode)
+    :commands (latex-mode LaTeX-mode plain-tex-mode)
+    :init
+    (progn
+      (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
+      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+      (add-hook 'LaTeX-mode-hook #'flyspell-mode)
+      (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
+      (setq TeX-auto-save t
+            TeX-parse-self t
+            TeX-save-query nil
+            TeX-PDF-mode t)))
+#+end_src
+
+** Web
 
 #+begin_src emacs-lisp
   (use-package php-mode
@@ -1446,7 +1478,7 @@ for evaluating the Scheme code blocks:
     :straight t)
 #+end_src
 
-** YAML stuff
+** YAML
 
 #+begin_src emacs-lisp
   (use-package yaml-mode
@@ -1454,7 +1486,7 @@ for evaluating the Scheme code blocks:
     :mode "\.ya?ml\'")
 #+end_src
 
-** Markdown stuff
+** Markdown
 
 #+begin_src emacs-lisp
   (use-package markdown-mode
@@ -1463,7 +1495,7 @@ for evaluating the Scheme code blocks:
     (setq-default markdown-hide-markup t))
 #+end_src
 
-** reStructuredText stuff
+** reStructuredText
 
 #+begin_src emacs-lisp
   (use-package rst
@@ -1476,14 +1508,7 @@ for evaluating the Scheme code blocks:
     (setq rst-indent-width 2))
 #+end_src
 
-** Lua stuff
-
-#+begin_src emacs-lisp
-  (use-package lua-mode
-    :straight t)
-#+end_src
-
-** JSON stuff
+** JSON
 
 #+begin_src emacs-lisp
   (use-package json-mode
@@ -1493,31 +1518,7 @@ for evaluating the Scheme code blocks:
     :hook (json-mode . flymake-json-load))
 #+end_src
 
-** Cmake stuff
-
-#+begin_src emacs-lisp
-  (use-package cmake-mode
-    :mode ("CMakeLists\\.txt\\'" "\\.cmake\(.in\)?\\'")
-    :config
-    (add-to-list 'company-backends 'company-cmake))
-
-  (use-package eldoc-cmake
-    :after company
-    :hook (cmake-mode . eldoc-cmake-enable))
-
-  (use-package cmake-font-lock
-    :straight t
-    :preface
-    (defun my-cmake-font-lock ()
-      (let ((auto-refresh-defaults (boundp 'font-lock-keywords)))
-        (cmake-font-lock-activate)
-        (when auto-refresh-defaults
-          (font-lock-refresh-defaults))))
-    :init
-    (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
-#+end_src
-
-** Git stuff
+** Git
 
 A porcelain as glorious as the one from Meißen:
 
@@ -1532,14 +1533,14 @@ A porcelain as glorious as the one from Meißen:
            ("\\.gitignore\\'" . gitignore-mode)))
 #+end_src
 
-** The heretic Vim stuff
+** The heretic Vimscript
 
 #+begin_src emacs-lisp
   (use-package vimrc-mode
     :straight t)
 #+end_src
 
-** Nix stuff
+** Nix expressions language
 
 Syntax highlighting for Nix expression's language files
  
@@ -1548,6 +1549,11 @@ Syntax highlighting for Nix expression's language files
     :straight t
     :mode "\\.nix\\'")
 #+end_src
+
+
+
+
+
 
 * Footer of the Emacs package
 <<sec:foot>>

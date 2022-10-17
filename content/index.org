@@ -414,7 +414,7 @@ modeline, but also for file managers and many other packages.
     :straight t
     :init (doom-modeline-mode 1)
     :config
-    (setq doom-modeline-height 40)
+    (setq doom-modeline-height 55)
     (setq doom-modeline-buffer-file-name-style 'relative-to-project)
     (setq doom-line-numbers-style 'relative)
     (setq doom-modeline-major-mode-icon t)
@@ -539,6 +539,52 @@ achieves most of the functionality I need:
   (use-package avy
     :straight t
     :bind (("M-j" . avy-goto-char-timer)))
+#+end_src
+
+** Create awesome command combos and menus with hydra
+
+This packages makes it very easy to create keybindings combinations using a common prefix. It also generates a
+menu showing the possible commands:
+
+#+begin_src emacs-lisp
+  (use-package hydra
+    :straight t)
+
+  (use-package use-package-hydra
+    :straight t)
+#+end_src
+
+Here is a nice example for =straight.el=:
+
+#+begin_src emacs-lisp
+  (defhydra hydra-straight-helper (global-map "<f2>")
+    "
+  _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
+  _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
+  ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
+  _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
+  _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
+    ("c" straight-check-all)
+    ("C" straight-check-package)
+    ("r" straight-rebuild-all)
+    ("R" straight-rebuild-package)
+    ("f" straight-fetch-all)
+    ("F" straight-fetch-package)
+    ("p" straight-pull-all)
+    ("P" straight-pull-package)
+    ("m" straight-merge-all)
+    ("M" straight-merge-package)
+    ("n" straight-normalize-all)
+    ("N" straight-normalize-package)
+    ("u" straight-push-all)
+    ("U" straight-push-package)
+    ("v" straight-freeze-versions)
+    ("V" straight-thaw-versions)
+    ("w" straight-watcher-start)
+    ("W" straight-watcher-quit)
+    ("g" straight-get-recipe)
+    ("e" straight-prune-build)
+    ("q" nil))
 #+end_src
 
 ** Command's information with which-key
@@ -1540,6 +1586,23 @@ A porcelain as glorious as the one from Meißen:
     :mode (("\\.gitattributes\\'" . gitattributes-mode)
            ("\\.gitconfig\\'" . gitconfig-mode)
            ("\\.gitignore\\'" . gitignore-mode)))
+#+end_src
+
+** GitLab CI
+
+This package comes very handy when writing GitLab pipelines:
+
+#+begin_src emacs-lisp
+  (use-package gitlab-ci-mode
+    :straight t
+    :mode
+    ("\\.gitlab-ci.yaml\\'" "\\.gitlab-ci.yml\\'"))
+
+  (use-package gitlab-ci-mode-flycheck
+    :straight t
+    :after flycheck gitlab-ci-mode
+    :init
+    (gitlab-ci-mode-flycheck-enable))
 #+end_src
 
 ** The heretic Vimscript

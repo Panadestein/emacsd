@@ -176,7 +176,8 @@ We can also have a nice integration with =use-package=:
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
   (use-package straight
-    :custom (straight-use-package-by-default t))
+    :custom (straight-use-package-by-default t)
+    :bind  (("C-<f2>" . hydra-straight-helper/body)))
 #+end_src
 
 For reference, I still show here how to set =use-package= with =package.el=. First we add the GNU ELPA
@@ -555,7 +556,7 @@ menu showing the possible commands:
 Here is a nice example for =straight.el= (the =:color= keyword symbol has a special [[https://github.com/abo-abo/hydra#color][purpose]] here):
 
 #+begin_src emacs-lisp
-  (defhydra hydra-straight-helper (global-map "<f2>" :hint nil :color pink)
+  (defhydra hydra-straight-helper (:hint nil :color pink)
     "
   _c_: check all       _f_: fetch all     _m_: merge all       _n_: normalize all      _u_: push all
   _C_: check package   _F_: fetch package _M_: merge package   _N_: normalize package  _U_: push package

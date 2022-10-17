@@ -267,8 +267,6 @@ This helps to clear the clutter and increases reproducibility of the config
 #+begin_src emacs-lisp
   (use-package hl-line
     :straight nil
-    :config
-    (global-hl-line-mode +1)
     :hook
     (prog-mode . hl-line-mode)
     (text-mode . hl-line-mode))
@@ -554,16 +552,16 @@ menu showing the possible commands:
     :straight t)
 #+end_src
 
-Here is a nice example for =straight.el=:
+Here is a nice example for =straight.el= (the =:color= keyword symbol has a special [[https://github.com/abo-abo/hydra#color][purpose]] here):
 
 #+begin_src emacs-lisp
-  (defhydra hydra-straight-helper (global-map "<f2>")
+  (defhydra hydra-straight-helper (global-map "<f2>" :hint nil :color pink)
     "
-  _c_heck all       |_f_etch all     |_m_erge all      |_n_ormalize all   |p_u_sh all
-  _C_heck package   |_F_etch package |_M_erge package  |_N_ormlize package|p_U_sh package
-  ----------------^^+--------------^^+---------------^^+----------------^^+------------||_q_uit||
-  _r_ebuild all     |_p_ull all      |_v_ersions freeze|_w_atcher start   |_g_et recipe
-  _R_ebuild package |_P_ull package  |_V_ersions thaw  |_W_atcher quit    |prun_e_ build"
+  _c_: check all       _f_: fetch all     _m_: merge all       _n_: normalize all      _u_: push all
+  _C_: check package   _F_: fetch package _M_: merge package   _N_: normalize package  _U_: push package
+  _r_: rebuild all     _p_: pull all      _w_: watcher start   _g_: get recipe         _v_: versions freeze
+  _R_: rebuild package _P_: pull package  _W_: watcher quit    _e_: prune build        _q_: quit
+  "
     ("c" straight-check-all)
     ("C" straight-check-package)
     ("r" straight-rebuild-all)
@@ -578,13 +576,12 @@ Here is a nice example for =straight.el=:
     ("N" straight-normalize-package)
     ("u" straight-push-all)
     ("U" straight-push-package)
-    ("v" straight-freeze-versions)
-    ("V" straight-thaw-versions)
     ("w" straight-watcher-start)
     ("W" straight-watcher-quit)
     ("g" straight-get-recipe)
     ("e" straight-prune-build)
-    ("q" nil))
+    ("v" straight-freeze-versions)
+    ("q" nil :color blue))
 #+end_src
 
 ** Command's information with which-key
@@ -1227,6 +1224,13 @@ This mode can be also configured with =use-package=:
                             (other . "linux"))))
 #+end_src
 
+** Rust
+
+#+begin_src emacs-lisp
+  (use-package rust-mode
+    :straight t)
+#+end_src
+
 ** Makefile
 
 Here it is important to mention that the following =use-package= declaration exists solely
@@ -1561,6 +1565,13 @@ Auctex provides all you will ever need to work with Latex, and more.
                 ("M-e" . rst-forward-section))
     :init
     (setq rst-indent-width 2))
+#+end_src
+
+** AsciiDoc
+
+#+begin_src emacs-lisp
+  (use-package adoc-mode
+    :straight t)
 #+end_src
 
 ** JSON

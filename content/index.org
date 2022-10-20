@@ -1452,6 +1452,10 @@ makes org-mode files look gorgeous.
   (use-package ox-hugo
     :straight t
     :after org)
+
+  (use-package ox-ipynb
+    :straight (:host github :repo "jkitchin/ox-ipynb")
+    :after org)
 #+end_src
 
 The current Geiser implementation does not play well with =org-babel=, so I have decided to use =ob-racket=

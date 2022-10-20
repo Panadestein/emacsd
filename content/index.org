@@ -67,7 +67,7 @@ of this file you can find the following code:
 With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
 in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
 A somehow tricky aspect is to get syntax highlighting when exporting to HTML
-with =org-mode= using Emacs in batch mode. You can take a look to my =build-site.el=
+with =org-mode= using Emacs in batch mode. You can take a look at my =build-site.el=
 script in the source [[https://github.com/Panadestein/emacsd][repo]] to see how I achieve
 this in practice.
 
@@ -225,8 +225,6 @@ The variables have self-explanatory names, but I have added a few comments for t
     (tool-bar-mode -1)
     (show-paren-mode 1)
     (fringe-mode '(0 . 0))
-    ;; Make ESC close prompts
-    (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
     ;; No scroll bar, always full screen
     (add-to-list 'default-frame-alist
                  '(vertical-scroll-bars . nil))
@@ -240,6 +238,7 @@ The variables have self-explanatory names, but I have added a few comments for t
     (when (version<= "26.0.50" emacs-version)
       (global-display-line-numbers-mode)
       (setq display-line-numbers 'relative))
+    (setq display-line-numbers 'relative)
     ;; Remember line number
     (if (fboundp #'save-place-mode)
         (save-place-mode +1)
@@ -248,7 +247,10 @@ The variables have self-explanatory names, but I have added a few comments for t
     (defun my-reload-emacs ()
       "Reload the Emacs configuration"
       (interactive)
-      (load-file "~/.emacs.d/init.el")))
+      (load-file "~/.emacs.d/init.el"))
+    :bind
+    (;; Make ESC close prompts
+     ("<escape>" . keyboard-escape-quit)))
 #+end_src
 
 ** Prevent custom from messing with my config file
@@ -1311,6 +1313,9 @@ which expands to
           python-shell-prompt-detect-failure-warning nil)
     (add-to-list 'python-shell-completion-native-disabled-interpreters "jupyter"))
 
+  (use-package ein
+    :straight t)
+
   (use-package pyvenv
     :straight t
     :demand t
@@ -1320,7 +1325,7 @@ which expands to
 
   (use-package py-autopep8
     :straight t
-    :hook ((python-mode) . py-autopep8-mode))
+    :hook (python-mode . py-autopep8-mode))
 #+end_src
 
 Additional support for Jupyter notebooks:

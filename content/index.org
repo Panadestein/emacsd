@@ -237,8 +237,7 @@ The variables have self-explanatory names, but I have added a few comments for t
     ;; Line numbers
     (when (version<= "26.0.50" emacs-version)
       (global-display-line-numbers-mode)
-      (setq display-line-numbers 'relative))
-    (setq display-line-numbers 'relative)
+      (setq display-line-numbers-type 'relative))
     ;; Remember line number
     (if (fboundp #'save-place-mode)
         (save-place-mode +1)
@@ -1325,7 +1324,7 @@ which expands to
 
   (use-package py-autopep8
     :straight t
-    :hook (python-mode . py-autopep8-mode))
+    :hook (python-mode . py-autopep8-enable-on-save))
 #+end_src
 
 Additional support for Jupyter notebooks:

@@ -1,6 +1,7 @@
 #+TITLE: Literate Emacs configuration
 #+AUTHOR: Panadestein
 #+HTML: <img alt="GitHub" src="https://img.shields.io/github/license/Panadestein/emacsd">
+#+HTML: <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/Panadestein/emacsd/Publish%20the%20Gihub%20Pages%20of%20my%20literate%20Emacs%20config">
 
 This is my [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration. It was initially fine-tuned for Python,
 C, C++, FORTRAN and Lisp development, but it has grown far beyond the initial scope.

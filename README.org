@@ -1,6 +1,8 @@
 #+title: Literate Emacs configuration
 #+author: Panadestein
 
+[[GitHub][https://img.shields.io/github/license/Panadestein/emacsd]]
+
 This is my [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration. It was initially fine-tuned for Python,
 C, C++, FORTRAN and Lisp development, but it has grown far beyond the initial scope.
 I use =use-package= extensively, which ensures a reproducible configuration.

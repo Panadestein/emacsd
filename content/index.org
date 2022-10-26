@@ -769,6 +769,19 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
           langtool-http-server-port 8081))
 #+end_src
 
+** Translator
+
+This is a very powerful translator integrated with Emacs. It supports multiple translation engines such as Google, Bing, and DeepL.
+
+#+begin_src emacs-lisp
+  (use-package go-translate
+    :straight t
+    :config
+    (setq gts-translate-list '(("en" "es")
+                               ("fr" "en")
+                               ("de" "en"))))
+#+end_src
+
 ** Syntax checking with Flycheck
 
 Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
@@ -1040,6 +1053,9 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 #+begin_src emacs-lisp
   (use-package pdf-tools
     :straight t
+    :bind
+    (:map pdf-view-mode-map
+          ("C-s" . isearch-forward-regexp))
     :config
     (setq-default pdf-view-display-size 'fit-page)
     (setq pdf-annot-activate-created-annotations t)
@@ -1395,8 +1411,14 @@ makes org-mode files look gorgeous.
 #+begin_src emacs-lisp
   (use-package org
     :straight t
+    :init
+    (defun display-ansi-colors ()
+      "Fixes kernel output in emacs-jupyter"
+      (ansi-color-apply-on-region (point-min) (point-max)))
     :hook
-    (org-mode . (lambda () (add-hook 'after-save-hook #'org-babel-tangle :append :local)))
+    (org-mode . (lambda () (progn
+                             (add-hook 'after-save-hook #'org-babel-tangle :append :local)
+                             (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)))
     :config
     (require 'ox-beamer)
     (require 'ol-bibtex)

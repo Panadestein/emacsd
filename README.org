@@ -1,7 +1,6 @@
-#+title: Literate Emacs configuration
-#+author: Panadestein
-
-[[GitHub][https://img.shields.io/github/license/Panadestein/emacsd]]
+#+TITLE: Literate Emacs configuration
+#+AUTHOR: Panadestein
+#+HTML: <img alt="GitHub" src="https://img.shields.io/github/license/Panadestein/emacsd">
 
 This is my [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration. It was initially fine-tuned for Python,
 C, C++, FORTRAN and Lisp development, but it has grown far beyond the initial scope.
@@ -14,24 +13,24 @@ I use Emacs mainly on [[https://github.com/Panadestein/nixos-config][NixOS]], wi
 file is uploaded only once. A very good explanation can be found [[https://wiki.archlinux.org/index.php/Emacs#Running_Emacs][here]]. After editing 
 the config file, the unit must be reloaded:
 
-  #+BEGIN_SRC bash
+#+BEGIN_SRC bash
   systemctl --user restart emacs
-  #+END_SRC
+#+END_SRC
 
 To use =emacsclient= with the GUI application,
 the file =~/.local/share/applications/emacsclient.desktop= must be created with 
 the following content:
 
-  #+BEGIN_SRC bash
+#+BEGIN_SRC bash
   [Desktop Entry]
-Name=Emacs (Client)
-GenericName=Text Editor
-Comment=Edit text
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-Exec=emacsclient -с -a "emacs" %F
-Icon=emacs
-Type=Application
-Terminal=false
-Categories=Development;TextEditor;Utility;
-StartupWMClass=Emacs
-  #+END_SRC
+  Name=Emacs (Client)
+  GenericName=Text Editor
+  Comment=Edit text
+  MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+  Exec=emacsclient -с -a "emacs" %F
+  Icon=emacs
+  Type=Application
+  Terminal=false
+  Categories=Development;TextEditor;Utility;
+  StartupWMClass=Emacs
+#+END_SRC

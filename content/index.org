@@ -855,6 +855,19 @@ BEGIN_SHELL [ ${1:/bin/bash} ]
 END_SHELL%  
 #+end_src
 
+** Better diff configuration
+
+Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, it does
+require better configuration:
+
+#+begin_src emacs-lisp
+  (use-package ediff
+    :straight nil
+    :config
+    (setq ediff-window-setup-function 'ediff-setup-windows-plain
+          ediff-split-window-function 'split-window-horizontally))
+#+end_src
+
 * File browsing and terminals
 
 ** Terminal support with Vterm
@@ -1418,7 +1431,7 @@ makes org-mode files look gorgeous.
     :hook
     (org-mode . (lambda () (progn
                              (add-hook 'after-save-hook #'org-babel-tangle :append :local)
-                             (add-hook 'org-babel-after-execute-hook #'display-ansi-colors)))
+                             (add-hook 'org-babel-after-execute-hook #'display-ansi-colors))))
     :config
     (require 'ox-beamer)
     (require 'ol-bibtex)

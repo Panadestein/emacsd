@@ -855,14 +855,24 @@ BEGIN_SHELL [ ${1:/bin/bash} ]
 END_SHELL%  
 #+end_src
 
-** Better diff configuration
+** Better ediff configuration
 
-Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, it does
-require better configuration:
+Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, the default configuration can be improved a bit:
 
 #+begin_src emacs-lisp
   (use-package ediff
     :straight nil
+    :preface
+    (defvar my-ediff-original-windows nil)
+    (defun my-store-pre-ediff-winconfig ()
+      "Stores the window arrangement before opening ediff."
+      (setq my-ediff-original-windows (current-window-configuration)))
+    (defun my-restore-pre-ediff-winconfig ()
+      "Resets original window arrangement"
+      (set-window-configuration my-ediff-original-windows))
+    :hook
+    ((ediff-before-setup . my-store-pre-ediff-winconfig)
+     (ediff-quit . my-restore-pre-ediff-winconfig))
     :config
     (setq ediff-window-setup-function 'ediff-setup-windows-plain
           ediff-split-window-function 'split-window-horizontally))
@@ -1475,7 +1485,11 @@ makes org-mode files look gorgeous.
     :straight t
     :config
     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+#+end_src
 
+Some extra exporting formats:
+
+#+begin_src emacs-lisp
   (use-package ox-reveal
     :straight t
     :after org
@@ -1491,6 +1505,15 @@ makes org-mode files look gorgeous.
   (use-package ox-ipynb
     :straight (:host github :repo "jkitchin/ox-ipynb")
     :after org)
+#+end_src
+
+And by the way, convert everything else to =org-mode= please:
+
+#+begin_src emacs-lisp
+  (use-package org-pandoc-import
+    :straight (:host github
+                     :repo "tecosaur/org-pandoc-import"
+                     :files ("*.el" "filters" "preprocessors")))
 #+end_src
 
 The current Geiser implementation does not play well with =org-babel=, so I have decided to use =ob-racket=

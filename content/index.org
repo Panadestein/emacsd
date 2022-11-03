@@ -772,14 +772,29 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
 ** Translator
 
 This is a very powerful translator integrated with Emacs. It supports multiple translation engines such as Google, Bing, and DeepL.
+I prefer to use pop-ups for the translation, so I need to install the =posframe= package in addition.
+The translation directions can be changed in the prompt with =C-n= and =C-p=.
 
 #+begin_src emacs-lisp
   (use-package go-translate
     :straight t
+    :bind
+    (("C-c C-t" . gts-do-translate))
     :config
-    (setq gts-translate-list '(("en" "es")
+    (setq gts-translate-list '(("de" "en")
                                ("fr" "en")
-                               ("de" "en"))))
+                               ("en" "es")))
+    (setq gts-default-translator
+          (gts-translator
+           :picker
+           (gts-prompt-picker)
+           :engines
+           (list (gts-bing-engine) (gts-google-engine))
+           :render
+           (gts-posframe-pop-render))))
+
+  (use-package posframe
+    :straight t)
 #+end_src
 
 ** Syntax checking with Flycheck
@@ -1079,6 +1094,9 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
     :bind
     (:map pdf-view-mode-map
           ("C-s" . isearch-forward-regexp))
+    :hook
+    ((pdf-view-mode . (lambda ()
+                        (display-line-numbers-mode -1))))
     :config
     (setq-default pdf-view-display-size 'fit-page)
     (setq pdf-annot-activate-created-annotations t)

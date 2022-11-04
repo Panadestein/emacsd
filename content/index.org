@@ -1088,15 +1088,58 @@ After trying a couple of file browsers I understood that all I needed was alread
 
 ** Web browsers
 
-And because in the Emacs operating system we can do just about anything, I have added the =shr-tag-pre-highlight=
-package so =eww= gets nice syntax highlighting. This comes handy when comparing programming languages in Rosetta Code.
+And because in the Emacs operating system we can do just about anything, I have added the =shr-tag-pre-highlight= and =shrface=
+packages, so =eww= gets an =org-mode= look and feel. This comes handy when comparing programming languages in Rosetta Code.
 
 #+begin_src emacs-lisp
   (use-package shr-tag-pre-highlight
     :straight t
     :config
+    (add-to-list 'shr-external-rendering-functions '(pre . shrface-shr-tag-pre-highlight))
+    (defun shrface-shr-tag-pre-highlight (pre)
+      "Highlighting code in PRE."
+      (let* ((shr-folding-mode 'none)
+             (shr-current-font 'default)
+             (code (with-temp-buffer
+                     (shr-generic pre)
+                     (buffer-string)))
+             (lang (or (shr-tag-pre-highlight-guess-language-attr pre)
+                       (let ((sym (language-detection-string code)))
+                         (and sym (symbol-name sym)))))
+             (mode (and lang
+                        (shr-tag-pre-highlight--get-lang-mode lang))))
+        (shr-ensure-newline)
+        (shr-ensure-newline)
+        (setq start (point))
+        (insert
+         (propertize (concat "#+BEGIN_SRC " lang "\n") 'face 'org-block-begin-line)
+         (or (and (fboundp mode)
+                  (with-demoted-errors "Error while fontifying: %S"
+                    (shr-tag-pre-highlight-fontify code mode)))
+             code)
+         (propertize "#+END_SRC" 'face 'org-block-end-line ))
+        (shr-ensure-newline)
+        (setq end (point))
+        (add-face-text-property start end '(:background "#292b2e" :extend t))
+        (shr-ensure-newline)
+        (insert "\n")))
     (add-to-list 'shr-external-rendering-functions
                  '(pre . shr-tag-pre-highlight)))
+
+  (use-package shrface
+    :straight t
+    :config
+    (shrface-basic)
+    (shrface-trial)
+    (shrface-default-keybindings)
+    (setq shrface-href-versatile t))
+
+  (use-package eww
+    :straight nil
+    :hook
+    ((eww-after-render . shrface-mode))
+    :config
+    (require 'shrface))
 #+end_src
 
 ** PDF support

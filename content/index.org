@@ -276,8 +276,8 @@ This helps to clear the clutter and increases reproducibility of the config
 
 ** Old habits die hard
 
-I cannot just trash years of Vim muscle memory workout. Although the Emacs keybindings
-slowly start to /klappt/.
+I cannot just trash years of Vim muscle memory workout. However, the Emacs keybindings
+slowly start to /klappt/, and for some major modes it just does not make sense to use Evil.
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -286,7 +286,9 @@ slowly start to /klappt/.
     :config
     (evil-mode 1)
     (evil-set-undo-system 'undo-tree)
-    ;; This is the cleanest solution for vterm
+    (evil-set-initial-state 'eww-mode 'emacs)
+    (evil-set-initial-state 'dired-mode 'emacs)
+    (evil-set-initial-state 'pdf-view-mode 'emacs)
     (evil-set-initial-state 'eshell-mode 'emacs)
     (evil-set-initial-state 'vterm-mode 'emacs))
 #+end_src
@@ -1082,6 +1084,19 @@ After trying a couple of file browsers I understood that all I needed was alread
 
   (use-package dired-single
     :straight t)
+#+end_src
+
+** Web browsers
+
+And because in the Emacs operating system we can do just about anything, I have added the =shr-tag-pre-highlight=
+package so =eww= gets nice syntax highlighting. This comes handy when comparing programming languages in Rosetta Code.
+
+#+begin_src emacs-lisp
+  (use-package shr-tag-pre-highlight
+    :straight t
+    :config
+    (add-to-list 'shr-external-rendering-functions
+                 '(pre . shr-tag-pre-highlight)))
 #+end_src
 
 ** PDF support

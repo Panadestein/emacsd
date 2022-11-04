@@ -286,11 +286,14 @@ slowly start to /klappt/, and for some major modes it just does not make sense t
     :config
     (evil-mode 1)
     (evil-set-undo-system 'undo-tree)
-    (evil-set-initial-state 'eww-mode 'emacs)
-    (evil-set-initial-state 'dired-mode 'emacs)
-    (evil-set-initial-state 'pdf-view-mode 'emacs)
-    (evil-set-initial-state 'eshell-mode 'emacs)
-    (evil-set-initial-state 'vterm-mode 'emacs))
+    (mapc (lambda (mode)
+            (evil-set-initial-state mode 'emacs))
+          '(eww-mode
+            dired-mode
+            profiler-report-mode
+            pdf-view-mode
+            eshell-mode
+            vterm-mode)))
 #+end_src
 
 ** Linear undo system
@@ -1095,7 +1098,6 @@ packages, so =eww= gets an =org-mode= look and feel. This comes handy when compa
   (use-package shr-tag-pre-highlight
     :straight t
     :init
-    (add-to-list 'shr-external-rendering-functions '(pre . shrface-shr-tag-pre-highlight))
     (defun shrface-shr-tag-pre-highlight (pre)
       "Highlighting code in PRE."
       (let* ((shr-folding-mode 'none)
@@ -1120,12 +1122,12 @@ packages, so =eww= gets an =org-mode= look and feel. This comes handy when compa
          (propertize "#+END_SRC" 'face 'org-block-end-line ))
         (shr-ensure-newline)
         (setq end (point))
-        (add-face-text-property start end '(:background "#292b2e" :extend t))
+        (add-face-text-property start end '(:background "#1f2329" :extend t))
         (shr-ensure-newline)
         (insert "\n")))
     :config
     (add-to-list 'shr-external-rendering-functions
-                 '(pre . shr-tag-pre-highlight)))
+                 '(pre . shrface-shr-tag-pre-highlight)))
 
   (use-package shrface
     :straight t

@@ -1094,7 +1094,7 @@ packages, so =eww= gets an =org-mode= look and feel. This comes handy when compa
 #+begin_src emacs-lisp
   (use-package shr-tag-pre-highlight
     :straight t
-    :config
+    :init
     (add-to-list 'shr-external-rendering-functions '(pre . shrface-shr-tag-pre-highlight))
     (defun shrface-shr-tag-pre-highlight (pre)
       "Highlighting code in PRE."
@@ -1123,6 +1123,7 @@ packages, so =eww= gets an =org-mode= look and feel. This comes handy when compa
         (add-face-text-property start end '(:background "#292b2e" :extend t))
         (shr-ensure-newline)
         (insert "\n")))
+    :config
     (add-to-list 'shr-external-rendering-functions
                  '(pre . shr-tag-pre-highlight)))
 

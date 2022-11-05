@@ -289,7 +289,6 @@ slowly start to /klappt/, and for some major modes it just does not make sense t
     (mapc (lambda (mode)
             (evil-set-initial-state mode 'emacs))
           '(eww-mode
-            dired-mode
             profiler-report-mode
             pdf-view-mode
             eshell-mode
@@ -1032,6 +1031,30 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     ("C-c p" . eshell-toggle))
 #+end_src
 
+** TRAMP
+
+Another must have of Emacs. This package together with dired saves me from configuring
+my editor all the time in obscure supercomputers around the world.
+
+#+begin_src emacs-lisp
+  (use-package tramp                                        
+    :straight nil                                             
+    :custom                                                 
+    (tramp-default-method "ssh")                           
+    :config
+    (setq remote-file-name-inhibit-cache nil)
+    (setq vc-ignore-dir-regexp               
+          (format "%s\\|%s"                  
+                  vc-ignore-dir-regexp       
+                  tramp-file-name-regexp))   
+    (setq tramp-verbose 1))                  
+
+  (use-package tramp-sh                                     
+    :straight nil                                             
+    :config                                                 
+    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+#+end_src
+
 ** File browsers
 
 After trying a couple of file browsers I understood that all I needed was already there: =dired=.
@@ -1164,28 +1187,25 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
     (pdf-tools-install))
 #+end_src
 
-** TRAMP
+** Multimedia player
 
-Another must have of Emacs. This package together with dired saves me from configuring
-my editor all the time in obscure supercomputers around the world.
+For multimedia content I use =emms=, a lightweight player written in Emacs Lisp, that integrates perfectly
+with =mpv=.
 
 #+begin_src emacs-lisp
-  (use-package tramp                                        
-    :straight nil                                             
-    :custom                                                 
-    (tramp-default-method "ssh")                           
+  (use-package emms
+    :straight t
     :config
-    (setq remote-file-name-inhibit-cache nil)
-    (setq vc-ignore-dir-regexp               
-          (format "%s\\|%s"                  
-                  vc-ignore-dir-regexp       
-                  tramp-file-name-regexp))   
-    (setq tramp-verbose 1))                  
-
-  (use-package tramp-sh                                     
-    :straight nil                                             
-    :config                                                 
-    (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+    (require 'emms-setup)
+    (emms-all)
+    (add-to-list 'emms-player-list 'emms-player-mpv t)
+    (emms-player-set emms-player-mpv
+                     'regex
+                     (rx (or (: "https://" (* nonl) "youtube.com" (* nonl))
+                             (+ (? (or "https://" "http://"))
+                                (* nonl)
+                                (regexp (eval (emms-player-simple-regexp
+                                               "mp4" "mov" "wmv" "webm" "flv" "avi" "mkv"))))))))
 #+end_src
 
 * Programming
@@ -1607,6 +1627,41 @@ for evaluating the Scheme code blocks:
     :straight (ob-racket
                :type git :host github :repo "hasu/emacs-ob-racket"
                :files ("*.el" "*.rkt")))
+#+end_src
+
+Finally, I set up my personal knowledge management system with =org-roam=. This package
+leverages the power of =org-mode= to create knowledge networks using
+Niklas Luhmann's /Zettelkasten/ method.
+
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :straight t
+    :custom
+    (org-roam-directory (file-truename "~/Documents/Arbeit/WIKI"))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    (setq org-roam-node-display-template
+          (concat "${title:*} "
+                  (propertize "${tags:10}" 'face 'org-tag)))
+    (org-roam-db-autosync-mode)
+    (require 'org-roam-protocol))
+
+  (use-package org-roam-ui
+    :straight (:host github
+               :repo "org-roam/org-roam-ui"
+               :branch "main"
+               :files ("*.el" "out"))
+      :after org-roam
+      :config
+      (setq org-roam-ui-sync-theme t
+            org-roam-ui-follow t
+            org-roam-ui-update-on-save t
+            org-roam-ui-open-on-start t))
 #+end_src
 
 ** Latex

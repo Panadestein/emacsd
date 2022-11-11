@@ -1168,6 +1168,33 @@ packages, so =eww= gets an =org-mode= look and feel. This comes handy when compa
     (require 'shrface))
 #+end_src
 
+And now that we are here, why don't we surf YouTube with this amazing package:
+
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :straight t)
+
+  (use-package elfeed-tube
+    :straight t
+    :after elfeed
+    :config
+    (elfeed-tube-setup)
+    :bind
+    (:map elfeed-show-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save)
+          :map elfeed-search-mode-map
+          ("F" . elfeed-tube-fetch)
+          ([remap save-buffer] . elfeed-tube-save)))
+
+  (use-package elfeed-tube-mpv
+    :straight t
+    :bind
+    (:map elfeed-show-mode-map
+          ("C-c C-f" . elfeed-tube-mpv-follow-mode)
+          ("C-c C-w" . elfeed-tube-mpv-where)))
+#+end_src
+
 ** PDF support
 
 Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.

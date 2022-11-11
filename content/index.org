@@ -290,6 +290,8 @@ slowly start to /klappt/, and for some major modes it just does not make sense t
             (evil-set-initial-state mode 'emacs))
           '(eww-mode
             profiler-report-mode
+            elfeed-mode
+            helpful-mode
             pdf-view-mode
             eshell-mode
             vterm-mode)))
@@ -1195,6 +1197,17 @@ And now that we are here, why don't we surf YouTube with this amazing package:
           ("C-c C-w" . elfeed-tube-mpv-where)))
 #+end_src
 
+** Interoperability with Nyxt
+
+The Emacs of the web browsers is =Nyxt=. With this little package we can improve the communication between the two programs:
+
+#+begin_src emacs-lisp
+  (use-package emacs-with-nyxt
+    :straight (:type git
+               :host github
+               :repo "ag91/emacs-with-nyxt"))
+#+end_src
+
 ** PDF support
 
 Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.
@@ -1233,6 +1246,17 @@ with =mpv=.
                                 (* nonl)
                                 (regexp (eval (emms-player-simple-regexp
                                                "mp4" "mov" "wmv" "webm" "flv" "avi" "mkv"))))))))
+#+end_src
+
+Alternatively, I use the =empv= package, which provides a more elaborated interface to the =mpv= player.
+
+#+begin_src emacs-lisp
+  (use-package empv
+    :straight (:type git
+               :host github
+               :repo "isamert/empv.el")
+    :config
+    (setq empv-invidious-instance "https://invidious.tiekoetter.com/api/v1"))
 #+end_src
 
 * Programming
@@ -1638,8 +1662,8 @@ And by the way, convert everything else to =org-mode= please:
 #+begin_src emacs-lisp
   (use-package org-pandoc-import
     :straight (:host github
-                     :repo "tecosaur/org-pandoc-import"
-                     :files ("*.el" "filters" "preprocessors")))
+               :repo "tecosaur/org-pandoc-import"
+               :files ("*.el" "filters" "preprocessors")))
 #+end_src
 
 The current Geiser implementation does not play well with =org-babel=, so I have decided to use =ob-racket=

@@ -1197,17 +1197,6 @@ And now that we are here, why don't we surf YouTube with this amazing package:
           ("C-c C-w" . elfeed-tube-mpv-where)))
 #+end_src
 
-** Interoperability with Nyxt
-
-The Emacs of the web browsers is =Nyxt=. With this little package we can improve the communication between the two programs:
-
-#+begin_src emacs-lisp
-  (use-package emacs-with-nyxt
-    :straight (:type git
-               :host github
-               :repo "ag91/emacs-with-nyxt"))
-#+end_src
-
 ** PDF support
 
 Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.

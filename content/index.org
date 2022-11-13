@@ -997,6 +997,10 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
   (use-package eshell
     :straight nil
     :preface
+    (defun my-exit ()
+      "Remove window when exiting"
+      (when (not (one-window-p))
+        (delete-window)))
     (defun my-eshell-prompt ()
       "A nice prompt"
       (concat
@@ -1021,6 +1025,7 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (eshell-prompt-regexp "^[^\)]*[\)] ")
     (eshell-prompt-function #'my-eshell-prompt)
     :config
+    (advice-add 'eshell-life-is-too-much :after 'my-exit)
     (setenv "PAGER" "cat"))
 
   (use-package eshell-toggle
@@ -1031,6 +1036,12 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (eshell-toggle-init-function #'eshell-toggle-init-eshell)
     :bind
     ("C-c p" . eshell-toggle))
+
+  (use-package eshell-syntax-highlighting
+    :after eshell-mode
+    :straight t
+    :config
+    (eshell-syntax-highlighting-global-mode 1))
 #+end_src
 
 ** TRAMP

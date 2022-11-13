@@ -239,6 +239,10 @@ The variables have self-explanatory names, but I have added a few comments for t
     (add-to-list 'default-frame-alist '(fullscreen . maximized))
     ;; Font
     (add-to-list 'default-frame-alist '(font . "Fira Code-18"))
+    ;; Mimetypes
+    (add-to-list 'mailcap-user-mime-data
+                 '((type . "application/pdf")
+                   (viewer . pdf-view-mode)))
     ;; Terminal transparency
     (face-spec-set 'default
                    '((((type tty)) :background "unspecified-bg")))

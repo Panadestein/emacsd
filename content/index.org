@@ -209,6 +209,14 @@ The variables have self-explanatory names, but I have added a few comments for t
 #+begin_src emacs-lisp
   (use-package emacs
     :straight nil
+    :preface
+    (defun my-reload-emacs ()
+      "Reload the Emacs configuration"
+      (interactive)
+      (load-file "~/.emacs.d/init.el"))
+    (defun revert-buffer-no-confirm ()
+      "Revert buffer without confirmation."
+      (interactive) (revert-buffer t t))
     :config
     ;; Emacs internal options
     (setq-default initial-scratch-message ";; Welcome Panadestein!!"
@@ -242,14 +250,10 @@ The variables have self-explanatory names, but I have added a few comments for t
     (if (fboundp #'save-place-mode)
         (save-place-mode +1)
       (setq-default save-place t))
-    ;; Additional functions
-    (defun my-reload-emacs ()
-      "Reload the Emacs configuration"
-      (interactive)
-      (load-file "~/.emacs.d/init.el"))
     :bind
     (;; Make ESC close prompts
-     ("<escape>" . keyboard-escape-quit)))
+     ("<escape>" . keyboard-escape-quit)
+     ("C-c C-r" . revert-buffer-no-confirm)))
 #+end_src
 
 ** Prevent custom from messing with my config file
@@ -1007,7 +1011,7 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
        "(" (user-login-name) " . "
        (car (reverse (split-string (eshell/pwd) "/"))) ") "))
     :hook
-    ((eshell-mode . (lambda () 
+    ((eshell-mode . (lambda ()
                       (add-to-list 'eshell-visual-commands "ssh")
                       (add-to-list 'eshell-visual-commands "tail")
                       (add-to-list 'eshell-visual-commands "top")
@@ -1029,6 +1033,7 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (setenv "PAGER" "cat"))
 
   (use-package eshell-toggle
+    :straight t
     :custom
     (eshell-toggle-size-fraction 3)
     (eshell-toggle-use-projectile-root nil)
@@ -1038,10 +1043,9 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     ("C-c p" . eshell-toggle))
 
   (use-package eshell-syntax-highlighting
-    :after eshell-mode
     :straight t
     :config
-    (eshell-syntax-highlighting-global-mode 1))
+    (eshell-syntax-highlighting-global-mode +1))
 #+end_src
 
 ** TRAMP

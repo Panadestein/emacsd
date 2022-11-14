@@ -1024,7 +1024,9 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
                       (eshell/alias "mgu" "magit-diff-unstaged")
                       (eshell/alias "mg" "magit-diff-staged"))))
     :custom
-    (eshell-banner-message (shell-command-to-string "figlet Eshell"))
+    (eshell-banner-message
+     (propertize (shell-command-to-string "figlet Eshell")
+                 'face `(:foreground "#cc5492")))
     (eshell-history-size 10000)
     (eshell-hist-ignore-dups t)
     (eshell-buffer-maximum-lines 10000)
@@ -1050,6 +1052,11 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     :straight t
     :config
     (eshell-syntax-highlighting-global-mode +1))
+
+  (use-package fish-completion
+    :straight t
+    :hook
+    (eshell-mode . fish-completion-mode))
 #+end_src
 
 ** TRAMP

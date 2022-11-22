@@ -907,7 +907,7 @@ Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, the defaul
           ediff-split-window-function 'split-window-horizontally))
 #+end_src
 
-* File browsing and terminals
+* File browsing, terminal emulators, and web browsing
 
 ** Terminal support with Vterm
 
@@ -1025,8 +1025,10 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
                       (eshell/alias "mg" "magit-diff-staged"))))
     :custom
     (eshell-banner-message
-     (propertize (shell-command-to-string "figlet Eshell")
-                 'face `(:foreground "#cc5492")))
+     (propertize
+      (let ((default-directory "~"))
+        (shell-command-to-string "figlet Eshell"))
+      'face `(:foreground "#cc5492")))
     (eshell-history-size 10000)
     (eshell-hist-ignore-dups t)
     (eshell-buffer-maximum-lines 10000)
@@ -1221,6 +1223,18 @@ And now that we are here, why don't we surf YouTube with this amazing package:
     (:map elfeed-show-mode-map
           ("C-c C-f" . elfeed-tube-mpv-follow-mode)
           ("C-c C-w" . elfeed-tube-mpv-where)))
+#+end_src
+
+** IRC and Matrix
+
+Software tinkerers tend to hang out on IRCs a lot, so this configuration is very useful to get help on those channels, and keeping
+in touch with friends.
+
+#+begin_src emacs-lisp
+  (use-package ement
+    :straight (:type git
+               :host github
+               :repo "alphapapa/ement.el"))
 #+end_src
 
 ** PDF support

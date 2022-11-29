@@ -1295,7 +1295,11 @@ in a laconic manner, because this section is rather opinionated.
 
 ** Lisp
 
-The language that gave birth to the "Maxwell equations of software".
+The language that gave birth to the "Maxwell equations of software". Lisp dialects are my favorite programming languages.
+Below I add a vague description of some of the things I like from them.
+
+*** General
+Enhance the overall lisp experience in Emacs with Lispy, and its /evil/ friend Lispyville.
 
 #+begin_src emacs-lisp
   (use-package lispy
@@ -1306,16 +1310,27 @@ The language that gave birth to the "Maxwell equations of software".
   (use-package lispyville
     :straight t
     :hook (lispy-mode . lispyville-mode))
+#+end_src
 
+*** Common Lisp
+Powerful compiler, great libraries and OOP features.
+
+#+begin_src emacs-lisp
   (use-package slime
     :straight t
     :mode ("\\.lisp\\'" . lisp-mode)
     :init
     (setq slime-net-coding-system 'utf-8-unix
           inferior-lisp-program "sbcl")
-    (add-to-list 'slime-contribs 'slime-fancy)
-    (add-to-list 'slime-contribs 'slime-repl))
+    (setq slime-contribs '(slime-fancy
+                           slime-repl
+                           slime-autodoc)))
+#+end_src
 
+*** Scheme and Racket
+Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great documentation.
+
+#+begin_src emacs-lisp
   (use-package geiser
     :straight t
     :config
@@ -1328,7 +1343,12 @@ The language that gave birth to the "Maxwell equations of software".
 
   (use-package racket-mode
     :straight t)
+#+end_src
 
+*** Clojure
+Largest library ecosystem thanks to JVM, vectors and maps. Strong focus on functional programming.
+
+#+begin_src emacs-lisp
   (use-package clojure-mode
     :straight t)
 
@@ -1338,7 +1358,12 @@ The language that gave birth to the "Maxwell equations of software".
     (setq nrepl-log-messages t
           cider-font-lock-dynamically '(macro core function var)
           cider-overlays-use-font-lock t))
+#+end_src
 
+*** Hy
+The youngest in this list, similar in spirit to Clojure, but translates to Python's AST.
+
+#+begin_src emacs-lisp
   (use-package hy-mode
     :straight t
     :mode "\\.hy\\'"

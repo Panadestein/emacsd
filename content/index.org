@@ -503,7 +503,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     :config (counsel-mode)
     :bind
     ("M-x" . counsel-M-x)
-    ("C-x b" . counsel-switch-buffer)
+    ("C-x b" . ido-switch-buffer)
     ("C-c f" . counsel-recentf)
     ("C-M-l" . counsel-imenu)
     ("C-x C-f" . counsel-find-file)

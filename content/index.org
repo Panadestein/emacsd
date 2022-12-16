@@ -660,6 +660,19 @@ package, though its approach of parsing the TAGS file makes it very slow when us
     (push "build" counsel-etags-ignore-directories))
 #+end_src
 
+** Tree-sitter
+
+Emacs package to use the incremental parsing library [[https://tree-sitter.github.io/tree-sitter/][tree-sitter]].
+
+#+begin_src emacs-lisp
+  (use-package tree-sitter
+    :straight t)
+
+  (use-package tree-sitter-langs
+    :straight t
+    :after tree-sitter)
+#+end_src
+
 ** Completion with company
 
 Source code completions. An all-time classic.

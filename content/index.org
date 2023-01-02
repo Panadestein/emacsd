@@ -1956,6 +1956,16 @@ Syntax highlighting for Nix expression's language files
     :mode "\\.nix\\'")
 #+end_src
 
+** GNU Guix package manager
+
+[[https://guix.gnu.org/][Guix]] is a functional package manager inspired by [[https://nixos.org/][Nix]], but using Guile scheme instead of the Nix expression's language.
+This package offers an Emacs interface to it.
+
+#+begin_src emacs-lisp
+  (use-package emacs-guix
+    :straight t)
+#+end_src
+
 
 * Footer of the Emacs package
 <<sec:foot>>

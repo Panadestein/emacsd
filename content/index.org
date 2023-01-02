@@ -1962,7 +1962,7 @@ Syntax highlighting for Nix expression's language files
 This package offers an Emacs interface to it.
 
 #+begin_src emacs-lisp
-  (use-package emacs-guix
+  (use-package guix
     :straight t)
 #+end_src
 

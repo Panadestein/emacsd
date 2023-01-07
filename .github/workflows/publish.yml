@@ -1,4 +1,4 @@
-name: Publish the Gihub Pages of my literate Emacs config
+name: Publish
 
 on:
   push:

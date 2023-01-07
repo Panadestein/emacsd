@@ -1355,7 +1355,8 @@ Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great d
     (setq geiser-chez-binary "scheme"))
 
   (use-package racket-mode
-    :straight t)
+    :straight t
+    :hook (racket-mode . racket-xp-mode))
 #+end_src
 
 *** Clojure
@@ -1687,6 +1688,7 @@ makes org-mode files look gorgeous.
     (setq org-latex-pdf-process '("latexmk -shell-escape -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)
     (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))
+    (setq org-src-window-setup 'current-window)
     (setq org-startup-indented t)
     (setq org-latex-listings 'minted
           org-latex-packages-alist '(("" "minted")))

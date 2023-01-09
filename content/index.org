@@ -1318,7 +1318,9 @@ Enhance the overall lisp experience in Emacs with Lispy, and its /evil/ friend L
   (use-package lispy
     :straight t
     :hook ((emacs-lisp-mode . lispy-mode)
-           (scheme-mode . lispy-mode)))
+           (lisp-mode . lispy-mode)
+           (scheme-mode . lispy-mode)
+           (racket-mode . lispy-mode)))
 
   (use-package lispyville
     :straight t
@@ -1341,7 +1343,7 @@ Powerful compiler, great libraries and OOP features.
 #+end_src
 
 *** Scheme and Racket
-Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great documentation.
+Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great documentation, and scribble!
 
 #+begin_src emacs-lisp
   (use-package geiser

@@ -1319,8 +1319,7 @@ Enhance the overall lisp experience in Emacs with Lispy, and its /evil/ friend L
     :straight t
     :hook ((emacs-lisp-mode . lispy-mode)
            (lisp-mode . lispy-mode)
-           (scheme-mode . lispy-mode)
-           (racket-mode . lispy-mode)))
+           (scheme-mode . lispy-mode)))
 
   (use-package lispyville
     :straight t
@@ -1358,7 +1357,8 @@ Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great d
 
   (use-package racket-mode
     :straight t
-    :hook (racket-mode . racket-xp-mode))
+    :mode ("\\.rkt\\'" "\\.scrbl\\'")
+    :hook ((racket-mode . racket-xp-mode)))
 #+end_src
 
 *** Clojure

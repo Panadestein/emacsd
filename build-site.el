@@ -22,7 +22,7 @@
 
 (package-install 'htmlize)
 (package-install 'nix-mode)
-(package-install 'color-theme)
+(package-install 'color-theme-modern)
 
 (require 'htmlize)
 (require 'nix-mode)
@@ -32,9 +32,8 @@
 ;; Using this library is a work-around to get color in HTML exports.
 ;; Otherwise Emacs in batch mode cannot get the correct faces
 
-(require 'color-theme)
-(color-theme-initialize)
-(color-theme-greiner)
+(load-theme 'greiner t t)
+(enable-theme 'greiner)
 
 ;; Set some variables for the export
 

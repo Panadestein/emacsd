@@ -21,7 +21,6 @@
 ;; Install packages needed for HTML export
 
 (package-install 'htmlize)
-(package-install 'nix-mode)
 (package-install 'color-theme-modern)
 (package-install 'reformater)
 
@@ -29,7 +28,6 @@
 (require 'nix-mode)
 (require 'ox-publish)
 (require 'font-lock)
-(require 'reformatter)
 
 ;; Using this library is a work-around to get color in HTML exports.
 ;; Otherwise Emacs in batch mode cannot get the correct faces

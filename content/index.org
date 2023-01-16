@@ -1446,7 +1446,7 @@ tasks that I stumble against at work.
               (list (format "%s" (nth (- len 1) matrix-as-list))))))
         (setq col-count (1+ col-count))
         (insert "\n"
-                (format "aw%%aw_erange_matrix(%d, :) = %s" col-count col-as-string)))
+                (format "aw%%aw_erange_matrix(:, %d) = %s" col-count col-as-string)))
       (insert-matrix-cols-greenx (nthcdr len matrix-as-list) len col-count)))
 
   ;;;###autoload

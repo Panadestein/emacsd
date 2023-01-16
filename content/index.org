@@ -1403,6 +1403,78 @@ For this, the =macrostep= package comes very handy.
                 ("C-c e" . macrostep-expand)))
 #+end_src
 
+** My Emacs Lisp packages
+
+Here I plan to add small packages I write from time to time, mainly for non-trivial editing
+tasks that I stumble against at work.
+
+#+begin_src emacs-lisp :tangle ../lib/parse-greenx.el
+  ;;; parse-greenx.el --- Utilities to refactor GreenX library
+
+  ;; Copyright (C) Dr. Ramon L. Panades Barrueta
+
+  ;; Author: Dr. Ramon L. Panades Barrueta
+  ;; Keywords: parsing, refactoring
+
+  ;;; Commentary:
+
+  ;; This module provides some procedures to manipulate the GreenX
+  ;; hard-coded arrays.
+
+  ;;; Code:
+
+  (defun prune-chars-greenx (beginning end)
+    "Remove undesired characters in active region from BEGINNING to END."
+    (when (use-region-p)
+      (mapcar (lambda (spurious-string)
+                (replace-string-in-region spurious-string
+                                          " "
+                                          beginning
+                                          end))
+              '("," "&"))))
+
+  (defun insert-matrix-cols-greenx (matrix-as-list len col-count)
+    "Print COL-COUNT columns of length LEN for MATRIX-AS-LIST."
+    (when matrix-as-list
+      (let ((col-as-string
+             (vconcat
+              (mapcar
+               (lambda (the-numbers)
+                 (format "%s, " the-numbers))
+               (butlast matrix-as-list
+                        (- (length matrix-as-list) (- len 1))))
+              (list (format "%s" (nth (- len 1) matrix-as-list))))))
+        (setq col-count (1+ col-count))
+        (insert "\n"
+                (format "aw%%aw_erange_matrix(%d, :) = %s" col-count col-as-string)))
+      (insert-matrix-cols-greenx (nthcdr len matrix-as-list) len col-count)))
+
+  ;;;###autoload
+  (defun matrix-to-cols-greenx (start end len)
+    "Print columns of array of shape (-1, LEN) in active region START END."
+    (interactive "r\nP")
+    (prune-chars-greenx start end)
+    (unwind-protect
+        (let ((mstart (make-marker))
+              (mend (make-marker)))
+          (set-marker mstart start)
+          (set-marker mend end)
+          (goto-char start)
+          (let* ((text (buffer-substring start end))
+                 (elems-matrix
+                  (mapcar
+                   (lambda (srow)
+                     (car (read-from-string srow)))
+                   (split-string text nil t))))
+            (goto-char end)
+            (insert-matrix-cols-greenx elems-matrix len 0)
+            (delete-region mstart mend)))
+      (widen)))
+
+  (provide 'parse-greenx)
+  ;;; parse-greenx.el ends here
+#+end_src
+
 ** Fortran
 
 Fortran is a major component of my job as a physicist, this package provides all I need. 

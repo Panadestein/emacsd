@@ -22,10 +22,8 @@
 
 (package-install 'htmlize)
 (package-install 'color-theme-modern)
-(package-install 'reformater)
 
 (require 'htmlize)
-(require 'nix-mode)
 (require 'ox-publish)
 (require 'font-lock)
 

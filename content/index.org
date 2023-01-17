@@ -2042,6 +2042,22 @@ This package offers an Emacs interface to it.
     :straight t)
 #+end_src
 
+* Dirty hacks
+
+The usual downside of using bleeding-edge software, every now and then something needs to be manually fixed. Here I add
+temporary workarounds to broken packages.
+
+#+begin_src emacs-lisp
+  ;; Nix-mode needs this package
+  (use-package reformatter
+    :straight t)
+
+  ;; A bunch of packages need it, including magit
+  (use-package compat
+    :straight (:host github
+               :repo "emacs-compat/compat"))
+#+end_src
+
 
 * Footer of the Emacs package
 <<sec:foot>>

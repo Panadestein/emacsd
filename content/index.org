@@ -1817,6 +1817,7 @@ Some extra exporting formats:
 
   (use-package ox-ipynb
     :straight (:host github :repo "jkitchin/ox-ipynb")
+    :config (advice-remove 'org-display-inline-images 'font-lock-fontify-buffer)
     :after org)
 #+end_src
 

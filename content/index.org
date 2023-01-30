@@ -217,6 +217,10 @@ temporary workarounds to broken packages.
                :repo "emacs-compat/compat"))
 #+end_src
 
+Other workarounds:
+
+- =emacs-jupyter='s native compilation is currently not working
+
 ** One editor to rule them all, one editor to find them
 
 Here I use the =use-package= macro to keep all Emacs internal settings organized in one single block.
@@ -1682,7 +1686,7 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package jupyter
-    :straight t)
+    :straight (:build (:not native-compile)))
 #+end_src
 
 ** Julia

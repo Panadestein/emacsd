@@ -1859,7 +1859,7 @@ Niklas Luhmann's /Zettelkasten/ method.
     (use-package emacsql-sqlite-builtin)
     (setq org-roam-database-connector 'sqlite-builtin)
     :custom
-    (org-roam-directory (file-truename "~/Documents/Arbeit/WIKI"))
+    (org-roam-directory (file-truename "~/Documents/Arbeit/WIKI/notes"))
     :bind (("C-c n l" . org-roam-buffer-toggle)
            ("C-c n f" . org-roam-node-find)
            ("C-c n g" . org-roam-graph)

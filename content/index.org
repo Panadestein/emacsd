@@ -1679,7 +1679,7 @@ which expands to
 
   (use-package py-autopep8
     :straight t
-    :hook (python-mode . py-autopep8-enable-on-save))
+    :hook (python-mode . py-autopep8-mode))
 #+end_src
 
 Additional support for Jupyter notebooks:

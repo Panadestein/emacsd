@@ -1855,6 +1855,9 @@ Niklas Luhmann's /Zettelkasten/ method.
 #+begin_src emacs-lisp
   (use-package org-roam
     :straight t
+    :init
+    (use-package emacsql-sqlite-builtin)
+    (setq org-roam-database-connector 'sqlite-builtin)
     :custom
     (org-roam-directory (file-truename "~/Documents/Arbeit/WIKI"))
     :bind (("C-c n l" . org-roam-buffer-toggle)

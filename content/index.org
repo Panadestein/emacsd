@@ -1693,10 +1693,11 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package julia-mode
+    :straight t
     :mode "\\.jl\\'")
 
-  (use-package flycheck-julia
-    :hook (julia-mode . flycheck-julia-setup))
+  (use-package eglot-jl
+    :straight t)
 #+end_src
 
 ** Haskell

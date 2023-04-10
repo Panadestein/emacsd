@@ -1694,9 +1694,10 @@ Additional support for Jupyter notebooks:
 #+begin_src emacs-lisp
   (use-package julia-mode
     :straight t
-    :mode "\\.jl\\'")
+    :mode "\\.jl\\'"
+    :hook (julia-mode . lsp-mode))
 
-  (use-package eglot-jl
+  (use-package lsp-julia
     :straight t)
 #+end_src
 

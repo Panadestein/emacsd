@@ -1698,7 +1698,9 @@ Additional support for Jupyter notebooks:
     :hook (julia-mode . lsp-mode))
 
   (use-package lsp-julia
-    :straight t)
+    :straight t
+    :custom
+    (lsp-julia-default-environment "~/.julia/environments/v1.8"))
 #+end_src
 
 ** Haskell

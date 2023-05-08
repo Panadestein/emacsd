@@ -201,7 +201,7 @@ and MELPA archives, and then require =use-package=:
     (require 'use-package))
 #+end_src
 
-* Dirty hacks
+** Dirty hacks
 
 The usual downside of using bleeding-edge software, every now and then something needs to be manually fixed. Here I add
 temporary workarounds to broken packages.
@@ -523,7 +523,7 @@ search feature (=C-s=) is far more powerful than the default Emacs counterpart.
     :config (counsel-mode)
     :bind
     ("M-x" . counsel-M-x)
-    ("C-x b" . ido-switch-buffer)
+    ("C-x b" . counsel-switch-buffer)
     ("C-c f" . counsel-recentf)
     ("C-M-l" . counsel-imenu)
     ("C-x C-f" . counsel-find-file)
@@ -938,6 +938,16 @@ Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, the defaul
     :config
     (setq ediff-window-setup-function 'ediff-setup-windows-plain
           ediff-split-window-function 'split-window-horizontally))
+#+end_src
+
+** ChatGPT
+
+For the times they are a-changin'. Large language models are here to stay, and as cliche as it might sound,
+they are the future. It comes then natural to have a nice Emacs package to query ChatGPT.
+
+#+begin_src emacs-lisp
+  (use-package gptel
+    :straight t)
 #+end_src
 
 * File browsing, terminal emulators, and web browsing

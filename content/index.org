@@ -1710,7 +1710,7 @@ Additional support for Jupyter notebooks:
   (use-package lsp-julia
     :straight t
     :custom
-    (lsp-julia-default-environment "~/.julia/environments/v1.8"))
+    (lsp-julia-default-environment "~/.julia/environments/v1.9"))
 #+end_src
 
 ** Haskell

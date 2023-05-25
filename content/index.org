@@ -627,7 +627,7 @@ come very handy when exploring a new package.
 
 #+begin_src emacs-lisp
   (use-package which-key
-    :straight t
+    :straight (:build (:not native-compile))
     :diminish
     :custom
     (which-key-idle-secondary-delay 0.01)

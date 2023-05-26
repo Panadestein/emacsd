@@ -1703,10 +1703,6 @@ Additional support for Jupyter notebooks:
     :mode "\\.jl\\'"
     :hook (julia-mode . lsp-mode))
 
-  (use-package julia-ts-mode
-    :straight t
-    :mode "\\.jl$")
-
   (use-package lsp-julia
     :straight t
     :custom
@@ -1913,10 +1909,10 @@ Auctex provides all you will ever need to work with LaTeX, and more.
 #+begin_src emacs-lisp
   (use-package auctex
     :straight t
-    :hook (LaTeX-mode . (LaTeX-preview-setup
-                         LaTeX-math-mode
-                         flyspell-mode
-                         turn-on-reftex))
+    :hook ((LaTeX-mode . LaTeX-preview-setup)
+           (LaTeX-mode . LaTeX-math-mode)
+           (LaTeX-mode . flyspell-mode)
+           (LaTeX-mode . turn-on-reftex))
     :mode ("\\.tex\\'" . latex-mode)
     :config
     (setq TeX-auto-save t

@@ -1906,12 +1906,12 @@ Niklas Luhmann's /Zettelkasten/ method.
             org-roam-ui-open-on-start t))
 #+end_src
 
-** Latex
+** LaTeX
 
-Auctex provides all you will ever need to work with Latex, and more. 
+Auctex provides all you will ever need to work with LaTeX, and more. 
 
 #+begin_src emacs-lisp
-  (use-package tex
+  (use-package auctex
     :straight t
     :hook (LaTeX-mode . (LaTeX-preview-setup
                          LaTeX-math-mode

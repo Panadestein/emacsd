@@ -719,28 +719,17 @@ The latter maximizes the use of already existing Emacs infrastructure.
   (use-package lsp-mode
     :straight t
     :init
-    (defun my-lsp-hook ()                      
-      "Do not use lsp-mode with tramp"         
+    (defun my-lsp-hook ()
+      "Do not use lsp-mode with tramp"
       (unless (file-remote-p default-directory)
-        (lsp)))                                
+        (lsp)))
     :config
     (setq lsp-idle-delay 0.5
           lsp-enable-symbol-highlighting t
-          lsp-enable-snippet nil
-          lsp-pyls-plugins-flake8-enabled t)
-    (lsp-register-custom-settings
-     '(("pyls.plugins.pyls_mypy.enabled" nil nil)
-       ("pyls.plugins.pyls_mypy.live_mode" nil t)
-       ("pyls.plugins.pyls_black.enabled" t t)
-       ("pyls.plugins.pyls_isort.enabled" t t)
-       ;; Disable duplicated by flake8
-       ("pyls.plugins.pycodestyle.enabled" nil t)
-       ("pyls.plugins.mccabe.enabled" nil t)
-       ("pyls.plugins.pyflakes.enabled" nil t)))
-    :hook
-    ((python-mode . my-lsp-hook)
-     (f90-mode . my-lsp-hook)
-     (lsp-mode . lsp-enable-which-key-integration)))
+          lsp-enable-snippet nil)
+    :hook ((python-mode . my-lsp-hook)
+           (f90-mode . my-lsp-hook)
+           (lsp-mode . lsp-enable-which-key-integration)))
 
   (use-package lsp-ui
     :straight t
@@ -758,7 +747,6 @@ The latter maximizes the use of already existing Emacs infrastructure.
     :commands lsp-ui-mode)
 
   (use-package lsp-treemacs
-    :after treemacs lsp
     :straight t)
 #+end_src
 
@@ -1582,13 +1570,12 @@ This mode can be also configured with =use-package=:
 #+begin_src emacs-lisp
   (use-package ccls
     :straight t
-    :hook ((c-mode c++-mode objc-mode cuda-mode) .
-           (lambda () (require 'ccls) (lsp)))
-    :config
-    (setq c-basic-offset 6)
-    (setq c-default-style '((java-mode . "java")
-                            (awk-mode . "awk")
-                            (other . "linux"))))
+    :defer t
+    :hook ((c-mode c++-mode objc-mode cuda-mode) . lsp)
+    :commands lsp
+    :init
+    (setq c-basic-offset 6
+          c-default-style '("linux")))
 #+end_src
 
 ** Rust
@@ -1671,6 +1658,7 @@ which expands to
 #+begin_src emacs-lisp
   (use-package python
     :straight nil
+    :commands python-mode
     :config
     (setq python-shell-interpreter "jupyter"
           python-shell-interpreter-args "console --simple-prompt"
@@ -1682,14 +1670,22 @@ which expands to
 
   (use-package pyvenv
     :straight t
-    :demand t
-    :config
+    :init
     (setq pyvenv-workon "emacs")
     (pyvenv-tracking-mode 1))
 
   (use-package py-autopep8
     :straight t
     :hook (python-mode . py-autopep8-mode))
+
+  (use-package lsp-pyright
+    :straight t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp)))
+    :config
+    (setq lsp-pyright-auto-import-completions t
+          lsp-pyright-typechecking-mode "basic"))
 #+end_src
 
 Additional support for Jupyter notebooks:
@@ -1707,10 +1703,20 @@ Additional support for Jupyter notebooks:
     :mode "\\.jl\\'"
     :hook (julia-mode . lsp-mode))
 
+  (use-package julia-ts-mode
+    :straight t
+    :mode "\\.jl$")
+
   (use-package lsp-julia
     :straight t
     :custom
     (lsp-julia-default-environment "~/.julia/environments/v1.9"))
+
+  (use-package julia-vterm
+    :straight t
+    :hook (julia-mode . julia-vterm-mode)
+    :custom
+    (julia-vterm-repl-program "julia -t 4"))
 #+end_src
 
 ** Haskell
@@ -1905,20 +1911,21 @@ Niklas Luhmann's /Zettelkasten/ method.
 Auctex provides all you will ever need to work with Latex, and more. 
 
 #+begin_src emacs-lisp
-  (use-package auctex
+  (use-package tex
     :straight t
+    :hook (LaTeX-mode . (LaTeX-preview-setup
+                         LaTeX-math-mode
+                         flyspell-mode
+                         turn-on-reftex))
     :mode ("\\.tex\\'" . latex-mode)
-    :commands (latex-mode LaTeX-mode plain-tex-mode)
-    :init
-    (progn
-      (add-hook 'LaTeX-mode-hook #'LaTeX-preview-setup)
-      (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-      (add-hook 'LaTeX-mode-hook #'flyspell-mode)
-      (add-hook 'LaTeX-mode-hook #'turn-on-reftex)
-      (setq TeX-auto-save t
-            TeX-parse-self t
-            TeX-save-query nil
-            TeX-PDF-mode t)))
+    :config
+    (setq TeX-auto-save t
+          TeX-parse-self t
+          TeX-save-query nil
+          TeX-PDF-mode t
+          TeX-source-correlate-mode t
+          TeX-source-correlate-method 'synctex
+          TeX-source-correlate-start-server t))
 #+end_src
 
 ** Web

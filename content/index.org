@@ -32,13 +32,13 @@
 #+HTML_HEAD: @media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner
 #+HTML_HEAD: .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
 
-* A foreword on this config and Lisp
+* Prelude: Emacs configuration and the world of Lisp
 
-Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. As many specimens of the pedigree,
-this config ratifies that Newtonian aphorism involving giants. Many thanks to all the unsung
-heroes whose Emacs Lisp snippets assemble the DNA of this file. Apropos of Lisp, I have
-recently had a glimpse of the enlightenment promised by so many hacker's lore. Here is one
-of my favorites, written by RMS: 
+Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. This setup, like many of its lineage,
+validates Newton's famous aphorism about standing on the shoulders of giants.
+A heartful nod to all the unsung heroes whose Emacs Lisp snippets form the backbone
+of this file. Speaking of Lisp, I have recently tasted the enlightenment frequently
+prophesied in many a hacker's lore. Here is one of my favorites, penned by RMS himself:
 
 #+BEGIN_VERSE
 In days long ago,
@@ -64,17 +64,18 @@ of this file you can find the following code:
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
 #+end_src
 
-With these options, I tangle (every time I save, see the org-mode [[sec:org][hook]]) the source code blocks
-in this config to my Emacs =init.el=, and I set up the ReadTheOrg theme that the website uses.
-A somehow tricky aspect is to get syntax highlighting when exporting to HTML
-with =org-mode= using Emacs in batch mode. You can take a look at my =build-site.el=
-script in the source [[https://github.com/Panadestein/emacsd][repo]] to see how I achieve
-this in practice.
+Leveraging these options, I tangle (each time I save the file, refer to the org-mode [[sec:org][hook]]) 
+the source code blocks in this configuration to my Emacs =init.el=, while also setting
+up the ReadTheOrg theme utilized by the website. One nuance is the task of ensuring
+syntax highlighting when exporting to HTML with =org-mode= while using Emacs in batch mode.
+For a practical insight into how I accomplish this, feel free to examine my =build-site.el=
+script in the source [[https://github.com/Panadestein/emacsd][repository]].
 
-** Automatic configuration with Nix
+** Deployment with Nix
 
-Although it is possible to configure Emacs with Nix, I prefer to use the Elisp configuration. However, I do use
-the following overlay, together with Cachix to have the latest commits of the Emacs' master branch:
+While it's perfectly feasible to configure Emacs with Nix, my preference leans towards the Elisp configuration.
+Nonetheless, I've incorporated the following overlay in conjunction with Cachix to access the latest commits
+from Emacs' master branch:
 
 #+begin_src nix :tangle no
   nixpkgs.overlays = [
@@ -135,11 +136,11 @@ To comply with the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/e
 
 ** Setting up a package manager
 
-One of the cornerstones of any Emacs distribution is the package manager. In my case, I was mostly a happy user
+One of the cornerstones of any Emacs distribution is the package manager. Previously, I was mostly a happy user
 of =use-package= with the =package.el= backend. However, I did find myself in the need of using a more recent
-version of some packages (like =org-mode=). While there are tools like =Quelpa= that allow this without
-ditching =package.el=, I decided to go for the option that ensures reproducibility: [[https://github.com/radian-software/straight.el][straight.el]]. With this
-purely functional package manager, I feel closer to the high ideals of the Nix community.
+version of some packages (like =org-mode=). While there are tools like =Quelpa= that facilitate this without
+abandoning =package.el=, I opted for the approach ensuring reproducibility: [[https://github.com/radian-software/straight.el][straight.el]]. This purely functional
+package manager brings me into closer alignment with the lofty principles championed by the Nix community.
 
 #+begin_src emacs-lisp
   (defvar bootstrap-version)
@@ -203,8 +204,8 @@ and MELPA archives, and then require =use-package=:
 
 ** Dirty hacks
 
-The usual downside of using bleeding-edge software, every now and then something needs to be manually fixed. Here I add
-temporary workarounds to broken packages.
+The typical caveat of using bleeding-edge software is the occasional need for manual fixes. Here, I introduce
+(hopefully) temporary workarounds to address issues in broken packages.
 
 #+begin_src emacs-lisp
   ;; Nix-mode needs this package
@@ -220,6 +221,7 @@ temporary workarounds to broken packages.
 Other workarounds:
 
 - =emacs-jupyter='s native compilation is currently not working
+- =which-key='s native compilation is currently not working
 
 ** One editor to rule them all, one editor to find them
 
@@ -280,9 +282,9 @@ The variables have self-explanatory names, but I have added a few comments for t
      ("C-c C-r" . revert-buffer-no-confirm)))
 #+end_src
 
-** Prevent custom from messing with my config file
+** Safeguarding configuration file from unwanted =custom= interference
 
-This helps to clear the clutter and increases reproducibility of the config
+This piece of code serves to reduce clutter and boost the reproducibility of the configuration.
 
 #+begin_src emacs-lisp
   (let
@@ -292,7 +294,9 @@ This helps to clear the clutter and increases reproducibility of the config
       (load custom-file 'noerror)))
 #+end_src
 
-** Only highlight programming and text buffers
+** Precision line highlighting
+
+This code ensures line highlighting is applied selectively, focusing solely on programming and text buffers.
 
 #+begin_src emacs-lisp
   (use-package hl-line
@@ -304,8 +308,9 @@ This helps to clear the clutter and increases reproducibility of the config
 
 ** Old habits die hard
 
-I cannot just trash years of Vim muscle memory workout. However, the Emacs keybindings
-slowly start to /klappt/, and for some major modes it just does not make sense to use Evil.
+Discarding years of honed Vim muscle memory is not an option for me. Yet, I'm beginning to find
+that Emacs keybindings are starting to resonate, and in some major modes, employing Evil
+just doesn't make any sense.
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -325,10 +330,10 @@ slowly start to /klappt/, and for some major modes it just does not make sense t
             vterm-mode)))
 #+end_src
 
-** Linear undo system
+** Streamlining the undo system
 
-This is one of the not so awesome quirks of Emacs IMHO. Maybe one day I will understand
-its power. I keep it linear for the moment.
+Embracing Emacs comes with its quirks, and the default undo system stands out as one that puzzles me.
+Perhaps one day, I'll unlock its full potential. For the time being, I opt for a linear approach.
 
 #+begin_src emacs-lisp
   (use-package undo-tree
@@ -418,8 +423,9 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 
 ** Minimap
 
-This package implements Sublime Text's minimap in Emacs. Although I am quasi-satisfied with
-this config, I am not ready to use it on a regular basis.
+This package emulates the minimap feature found in Sublime Text within the realm of Emacs.
+Although I'm moderately content with this configuration, I haven't fully embraced its
+regular usage just yet.
 
 #+begin_src emacs-lisp
   (use-package minimap
@@ -433,11 +439,11 @@ this config, I am not ready to use it on a regular basis.
     (setq minimap-hide-fringes t))
 #+end_src
 
-** Fancy mode line
+** An elegant mode line
 
-Another gift from the Doom Emacs community. Best modeline I have seen for Emacs.
-The additional package =all-the-icons= provides awesome icons not only for the
-modeline, but also for file managers and many other packages.
+A precious contribution from the Doom Emacs community, boasting the finest mode line I've
+encountered for Emacs. The supplementary package =all-the-icons= augments this experience,
+offering an array of splendid icons for the mode line, file managers, and numerous other packages.
 
 #+begin_src emacs-lisp
   (use-package all-the-icons
@@ -458,8 +464,9 @@ modeline, but also for file managers and many other packages.
 
 ** Multiple cursors support
 
-This package is very interesting, although not so ergonomic IMHO. Here are some of the
-most relevant commands:
+This intriguing package offers functionality for handling multiple cursors,
+although its ergonomics could, in my opinion, use some improvement.
+Here are some of the most significant commands:
 
 - =C-n= make and go to next match
 - =C-p= make and go to previous match
@@ -473,8 +480,10 @@ most relevant commands:
 #+end_src
 
 ** Tabs-bar-mode
-I could not manage to use this package without side effects in Evil-mode. Here is a simple
-usage:
+
+Tabs are not traditionally a part of the standard Emacs workflow,
+preferring buffer-switching instead. The following is a simple configuration
+for incorporating tabs, included merely for the sake of completeness:
 
 - =C-x t f "filename"= opens file in new tab
 - =C-x t 0= closes current tab
@@ -485,7 +494,7 @@ usage:
     :bind (("C-<right>" . tabbar-forward)))
 #+end_src
 
-** Fancy HTML exports
+** Enhanced HTML exports
 
 This package ensures that some =org-mode= babel exports have proper syntax highlighting.
 
@@ -494,13 +503,15 @@ This package ensures that some =org-mode= babel exports have proper syntax highl
     :straight t)
 #+end_src
 
-* IDE features and help
+* IDE features and documentation
 
-** Complete everything (but code) in Emacs with ivy
+** Incremental search and completion with Ivy
 
-The usage of ivy and their autocompletion army (swiper, counsel) has greatly increased my
-productivity. It is also very well integrated with the Doom Emacs theme I use. The swiper
-search feature (=C-s=) is far more powerful than the default Emacs counterpart. 
+The integration of Ivy and its auxiliary tools, Swiper and Counsel, greatly enhances
+my Emacs experience by providing an advanced incremental completion system.
+They fit seamlessly with my Doom Emacs setup, facilitating a smooth workflow.
+Swiper's incremental buffer search functionality, invoked with =C-s=,
+outperforms the standard Emacs search.
 
 #+begin_src emacs-lisp
   (use-package ivy
@@ -575,10 +586,10 @@ achieves most of the functionality I need:
     :bind (("M-j" . avy-goto-char-timer)))
 #+end_src
 
-** Create awesome command combos and menus with hydra
+** Crafting command combos and menus with Hydra
 
-This packages makes it very easy to create keybindings combinations using a common prefix. It also generates a
-menu showing the possible commands:
+Hydra is a package that simplifies the creation of keybinding combinations using a shared prefix.
+As a bonus, it also generates a menu displaying all potential commands:
 
 #+begin_src emacs-lisp
   (use-package hydra
@@ -620,10 +631,10 @@ Here is a nice example for =straight.el= (the =:color= keyword symbol has a spec
     ("q" nil :color blue))
 #+end_src
 
-** Command's information with which-key
+** Exploring command options with which-key
 
-Which-key is a must-have to sail the raging seas of Emacs' packages keybindings. These suggestions
-come very handy when exploring a new package.
+Which-key is an indispensable tool for charting the turbulent waters of Emacs' packages keybindings.
+These suggestions prove incredibly useful when venturing into the realm of a new package.
 
 #+begin_src emacs-lisp
   (use-package which-key
@@ -636,10 +647,10 @@ come very handy when exploring a new package.
     (which-key-mode t))
 #+end_src
 
-** Improved help system with Helpful
+** Enhanced help systems with Helpful
 
-Emacs default help system is very good. Helpful makes it awesome by adding colors and source code
-exploration.
+While the default Emacs help system is commendable, Helpful elevates it to another level, introducing
+features such as syntax highlighting and source code exploration for a more intuitive and enriching experience.
 
 #+begin_src emacs-lisp
   (use-package helpful
@@ -656,10 +667,11 @@ exploration.
 
 ** Code tags
 
-Using code tags when developing in large scale codes (like electronic structure packages)
-can save your fingers from =grep= induced damage. I use the minimalistic =gtags-mode= that
-relies as much as possible on already existing Emacs tools. I also have configured the =counsel-etags=
-package, though its approach of parsing the TAGS file makes it very slow when used with TRAMP.
+When navigating through large codebases, such as electronic structure packages, employing code tags
+can save your fingers from the wear and tear induced by continuous =grep= commands.
+I leverage the minimalist =gtags-mode= that maximizes the use of existing Emacs tools.
+Additionally, I've set up the =counsel-etags= package, although its method of parsing the
+TAGS file tends to be sluggish when used in conjunction with TRAMP.
 
 #+begin_src emacs-lisp
   (use-package gtags-mode
@@ -804,11 +816,24 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
           langtool-http-server-port 8081))
 #+end_src
 
+Also available as a language server:
+
+#+begin_src emacs-lisp
+  (use-package lsp-ltex
+    :straight t
+    :hook (text-mode . (lambda ()
+                         (require 'lsp-ltex)
+                         (lsp)))
+    :init
+    (setq lsp-ltex-version "15.2.0"))
+#+end_src
+
 ** Translator
 
-This is a very powerful translator integrated with Emacs. It supports multiple translation engines such as Google, Bing, and DeepL.
-I prefer to use pop-ups for the translation, so I need to install the =posframe= package in addition.
-The translation directions can be changed in the prompt with =C-n= and =C-p=.
+This package provides a potent translation tool integrated seamlessly with Emacs. It extends support to
+numerous translation engines including Google, Bing, and DeepL. My preference leans towards using pop-ups
+for translations, necessitating the additional installation of the =posframe= package.
+The translation directions can be easily adjusted in the prompt using =C-n= and =C-p=.
 
 #+begin_src emacs-lisp
   (use-package go-translate
@@ -834,9 +859,11 @@ The translation directions can be changed in the prompt with =C-n= and =C-p=.
 
 ** Syntax checking with Flycheck
 
-Flycheck is another helpful tool. It has some limitations though. For instance, the continuous
-checking can harm performance, and some checkers can introduce huge penalties (I had to
-disable =mypy=). With this config I only check when saving.
+Flycheck is indeed a valuable asset in the toolkit, despite certain constraints.
+For instance, the persistent checking might negatively affect performance,
+and certain checkers can impose severe overheads - this led me to disable =mypy=.
+In my current configuration, checks are performed exclusively during saves
+for a balanced performance.
 
 #+begin_src emacs-lisp
   (use-package flycheck
@@ -851,9 +878,9 @@ disable =mypy=). With this config I only check when saving.
 
 ** Snippets
 
-Yasnippet is a fairly complete collection of snippets with a very intuitive syntax. Painful is the absence
-of Scheme snippets. I have written some custom snippets for the IRPF90 derived mode, which I also include
-here.
+Yasnippet offers a comprehensive collection of snippets complemented by an incredibly intuitive syntax.
+Its notable shortcoming, however, is the conspicuous absence of Scheme snippets. I've crafted custom snippets
+for the IRPF90 derived mode, which are also included here.
 
 #+begin_src emacs-lisp
   (use-package yasnippet
@@ -907,7 +934,8 @@ END_SHELL%
 
 ** Better ediff configuration
 
-Emacs built-in =ediff= is more powerful than =vimdiff= IMHO. However, the default configuration can be improved a bit:
+Emacs built-in =ediff= is more powerful than =vimdiff= IMHO.
+However, the default configuration can be improved a bit:
 
 #+begin_src emacs-lisp
   (use-package ediff
@@ -2086,9 +2114,10 @@ This package offers an Emacs interface to it.
 * Footer of the Emacs package
 <<sec:foot>>
 
-Thank you for reading 'till the end or for being interested on how to end an Emacs package. If you would
-like to try my configuration, feel free to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub. So that's it, let's gracefully finish tangling
-everything:
+You've journeyed to the finale or perhaps, you've taken a particular interest in the art of closing an Emacs package.
+If my configuration intrigues you and you'd like to experiment with it, I warmly invite you to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub.
+Your support and feedback will surely fuel its continuous development. Thank you for your time and interest!
+So, without further ado, let's elegantly wrap up the tangling process:
 
 #+begin_src emacs-lisp
   

@@ -816,16 +816,20 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
           langtool-http-server-port 8081))
 #+end_src
 
-Also available as a language server:
+Also, available as a language server:
 
 #+begin_src emacs-lisp
   (use-package lsp-ltex
     :straight t
-    :hook (text-mode . (lambda ()
-                         (require 'lsp-ltex)
-                         (lsp)))
+    :commands lsp-ltex-enable
     :init
-    (setq lsp-ltex-version "15.2.0"))
+    (setq lsp-ltex-version "15.2.0")
+    (defun lsp-ltex-enable ()
+      "Enable lsp-ltex."
+      (require 'lsp-ltex)
+      (lsp))
+    :hook
+    (LaTeX-mode . lsp-ltex-enable))
 #+end_src
 
 ** Translator
@@ -962,8 +966,15 @@ For the times they are a-changin'. Large language models are here to stay, and a
 they are the future. It comes then natural to have a nice Emacs package to query ChatGPT.
 
 #+begin_src emacs-lisp
-  (use-package gptel
-    :straight t)
+  (use-package chatgpt-shell
+    :straight (:host github
+               :repo "xenodium/chatgpt-shell"
+               :files ("shell-maker.el" "chatgpt-shell.el" "ob-chatgpt-shell.el"))
+    :config
+    (require 'shell-maker)
+    (require 'ob-chatgpt-shell)
+    :custom
+    (chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com")))
 #+end_src
 
 * File browsing, terminal emulators, and web browsing
@@ -1055,6 +1066,7 @@ files, one could do the following:
 #+end_src
 
 ** Terminal support with Eshell
+
 This is a command shell written purely in Emacs Lisp. While not being POSIX compliant,
 it is still a powerful tool for remote editing due to its native TRAMP support. Here I define
 a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behaviour of
@@ -1120,10 +1132,13 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (eshell-mode . fish-completion-mode))
 #+end_src
 
-** TRAMP
+** TRAMP: Remote file editing made easy
 
-Another must have of Emacs. This package together with dired saves me from configuring
-my editor all the time in obscure supercomputers around the world.
+TRAMP (Transparent Remote Access, Multiple Protocols) is an essential package in Emacs that simplifies remote file editing and management.
+Paired with Dired, TRAMP enables seamless editing of files on remote machines, saving you from the hassle of configuring your editor
+on obscure supercomputers around the world. With TRAMP, you can open, save, and edit files on remote machines as if they were local files.
+TRAMP supports various protocols, such as SSH, FTP, and SFTP, allowing you to work with remote files using familiar Emacs commands and keybindings.
+
 
 #+begin_src emacs-lisp
   (use-package tramp                                        
@@ -1807,20 +1822,24 @@ makes org-mode files look gorgeous.
     (require 'ol-bibtex)
     (add-to-list 'org-modules 'org-tempo)
     (org-babel-do-load-languages
-     'org-babel-load-languages '((fortran . t)
-                                 (julia . t)
-                                 (python . t)
-                                 (jupyter . t)
-                                 (scheme . t)
-                                 (haskell . t)
-                                 (lisp . t)
-                                 (emacs-lisp . t)
-                                 (clojure . t)
+     'org-babel-load-languages '((awk . t)
                                  (C . t)
-                                 (org . t)
+                                 (clojure . t)
+                                 (cpp . t)
+                                 (emacs-lisp . t)
+                                 (eshell . t)
+                                 (F90 . t)
                                  (gnuplot . t)
-                                 (awk . t)
+                                 (haskell . t)
+                                 (julia . t)
+                                 (jupyter . t)
                                  (latex . t)
+                                 (lisp . t)
+                                 (ly . t)
+                                 (maxima . t)
+                                 (org . t)
+                                 (python . t)
+                                 (scheme . t)
                                  (shell . t)))
     (setq org-babel-clojure-backend 'cider)
     (setq org-latex-pdf-process '("latexmk -shell-escape -pdf -outdir=%o %f"))

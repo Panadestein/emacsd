@@ -208,6 +208,9 @@ The typical caveat of using bleeding-edge software is the occasional need for ma
 (hopefully) temporary workarounds to address issues in broken packages.
 
 #+begin_src emacs-lisp
+  ;; All sorts of nasty things happen if wrong Org version
+  (straight-use-package 'org)
+
   ;; Nix-mode needs this package
   (use-package reformatter
     :straight t)
@@ -1825,17 +1828,15 @@ makes org-mode files look gorgeous.
      'org-babel-load-languages '((awk . t)
                                  (C . t)
                                  (clojure . t)
-                                 (cpp . t)
                                  (emacs-lisp . t)
                                  (eshell . t)
-                                 (F90 . t)
+                                 (fortran . t)
                                  (gnuplot . t)
                                  (haskell . t)
                                  (julia . t)
                                  (jupyter . t)
                                  (latex . t)
                                  (lisp . t)
-                                 (ly . t)
                                  (maxima . t)
                                  (org . t)
                                  (python . t)

@@ -1738,7 +1738,9 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package jupyter
-    :straight (:build (:not native-compile)))
+    :straight (:build (:not native-compile))
+    :config
+    (setq jupyter-use-zmq nil))
 #+end_src
 
 ** Julia
@@ -1759,6 +1761,42 @@ Additional support for Jupyter notebooks:
     :hook (julia-mode . julia-vterm-mode)
     :custom
     (julia-vterm-repl-program "julia -t 4"))
+#+end_src
+
+** Computer algebra systems
+
+*** Maxima
+
+Maxima is a CAS written in Common Lisp that has been around for quite some time. It provides
+capabilities for symbolic and numerical computations. The following package enhances the default
+Emacs experience with Maxima.
+
+#+begin_src emacs-lisp
+  (use-package maxima
+    :straight t
+    :init
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)
+          maxima-display-maxima-buffer nil)
+    (add-to-list 'auto-mode-alist
+                 (cons "\\.mac\\'" 'maxima-mode))
+    (add-to-list 'interpreter-mode-alist
+                 (cons "maxima" 'maxima-mode)))
+#+end_src
+
+*** SageMath
+
+SageMath is a comprehensive alternative to Mathematica, occasionally surpassing it in performance.
+However, it's written in Python, which lacks the advanced functional programming capabilities that
+I generally prefer in CASs.
+
+#+begin_src emacs-lisp
+  (use-package sage-shell-mode
+    :straight t
+    :mode
+    ("\\.sage\\'" . sage-shell-mode))
+
+  (use-package ob-sagemath
+    :straight t)
 #+end_src
 
 ** Haskell

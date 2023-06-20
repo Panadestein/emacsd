@@ -741,6 +741,7 @@ The latter maximizes the use of already existing Emacs infrastructure.
     :config
     (setq lsp-idle-delay 0.5
           lsp-enable-symbol-highlighting t
+          lsp-headerline-breadcrumb-enable nil
           lsp-enable-snippet nil)
     :hook ((python-mode . my-lsp-hook)
            (f90-mode . my-lsp-hook)

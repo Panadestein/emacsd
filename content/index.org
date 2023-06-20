@@ -791,6 +791,23 @@ for my workflow.
     :defer t)
 #+end_src
 
+** Debuggers
+
+The =realgut= debugger is a complete rewriting of the Emacs GUD. It has support for several debuggers and has seamless
+integration with GDB and PDB.
+
+#+begin_src emacs-lisp
+  (use-package realgud
+    :straight t)
+#+end_src
+
+For an experience closer to the mainstream IDEs one can use =dap-mode=, which uses the Debug Adapter Protocol:
+
+#+begin_src emacs-lisp
+  (use-package dap-mode
+    :straight t)
+#+end_src
+
 ** Spell checking with FlySpell
 
 FlySpell does a lot out of the box, therefore I have a very basic config.

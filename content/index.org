@@ -224,6 +224,20 @@ The typical caveat of using bleeding-edge software is the occasional need for ma
 Other workarounds:
 
 - =emacs-jupyter='s native compilation is currently not working
+- =emacs-zmq= need manual compilation on NixOS. Here is a shell for that:
+  #+begin_src nix :tangle no
+    { pkgs ? import <nixpkgs> {} }:
+
+    pkgs.mkShell {
+      buildInputs = with pkgs; [
+        autoconf
+        autoconf-archive
+        automake
+        libtool
+        pkgconfig
+      ];
+    }
+  #+end_src
 - =which-key='s native compilation is currently not working
 
 ** One editor to rule them all, one editor to find them
@@ -1760,9 +1774,7 @@ Additional support for Jupyter notebooks:
 
 #+begin_src emacs-lisp
   (use-package jupyter
-    :straight (:build (:not native-compile))
-    :config
-    (setq jupyter-use-zmq nil))
+    :straight (:build (:not native-compile)))
 #+end_src
 
 ** Julia

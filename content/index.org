@@ -279,6 +279,9 @@ The variables have self-explanatory names, but I have added a few comments for t
     (setq mailcap-user-mime-data
           '((type . "application/pdf")
             (viewer . pdf-view-mode)))
+    ;; Increase memory
+    (setq gc-cons-threshold 100000000)
+    (setq read-process-output-max (* 1024 1024))
     :bind
     (;; Make ESC close prompts
      ("<escape>" . keyboard-escape-quit)

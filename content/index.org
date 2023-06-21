@@ -747,6 +747,7 @@ The latter maximizes the use of already existing Emacs infrastructure.
           lsp-enable-snippet nil)
     :hook ((python-mode . my-lsp-hook)
            (f90-mode . my-lsp-hook)
+           (haskell-mode . my-lsp-hook)
            (lsp-mode . lsp-enable-which-key-integration)))
 
   (use-package lsp-ui
@@ -1828,11 +1829,8 @@ I generally prefer in CASs.
     (haskell-process-log t)
     (haskell-tags-on-save t))
 
-  (use-package flycheck-haskell
-    :straight t
-    :config
-    (setq-default flycheck-disabled-checkers '(haskell-stack-ghc))
-    (add-hook 'haskell-mode-hook #'flycheck-haskell-setup))
+  (use-package lsp-haskell
+    :straight t)
 #+end_src
 
 ** Perl

@@ -1222,7 +1222,6 @@ After trying a couple of file browsers I understood that all I needed was alread
     :straight t)
 
   (use-package dired
-    ;; TIP: use ( to hide file information
     :straight nil
     :custom ((dired-listing-switches "-agho --group-directories-first"))
     :commands (dired dired-jump)
@@ -1230,6 +1229,7 @@ After trying a couple of file browsers I understood that all I needed was alread
     :hook
     (dired-mode . all-the-icons-dired-mode)
     :config
+    (setq dired-kill-when-opening-new-dired-buffer t)
     (evil-define-key 'normal 'dired-mode-map
       "h" 'dired-single-up-directory
       "l" 'dired-single-buffer))

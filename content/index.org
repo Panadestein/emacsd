@@ -324,12 +324,14 @@ just doesn't make any sense.
     (evil-set-undo-system 'undo-tree)
     (mapc (lambda (mode)
             (evil-set-initial-state mode 'emacs))
-          '(eww-mode
-            profiler-report-mode
+          '(dired-mode
             elfeed-mode
+            eshell-mode
+            eww-mode
             helpful-mode
             pdf-view-mode
-            eshell-mode
+            profiler-report-mode
+            realgud-mode
             vterm-mode)))
 #+end_src
 
@@ -848,9 +850,7 @@ Also, available as a language server:
     (defun lsp-ltex-enable ()
       "Enable lsp-ltex."
       (require 'lsp-ltex)
-      (lsp))
-    :hook
-    (LaTeX-mode . lsp-ltex-enable))
+      (lsp)))
 #+end_src
 
 ** Translator
@@ -2024,7 +2024,7 @@ Auctex provides all you will ever need to work with LaTeX, and more.
           TeX-save-query nil
           TeX-PDF-mode t
           TeX-source-correlate-mode t
-          TeX-source-correlate-method 'synctex
+          TeX-source-correlate-method 'auto
           TeX-source-correlate-start-server t))
 #+end_src
 

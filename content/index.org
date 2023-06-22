@@ -223,21 +223,6 @@ The typical caveat of using bleeding-edge software is the occasional need for ma
 
 Other workarounds:
 
-- =emacs-jupyter='s native compilation is currently not working
-- =emacs-zmq= need manual compilation on NixOS. Here is a shell for that:
-  #+begin_src nix :tangle no
-    { pkgs ? import <nixpkgs> {} }:
-
-    pkgs.mkShell {
-      buildInputs = with pkgs; [
-        autoconf
-        autoconf-archive
-        automake
-        libtool
-        pkgconfig
-      ];
-    }
-  #+end_src
 - =which-key='s native compilation is currently not working
 
 ** One editor to rule them all, one editor to find them
@@ -1770,12 +1755,17 @@ which expands to
           lsp-pyright-typechecking-mode "basic"))
 #+end_src
 
-Additional support for Jupyter notebooks:
+I also heavily use the =emacs-jupyter= package to communicate with Jupyter kernels. Due to complications managing Python
+environments in NixOS, I added directly on my =configuration.nix= file:
 
-#+begin_src emacs-lisp
-  (use-package jupyter
-    :straight (:build (:not native-compile)))
-#+end_src
+  #+begin_src nix :tangle no
+    services.emacs = {
+      enable = true;
+      package = with pkgs; ((emacsPackagesFor emacs-git).emacsWithPackages
+        (epkgs: [ epkgs.jupyter ]));
+      defaultEditor = true;
+    };
+  #+end_src
 
 ** Julia
 

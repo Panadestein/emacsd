@@ -1905,6 +1905,7 @@ makes org-mode files look gorgeous.
     (setq org-file-apps '(("\\.pdf\\'" . "evince %s")))
     (setq org-src-window-setup 'current-window)
     (setq org-startup-indented t)
+    (setq org-highlight-latex-and-related '(native))
     (setq org-latex-listings 'minted
           org-latex-packages-alist '(("" "minted")))
     (setq org-startup-with-inline-images t)

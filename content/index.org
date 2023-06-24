@@ -1885,6 +1885,7 @@ makes org-mode files look gorgeous.
      'org-babel-load-languages '((awk . t)
                                  (C . t)
                                  (clojure . t)
+                                 (dot . t)
                                  (emacs-lisp . t)
                                  (eshell . t)
                                  (fortran . t)

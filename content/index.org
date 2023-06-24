@@ -1821,6 +1821,17 @@ I generally prefer in CASs.
     :straight t)
 #+end_src
 
+** Graph visualization
+
+This package provides support for Graphviz's =dot= command line tool. 
+
+#+begin_src emacs-lisp
+  (use-package graphviz-dot-mode
+    :straight t
+    :config
+    (setq graphviz-dot-indent-width 4))
+#+end_src
+
 ** Haskell
 
 #+begin_src emacs-lisp

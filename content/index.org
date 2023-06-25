@@ -293,11 +293,12 @@ The variables have self-explanatory names, but I have added a few comments for t
 This piece of code serves to reduce clutter and boost the reproducibility of the configuration.
 
 #+begin_src emacs-lisp
-  (let
-      ((customization-file (expand-file-name "custom.el" user-emacs-directory)))
-    (when (file-exists-p customization-file)
-      (setq custom-file customization-file)
-      (load custom-file 'noerror)))
+  (let ((customization-file
+         (expand-file-name "custom.el" user-emacs-directory)))
+    (unless (file-exists-p customization-file)
+      (write-region "" nil customization-file))
+    (setq custom-file customization-file)
+    (load custom-file 'noerror))
 #+end_src
 
 ** Precision line highlighting

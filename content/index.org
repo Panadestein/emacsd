@@ -1641,10 +1641,7 @@ This mode can be also configured with =use-package=:
     :straight t
     :defer t
     :hook ((c-mode c++-mode objc-mode cuda-mode) . lsp)
-    :commands lsp
-    :init
-    (setq c-basic-offset 6
-          c-default-style '("linux")))
+    :commands lsp)
 #+end_src
 
 ** Rust

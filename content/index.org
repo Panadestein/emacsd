@@ -1835,6 +1835,8 @@ This package provides support for Graphviz's =dot= command line tool.
 #+begin_src emacs-lisp
   (use-package haskell-mode
     :straight t
+    :init
+    (setq flymake-allowed-file-name-masks nil)
     :custom
     (haskell-process-load-or-reload-prompt t)
     (haskell-process-auto-import-loaded-modules t)

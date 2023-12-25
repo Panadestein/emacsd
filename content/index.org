@@ -225,6 +225,7 @@ Other workarounds:
 
 - =which-key='s native compilation is currently not working
 - =emacs-jupyter='s native compilation is currently not working
+- =cider= is disabled
 
 ** One editor to rule them all, one editor to find them
 
@@ -1457,6 +1458,7 @@ Largest library ecosystem thanks to JVM, vectors and maps. Strong focus on funct
 
   (use-package cider
     :straight t
+    :disabled t
     :config
     (setq nrepl-log-messages t
           cider-font-lock-dynamically '(macro core function var)
@@ -1828,6 +1830,26 @@ This package provides support for Graphviz's =dot= command line tool.
     :straight t
     :config
     (setq graphviz-dot-indent-width 4))
+#+end_src
+
+** Alternative shells
+
+*** Nushell 
+
+This shell draws a lot of inspiration from functional languages:
+
+#+begin_src emacs-lisp
+  (use-package nushell-mode
+    :straight t)
+#+end_src
+
+*** Xonsh 
+
+The best of Python and Bash, in a single shell:
+
+#+begin_src emacs-lisp
+  (use-package xonsh-mode
+    :straight t)
 #+end_src
 
 ** Haskell

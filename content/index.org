@@ -226,6 +226,7 @@ Other workarounds:
 - =which-key='s native compilation is currently not working
 - =emacs-jupyter='s native compilation is currently not working
 - =cider= is disabled
+- =magit= needs to be loaded after =transient=
 
 ** One editor to rule them all, one editor to find them
 
@@ -1849,7 +1850,9 @@ The best of Python and Bash, in a single shell:
 
 #+begin_src emacs-lisp
   (use-package xonsh-mode
-    :straight t)
+    :straight t
+    :config
+    (remove-hook xonsh-mode py-autopep8-mode t))
 #+end_src
 
 ** Haskell
@@ -2169,8 +2172,12 @@ Auctex provides all you will ever need to work with LaTeX, and more.
 A porcelain as glorious as the one from Meißen:
 
 #+begin_src emacs-lisp
-  (use-package magit
+  (use-package transient
     :straight t)
+
+  (use-package magit
+    :straight t
+    :after transient)
 
   (use-package git-modes
     :straight t

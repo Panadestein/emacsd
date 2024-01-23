@@ -1850,9 +1850,7 @@ The best of Python and Bash, in a single shell:
 
 #+begin_src emacs-lisp
   (use-package xonsh-mode
-    :straight t
-    :config
-    (remove-hook xonsh-mode py-autopep8-mode t))
+    :straight t)
 #+end_src
 
 ** Haskell

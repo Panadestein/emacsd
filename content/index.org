@@ -1763,7 +1763,7 @@ I also heavily use the =emacs-jupyter= package to communicate with Jupyter kerne
     (use-package jupyter
       :straight (:build (:not native-compile))
       :config
-        (setq jupyter-use-zmq nil))
+        (setq jupyter-use-zmq t))
   #+end_src
 
 ** Julia

@@ -1495,8 +1495,8 @@ For this, the =macrostep= package comes very handy.
 
 ** Iversonian array languages
 
-*APL* means A Program Language, start setting your conclusions. An absolute joy to program
-in them. Tacit, less is more. Terse, go to the point:
+*APL* stands for [[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]], make your own conclusions. It is an absolute joy to program
+in Iversonian array languages. Tacit and terse, less is more.
 
 *** BQN
 
@@ -1506,12 +1506,9 @@ An APL for your flying saucer:
   (use-package bqn-mode
     :straight t
     :bind (:map bqn-mode-map
-                ("C-c C-e" . bqn-comint-send-buffer)
-                ("C-x C-e" . bqn-comint-send-dwin))
-    :hook (bqn-mode . bqn-comint-buffer)
-    :config
-    (require 'bqn-keymap-mode)
-    (require 'bqn-glyph-mode))
+                ("C-c C-e" . bqn-comint-eval-buffer)
+                ("C-x C-e" . bqn-comint-eval-dwin))
+    :hook (bqn-mode . bqn-comint-buffer))
 #+end_src
 
 ** My Emacs Lisp packages

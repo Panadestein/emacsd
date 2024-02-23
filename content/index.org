@@ -1493,6 +1493,27 @@ For this, the =macrostep= package comes very handy.
                 ("C-c e" . macrostep-expand)))
 #+end_src
 
+** Iversonian array languages
+
+*APL* means A Program Language, start setting your conclusions. An absolute joy to program
+in them. Tacit, less is more. Terse, go to the point:
+
+*** BQN
+
+An APL for your flying saucer:
+
+#+begin_src emacs-lisp
+  (use-package bqn-mode
+    :straight t
+    :bind (:map bqn-mode-map
+                ("C-c C-e" . bqn-comint-send-buffer)
+                ("C-x C-e" . bqn-comint-send-dwin))
+    :hook (bqn-mode . bqn-comint-buffer)
+    :config
+    (require 'bqn-keymap-mode)
+    (require 'bqn-glyph-mode))
+#+end_src
+
 ** My Emacs Lisp packages
 
 Here I plan to add small packages I write from time to time, mainly for non-trivial editing

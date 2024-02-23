@@ -1507,7 +1507,7 @@ An APL for your flying saucer:
     :straight t
     :bind (:map bqn-mode-map
                 ("C-c C-e" . bqn-comint-eval-buffer)
-                ("C-x C-e" . bqn-comint-eval-dwin))
+                ("C-x C-e" . bqn-comint-eval-dwim))
     :hook (bqn-mode . bqn-comint-buffer))
 #+end_src
 

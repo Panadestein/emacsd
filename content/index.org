@@ -265,7 +265,7 @@ The variables have self-explanatory names, but I have added a few comments for t
                  '(vertical-scroll-bars . nil))
     (add-to-list 'default-frame-alist '(fullscreen . maximized))
     ;; Font
-    (add-to-list 'default-frame-alist '(font . "Fira Code-18"))
+    (add-to-list 'default-frame-alist '(font . "Iosevka-18"))
     ;; Terminal transparency
     (face-spec-set 'default
                    '((((type tty)) :background "unspecified-bg")))

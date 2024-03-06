@@ -330,7 +330,11 @@ just doesn't make any sense.
     (evil-set-undo-system 'undo-tree)
     (mapc (lambda (mode)
             (evil-set-initial-state mode 'emacs))
-          '(dired-mode
+          '(bqn-help--mode
+  	  bqn-glyph-mode
+  	  bqn-keymap-mode
+  	  dired-mode
+  	  eldoc-mode
             elfeed-mode
             eshell-mode
             eww-mode
@@ -918,8 +922,123 @@ for the IRPF90 derived mode, which are also included here.
   (use-package yasnippet
     :straight t
     :config
+    ;; BQN snippets
+    (yas-define-snippets
+     'bqn-mode '(("sign" "×" "Function: Sign, Multiply")
+  	       ("multiply" "×" "Function: Sign, Multiply")
+  	       ("reciprocal" "÷" "Function: Reciprocal, Divide")
+  	       ("divide" "÷" "Function: Reciprocal, Divide")
+  	       ("exponential" "⋆" "Function: Exponential, Power")
+  	       ("power" "⋆" "Function: Exponential, Power")
+  	       ("square root" "√" "Function: Square Root, Root")
+  	       ("root" "√" "Function: Square Root, Root")
+  	       ("floor" "⌊" "Function: Floor, Minimum")
+  	       ("minimum" "⌊" "Function: Floor, Minimum")
+  	       ("ceiling" "⌈" "Function: Ceiling, Maximum")
+  	       ("maximum" "⌈" "Function: Ceiling, Maximum")
+  	       ("sort up" "∧" "Function: Sort Up, And")
+  	       ("and" "∧" "Function: Sort Up, And")
+  	       ("sort down" "∨" "Function: Sort Down, Or")
+  	       ("or" "∨" "Function: Sort Down, Or")
+  	       ("not" "¬" "Function: Not, Span")
+  	       ("span" "¬" "Function: Not, Span")
+  	       ("less than or equal to" "≤" "Function: Less Than or Equal to")
+  	       ("greater than or equal to" "≥" "Function: Greater Than or Equal to")
+  	       ("length" "≠" "Function: Length, Not Equals")
+  	       ("not equals" "≠" "Function: Length, Not Equals")
+  	       ("depth" "≡" "Function: Depth, Match")
+  	       ("match" "≡" "Function: Depth, Match")
+  	       ("shape" "≢" "Function: Shape, Not Match")
+  	       ("not match" "≢" "Function: Shape, Not Match")
+  	       ("identity" "⊣" "Function: Identity, Left")
+  	       ("left" "⊣" "Function: Identity, Left")
+  	       ("identity" "⊢" "Function: Identity, Right")
+  	       ("right" "⊢" "Function: Identity, Right")
+  	       ("deshape" "⥊" "Function: Deshape, Reshape")
+  	       ("reshape" "⥊" "Function: Deshape, Reshape")
+  	       ("enlist" "⋈" "Function: Enlist, Pair")
+  	       ("pair" "⋈" "Function: Enlist, Pair")
+  	       ("join" "∾" "Function: Join, Join to")
+  	       ("join to" "∾" "Function: Join, Join to")
+  	       ("solo" "≍" "Function: Solo, Couple")
+  	       ("couple" "≍" "Function: Solo, Couple")
+  	       ("prefixes" "↑" "Function: Prefixes, Take")
+  	       ("take" "↑" "Function: Prefixes, Take")
+  	       ("suffixes" "↓" "Function: Suffixes, Drop")
+  	       ("drop" "↓" "Function: Suffixes, Drop")
+  	       ("range" "↕" "Function: Range, Windows")
+  	       ("windows" "↕" "Function: Range, Windows")
+  	       ("shift before" "«" "Function: Shift Before")
+  	       ("shift after" "»" "Function: Shift After")
+  	       ("reverse" "⌽" "Function: Reverse, Rotate")
+  	       ("rotate" "⌽" "Function: Reverse, Rotate")
+  	       ("transpose" "⍉" "Function: Transpose, Reorder axes")
+  	       ("reorder axes" "⍉" "Function: Transpose, Reorder axes")
+  	       ("grade up" "⍋" "Function: Grade Up, Bins Up")
+  	       ("bins up" "⍋" "Function: Grade Up, Bins Up")
+  	       ("grade down" "⍒" "Function: Grade Down, Bins Down")
+  	       ("bins down" "⍒" "Function: Grade Down, Bins Down")
+  	       ("first cell" "⊏" "Function: First Cell, Select")
+  	       ("select" "⊏" "Function: First Cell, Select")
+  	       ("first" "⊑" "Function: First, Pick")
+  	       ("pick" "⊑" "Function: First, Pick")
+  	       ("classify" "⊐" "Function: Classify, Index of")
+  	       ("index of" "⊐" "Function: Classify, Index of")
+  	       ("occurrence count" "⊒" "Function: Occurrence Count, Progressive Index of")
+  	       ("progressive index of" "⊒" "Function: Occurrence Count, Progressive Index of")
+  	       ("mark first" "∊" "Function: Mark First, Member of")
+  	       ("member of" "∊" "Function: Mark First, Member of")
+  	       ("deduplicate" "⍷" "Function: Deduplicate, Find")
+  	       ("find" "⍷" "Function: Deduplicate, Find")
+  	       ("group indices" "⊔" "Function: Group Indices, Group")
+  	       ("group" "⊔" "Function: Group Indices, Group")
+  	       ("constant" "˙" "Modifier: Constant")
+  	       ("self/swap" "˜" "Modifier: Self/Swap")
+  	       ("atop" "∘" "Modifier2: Atop")
+  	       ("over" "○" "Modifier2: Over")
+  	       ("before/bind" "⊸" "Modifier2: Before/Bind")
+  	       ("after/bind" "⟜" "Modifier2: After/Bind")
+  	       ("under" "⌾" "Modifier2: Under")
+  	       ("valences" "⊘" "Modifier2: Valences")
+  	       ("choose" "◶" "Modifier2: Choose")
+  	       ("rank" "⎉" "Modifier2: Rank")
+  	       ("cells" "˘" "Modifier: Cells")
+  	       ("depth" "⚇" "Modifier2: Depth")
+  	       ("each" "¨" "Modifier: Each")
+  	       ("table" "⌜" "Modifier: Table")
+  	       ("repeat" "⍟" "Modifier2: Repeat")
+  	       ("undo" "⁼" "Modifier: Undo")
+  	       ("fold" "´" "Modifier: Fold")
+  	       ("insert" "˝" "Modifier: Insert")
+  	       ("define" "←" "Gets: Define")
+  	       ("export" "⇐" "Gets: Export")
+  	       ("change" "↩" "Gets: Change")
+  	       ("return" "→" "Gets: Return")
+  	       ("separator" "⋄" "Separator: Separator")
+  	       ("begin list" "⟨" "Bracket: Begin list")
+  	       ("end list" "⟩" "Bracket: End list")
+  	       ("strand" "‿" "Ligature: Strand")
+  	       ("nothing" "·" "Nothing: Nothing")
+  	       ("system" "•" "Value: System")
+  	       ("left argument" "𝕨" "Value: Left argument")
+  	       ("left argument (as function)" "𝕎" "Function: Left argument (as function)")
+  	       ("right argument" "𝕩" "Value: Right argument")
+  	       ("right argument (as function)" "𝕏" "Function: Right argument (as function)")
+  	       ("modifier left operand (as subject)" "𝕗" "Value: Modifier left operand (as subject)")
+  	       ("modifier left operand" "𝔽" "Function: Modifier left operand")
+  	       ("2-modifier right operand (as subject)" "𝕘" "Value: 2-modifier right operand (as subject)")
+  	       ("2-modifier right operand" "𝔾" "Function: 2-modifier right operand")
+  	       ("current function (as subject)" "𝕤" "Value: Current function (as subject)")
+  	       ("current function" "𝕊" "Function: Current function")
+  	       ("current modifier" "𝕣" "Modifier: Current modifier")
+  	       ("minus" "¯" "Nothing: Minus")
+  	       ("pi" "π" "Nothing: Pi")
+  	       ("infinity" "∞" "Nothing: Infinity")))
+    ;; Enable everywhere
     (yas-global-mode 1))
+#+end_src
 
+#+begin_src emacs-lisp
   (use-package yasnippet-snippets
     :straight t
     :after yasnippet)
@@ -1505,11 +1624,44 @@ An APL for your flying saucer:
 #+begin_src emacs-lisp
   (use-package bqn-mode
     :straight t
+    :init
+    ;; Get rid of *Quail Completions*
+    (defun quail-completion ())
+    ;; Rudimentary org-babel support
+    (add-to-list 'org-babel-tangle-lang-exts '("bqn" . "bqn"))
+    (defun org-babel-expand-body:bqn (body params &optional processed-params)
+      "Expand BODY according to PARAMS, return the expanded body."
+      (require 'bqn-mode nil t)
+      (let ((vars (org-babel--get-vars (or
+  				      processed-params
+  				      (org-babel-process-params params)))))
+        (concat
+         (mapconcat
+  	(lambda (pair)
+  	  (format "%s=%S" (car pair) (org-babel-bqn-var-to-bqn (cdr pair))))
+  	vars "\n")
+         "\n" body "\n")))
+    (defun org-babel-execute:bqn (body params)
+      "Execute a block of Bqn code with org-babel."
+      (message "Executing BQN source code block")
+      (bqn-comint-evaluate-command body))
+    (defun org-babel-bqn-var-to-bqn (var)
+      "Convert an elisp var into a string of BQN."
+      (format "%S" var))
+    (defun org-babel-bqn-initiate-session (&optional session)
+      "If there is not a current inferior-process-buffer in SESSION then create."
+      (unless (string= session "none")
+        (get-buffer-process (bqn-comint-buffer))))
     :bind (:map bqn-mode-map
                 ("M-i" . bqn-help-symbol-info-at-point)
+                ("C-c g" . bqn-glyph-mode-show-glyphs)
+                ("C-c k" . bqn-keymap-mode-show-keyboard)
                 ("C-c C-e" . bqn-comint-eval-buffer)
                 ("C-x C-e" . bqn-comint-eval-dwim))
-    :hook (bqn-mode . bqn-comint-buffer))
+    :hook (bqn-mode . bqn-comint-buffer)
+    :config
+    (require 'bqn-keymap-mode)
+    (require 'bqn-glyph-mode))
 #+end_src
 
 *** Uiua

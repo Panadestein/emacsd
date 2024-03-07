@@ -1505,7 +1505,7 @@ For this, the =macrostep= package comes very handy.
 *APL* stands for [[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]], make your own conclusions. It is an absolute joy to program
 in Iversonian array languages. Tacit and terse, less is more.
 
-*** COMMENT BQN
+*** BQN
 
 An APL for your flying saucer:
 
@@ -1609,9 +1609,6 @@ An APL for your flying saucer:
     ;; Get rid of *Quail Completions*
     (defun quail-completion ()))
 #+end_src
-
-#+RESULTS:
-: bqn-comint-eval-dwim
 
 *** Uiua
 

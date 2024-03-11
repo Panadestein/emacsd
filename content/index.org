@@ -1502,12 +1502,15 @@ For this, the =macrostep= package comes very handy.
 
 ** Iversonian array languages
 
-*APL* stands for [[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]], make your own conclusions. It is an absolute joy to program
-in Iversonian array languages. Tacit and terse, less is more.
+I embarked on my programming journey with Fortran, a common initiation for many physicists. The ascent of NumPy and SciPy
+eventually piqued my interest, compelling me to explore Python. As my fascination with Python waned, I ventured into C++, only to find
+its lack of aesthetic appeal steering my curiosity towards Lisp and Haskell. Despite my reservations about certain aspects of
+these languages, the quintessence of the features I admire in them traces its origins to *APL*, i.e. to
+[[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]]. It is a joy to program in Iversonian array languages.
 
 *** BQN
 
-An APL for your flying saucer:
+An APL for your flying saucer, and the language I am more interested in at the moment:
 
 #+begin_src emacs-lisp
   (use-package bqn-mode
@@ -1563,7 +1566,7 @@ An APL for your flying saucer:
     (defun disable-rainbow-delimiters-bqn ()
       (rainbow-delimiters-mode -1))
     
-    ;; And the default fontlock needs work
+    ;; Modify the default fontlock
     (defface bqn-function
       '((t (:foreground "#3aa548")))
       "Face used for BQN functions."
@@ -1593,21 +1596,45 @@ An APL for your flying saucer:
       (set (make-local-variable 'font-lock-string-face)
   	 '(:foreground "#ABB2BF")))
 
-    :bind (:map bqn-mode-map
-                ("M-i" . bqn-help-symbol-info-at-point)
-                ("C-c g" . toggle-bqn-glyphs)
-                ("C-c k" . toggle-bqn-keymap)
-                ("C-c C-e" . bqn-comint-eval-buffer)
-                ("C-x C-e" . bqn-comint-eval-dwim))
-    :hook ((bqn-mode . bqn-comint-buffer)
-  	 (bqn-mode . disable-rainbow-delimiters-bqn)
-  	 (bqn-mode . my-bqn-mode-custom-strings))
-    :config
-    ;; Glyphs and keyboard layout
-    (require 'bqn-keymap-mode)
-    (require 'bqn-glyph-mode)
-    ;; Get rid of *Quail Completions*
-    (defun quail-completion ()))
+    ;; Propagate fontlock to helper modes
+    (defun my-bqn-keymap-mode-setup ()
+      "Set up bqn-keymap-mode specific configurations."
+      ;; Set up font locking to highlight BQN glyphs in bqn-keymap-mode using bqn-mode's rules
+      (setq-local font-lock-defaults bqn--font-lock-defaults)
+      (font-lock-add-keywords nil '(("\\(\"\\)" 1 'default t)))
+      (font-lock-add-keywords nil '(("[-┌┬┐├┼┤└┴┘─│]+" . 'default)))
+      (font-lock-flush (point-min) (point-max))
+      ;; We don't need strings in this mode
+      (modify-syntax-entry ?\" "." (syntax-table)))
+    (defun my-bqn-glyph-mode-setup ()
+      "Set up font locking to highlight BQN glyphs in bqn-glyph-mode using bqn-mode's rules."
+      (setq font-lock-keywords nil)
+      (let ((functions (regexp-opt '("+" "×" "÷" "⋆" "√" "⌊" "⌈" "|" "¬" "∧" "∨" "<"
+  				   ">" "≠" "=" "≤" "≥" "≡" "≢" "⊣" "⊢" "⥊" "∾" "≍"
+  				   "⋈" "↑" "↓" "↕" "«" "»" "⌽" "⍉" "/" "⍋" "⍒" "⊏"
+  				   "⊑" "⊐" "⊒" "∊" "⍷" "⊔" "!" "-" "⍋" "⍒" "⊏" "⊑" "⊐"
+  				   "⊒" "∊" "⍷" "⊔" "!"))))
+        (font-lock-add-keywords nil `((,functions . 'bqn-primitive-function))))
+      ;; Default for everything else to ensure non-glyph text appears as intended.
+      (font-lock-flush (point-min) (point-max)))
+    
+      :bind (:map bqn-mode-map
+  		("M-i" . bqn-help-symbol-info-at-point)
+  		("C-c g" . toggle-bqn-glyphs)
+  		("C-c k" . toggle-bqn-keymap)
+  		("C-c C-e" . bqn-comint-eval-buffer)
+  		("C-x C-e" . bqn-comint-eval-dwim))
+      :hook ((bqn-mode . bqn-comint-buffer)
+  	   (bqn-mode . disable-rainbow-delimiters-bqn)
+  	   (bqn-mode . my-bqn-mode-custom-strings)
+  	   (bqn-keymap-mode . my-bqn-keymap-mode-setup)
+  	   (bqn-glyph-mode . my-bqn-glyph-mode-setup))
+      :config
+      ;; Glyphs and keyboard layout
+      (require 'bqn-keymap-mode)
+      (require 'bqn-glyph-mode)
+      ;; Get rid of *Quail Completions*
+      (defun quail-completion ()))
 #+end_src
 
 *** Uiua

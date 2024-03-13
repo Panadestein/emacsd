@@ -764,13 +764,11 @@ The latter maximizes the use of already existing Emacs infrastructure.
     :straight t
     :hook (lsp-mode . lsp-ui-mode)
     :config
-    (setq lsp-ui-sideline-show-hover t
-          lsp-ui-sideline-delay 0.5
-          lsp-ui-doc-delay 5
-          lsp-ui-sideline-ignore-duplicates t
+    (setq lsp-ui-sideline-enable nil
+          lsp-ui-doc-header nil
+          lsp-ui-doc-delay 0.5
           lsp-ui-doc-position 'bottom
           lsp-ui-doc-alignment 'frame
-          lsp-ui-doc-header nil
           lsp-ui-doc-include-signature t
           lsp-ui-doc-use-childframe t)
     :commands lsp-ui-mode)
@@ -1576,7 +1574,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
       "Face used for BQN 1-modifiers."
       :group 'bqn)
     (defface bqn-two-modifier
-      '((t (:foreground "#998819")))
+      '((t (:foreground "#b7a31e")))
       "Face used for BQN 2-modifiers."
       :group 'bqn)
     (defface bqn-primitive-function
@@ -1588,7 +1586,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
       "Face used for primitive BQN 1-modifiers."
       :group 'bqn)
     (defface bqn-primitive-two-modifier
-      '((t (:foreground "#998819")))
+      '((t (:foreground "#b7a31e")))
       "Face used for primitive BQN 2-modifiers."
       :group 'bqn)
     (defun my-bqn-mode-custom-strings ()
@@ -1618,24 +1616,27 @@ An APL for your flying saucer, and the language I am more interested in at the m
       ;; Default for everything else to ensure non-glyph text appears as intended.
       (font-lock-flush (point-min) (point-max)))
     
-      :bind (:map bqn-mode-map
-  		("M-i" . bqn-help-symbol-info-at-point)
-  		("C-c g" . toggle-bqn-glyphs)
-  		("C-c k" . toggle-bqn-keymap)
-  		("C-c C-e" . bqn-comint-eval-buffer)
-  		("C-x C-e" . bqn-comint-eval-dwim))
-      :hook ((bqn-mode . bqn-comint-buffer)
-  	   (bqn-mode . disable-rainbow-delimiters-bqn)
-  	   (bqn-mode . my-bqn-mode-custom-strings)
-  	   (bqn-keymap-mode . my-bqn-keymap-mode-setup)
-  	   (bqn-glyph-mode . my-bqn-glyph-mode-setup))
-      :config
-      ;; Glyphs and keyboard layout
-      (require 'bqn-keymap-mode)
-      (require 'bqn-glyph-mode)
-      ;; Get rid of *Quail Completions*
-      (defun quail-completion ()))
+    :bind (:map bqn-mode-map
+  	      ("M-i" . bqn-help-symbol-info-at-point)
+  	      ("C-c g" . toggle-bqn-glyphs)
+  	      ("C-c k" . toggle-bqn-keymap)
+  	      ("C-c C-e" . bqn-comint-eval-buffer)
+  	      ("C-x C-e" . bqn-comint-eval-dwim))
+    :hook ((bqn-mode . bqn-comint-buffer)
+  	 (bqn-mode . disable-rainbow-delimiters-bqn)
+  	 (bqn-mode . my-bqn-mode-custom-strings)
+  	 (bqn-keymap-mode . my-bqn-keymap-mode-setup)
+  	 (bqn-glyph-mode . my-bqn-glyph-mode-setup))
+    :config
+    ;; Glyphs and keyboard layout
+    (require 'bqn-keymap-mode)
+    (require 'bqn-glyph-mode)
+    ;; Get rid of *Quail Completions*
+    (defun quail-completion ()))
 #+end_src
+
+#+RESULTS:
+: bqn-comint-eval-dwim
 
 *** Uiua
 

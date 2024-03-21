@@ -1594,7 +1594,11 @@ An APL for your flying saucer, and the language I am more interested in at the m
       (set (make-local-variable 'font-lock-string-face)
   	 '(:foreground "#ABB2BF"))
       (font-lock-add-keywords nil
-                            '(("\\({\\|}\\)" 0 'font-lock-type-face))))
+                              '(("\\({\\|}\\)"
+  			       0 'font-lock-type-face)))
+      (font-lock-add-keywords nil
+                              '(("\\(\\[\\|\\]\\|⟨\\|⟩\\)"
+                                 0 '(face (:foreground "cyan"))))))
 
     ;; Propagate fontlock to helper modes
     (defun my-bqn-keymap-mode-setup ()
@@ -1606,17 +1610,6 @@ An APL for your flying saucer, and the language I am more interested in at the m
       (font-lock-flush (point-min) (point-max))
       ;; We don't need strings in this mode
       (modify-syntax-entry ?\" "." (syntax-table)))
-    (defun my-bqn-glyph-mode-setup ()
-      "Set up font locking to highlight BQN glyphs in bqn-glyph-mode using bqn-mode's rules."
-      (setq font-lock-keywords nil)
-      (let ((functions (regexp-opt '("+" "×" "÷" "⋆" "√" "⌊" "⌈" "|" "¬" "∧" "∨" "<"
-  				   ">" "≠" "=" "≤" "≥" "≡" "≢" "⊣" "⊢" "⥊" "∾" "≍"
-  				   "⋈" "↑" "↓" "↕" "«" "»" "⌽" "⍉" "/" "⍋" "⍒" "⊏"
-  				   "⊑" "⊐" "⊒" "∊" "⍷" "⊔" "!" "-" "⍋" "⍒" "⊏" "⊑" "⊐"
-  				   "⊒" "∊" "⍷" "⊔" "!"))))
-        (font-lock-add-keywords nil `((,functions . 'bqn-primitive-function))))
-      ;; Default for everything else to ensure non-glyph text appears as intended.
-      (font-lock-flush (point-min) (point-max)))
     
     :bind (:map bqn-mode-map
   	      ("M-i" . bqn-help-symbol-info-at-point)
@@ -1627,8 +1620,10 @@ An APL for your flying saucer, and the language I am more interested in at the m
     :hook ((bqn-mode . bqn-comint-buffer)
   	 (bqn-mode . disable-rainbow-delimiters-bqn)
   	 (bqn-mode . my-bqn-mode-custom-faces)
-  	 (bqn-keymap-mode . my-bqn-keymap-mode-setup)
-  	 (bqn-glyph-mode . my-bqn-glyph-mode-setup))
+  	 (bqn-mode . (lambda ()
+                         (set (make-local-variable 'company-backends)
+                              '((company-yasnippet company-capf company-keywords)))))
+  	 (bqn-keymap-mode . my-bqn-keymap-mode-setup))
     :config
     ;; Glyphs and keyboard layout
     (require 'bqn-keymap-mode)

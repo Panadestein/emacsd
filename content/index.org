@@ -1589,10 +1589,12 @@ An APL for your flying saucer, and the language I am more interested in at the m
       '((t (:foreground "#b7a31e")))
       "Face used for primitive BQN 2-modifiers."
       :group 'bqn)
-    (defun my-bqn-mode-custom-strings ()
+    (defun my-bqn-mode-custom-faces ()
       "Customize string face for BQN mode."
       (set (make-local-variable 'font-lock-string-face)
-  	 '(:foreground "#ABB2BF")))
+  	 '(:foreground "#ABB2BF"))
+      (font-lock-add-keywords nil
+                            '(("\\({\\|}\\)" 0 'font-lock-type-face))))
 
     ;; Propagate fontlock to helper modes
     (defun my-bqn-keymap-mode-setup ()
@@ -1624,7 +1626,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
   	      ("C-x C-e" . bqn-comint-eval-dwim))
     :hook ((bqn-mode . bqn-comint-buffer)
   	 (bqn-mode . disable-rainbow-delimiters-bqn)
-  	 (bqn-mode . my-bqn-mode-custom-strings)
+  	 (bqn-mode . my-bqn-mode-custom-faces)
   	 (bqn-keymap-mode . my-bqn-keymap-mode-setup)
   	 (bqn-glyph-mode . my-bqn-glyph-mode-setup))
     :config
@@ -1634,9 +1636,6 @@ An APL for your flying saucer, and the language I am more interested in at the m
     ;; Get rid of *Quail Completions*
     (defun quail-completion ()))
 #+end_src
-
-#+RESULTS:
-: bqn-comint-eval-dwim
 
 *** Uiua
 

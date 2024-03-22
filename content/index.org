@@ -1500,11 +1500,10 @@ For this, the =macrostep= package comes very handy.
 
 ** Iversonian array languages
 
-I embarked on my programming journey with Fortran, a common initiation for many physicists. The ascent of NumPy and SciPy
-eventually piqued my interest, compelling me to explore Python. As my fascination with Python waned, I ventured into C++, only to find
-its lack of aesthetic appeal steering my curiosity towards Lisp and Haskell. Despite my reservations about certain aspects of
-these languages, the quintessence of the features I admire in them traces its origins to *APL*, i.e. to
-[[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]]. It is a joy to program in Iversonian array languages.
+I began programming with Fortran, a common initiation for many physicists. The rise of NumPy and SciPy
+eventually drew me to the Python world. As my interest in Python waned, I turned to C++, but was quickly dissuaded by its aesthetic limitations,
+which lead me to the beauty of Lisp and Haskell. Despite some criticisms of these languages, the core features I value in them have their
+roots in APL ([[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]]). Programming in Iversonian array languages is a delightful experience.
 
 *** BQN
 
@@ -1559,6 +1558,15 @@ An APL for your flying saucer, and the language I am more interested in at the m
               (delete-window (get-buffer-window buf))
               (kill-buffer buf))
   	(bqn-glyph-mode-show-glyphs))))
+    (defun bqn-explain-line ()
+      "Explain the current line in BQN, displaying the explanation result in the minibuffer."
+      (interactive)
+      ;; Capture the current line's content
+      (let* ((current-line (thing-at-point 'line t))
+             (command-to-explain (concat ")explain " current-line))
+  	   (proc (get-buffer-process (bqn-comint-buffer))))
+        ;; Use bqn-comint-evaluate-command to send the command
+        (message "%s" (bqn--comint-call-process-silently proc command-to-explain))))
     
     ;; Too much color in BQN is not good
     (defun disable-rainbow-delimiters-bqn ()
@@ -1616,6 +1624,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
   	      ("C-c g" . toggle-bqn-glyphs)
   	      ("C-c k" . toggle-bqn-keymap)
   	      ("C-c C-e" . bqn-comint-eval-buffer)
+  	      ("C-x e" . bqn-explain-line)
   	      ("C-x C-e" . bqn-comint-eval-dwim))
     :hook ((bqn-mode . bqn-comint-buffer)
   	 (bqn-mode . disable-rainbow-delimiters-bqn)

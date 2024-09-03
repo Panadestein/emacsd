@@ -20,6 +20,7 @@
 
 ;; Install packages needed for HTML export
 
+(package-install 'compat)
 (package-install 'htmlize)
 (package-install 'reformatter)
 (package-install 'nix-mode)

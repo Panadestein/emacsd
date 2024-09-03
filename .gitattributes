@@ -1,0 +1,5 @@
+# These are chore files used to generate the site
+*.html linguist-vendored
+*.css linguist-vendored
+*.sh linguist-vendored
+*.yasnippet linguist-vendored

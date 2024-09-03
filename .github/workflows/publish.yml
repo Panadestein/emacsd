@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Emacs
-        run: sudo apt install emacs-nox --yes
+        run: |
+          sudo apt-add-repository ppa:ubuntu-elisp/ppa
+          sudo apt update
+          sudo apt-get install emacs-snapshot
 
       - name: Build the site
         run: ./publi.sh

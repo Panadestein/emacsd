@@ -20,7 +20,6 @@
 
 ;; Install packages needed for HTML export
 
-(package-install 'compat)
 (package-install 'htmlize)
 (package-install 'reformatter)
 (package-install 'nix-mode)
@@ -42,6 +41,7 @@
 (setq org-html-validation-link nil
       org-html-head-include-scripts nil
       org-html-include-default-style nil
+      org-safe-remote-resources '("https://raw.githubusercontent.com/fniessen/org-html-themes/master/org/theme-readtheorg.setup")
       org-src-fontify-natively t)
 
 ;; Define the project to be published

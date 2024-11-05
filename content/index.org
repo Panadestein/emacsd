@@ -1651,6 +1651,20 @@ Point free or die. Stack based, array oriented, general purpose programming lang
     :mode "\\.ua\\'")  
 #+end_src
 
+** Theorem provers
+
+For now, this is only Lean:
+
+#+begin_src emacs-lisp
+  (use-package lean4-mode
+    :straight (lean4-mode
+  	     :type git
+  	     :host github
+  	     :repo "leanprover/lean4-mode"
+  	     :files ("*.el" "data"))
+    :commands (lean4-mode))
+#+end_src
+
 ** My Emacs Lisp packages
 
 Here I plan to add small packages I write from time to time, mainly for non-trivial editing

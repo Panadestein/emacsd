@@ -3,6 +3,7 @@
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
 #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+{{{disable-search}}}
 #+HTML_HEAD: <meta name="google-site-verification" content="UnH0G3uduefQ6n9JV-YfihFU5SrKCWPHlvu6Ancvghs" />
 #+HTML_HEAD: <!-- Global site tag (gtag.js) - Google Analytics -->
 #+HTML_HEAD: <script async src="https://www.googletagmanager.com/gtag/js?id=G-XJW2VM2D12"></script>

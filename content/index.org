@@ -1004,6 +1004,7 @@ they are the future. It comes then natural to have a nice Emacs package to query
     :straight (:host github
                :repo "xenodium/chatgpt-shell"
                :files ("shell-maker.el" "chatgpt-shell.el" "ob-chatgpt-shell.el"))
+    :disabled t
     :config
     (require 'shell-maker)
     (require 'ob-chatgpt-shell)
@@ -2186,7 +2187,6 @@ Niklas Luhmann's /Zettelkasten/ method.
   (use-package org-roam
     :straight t
     :init
-    (use-package emacsql-sqlite-builtin)
     (setq org-roam-database-connector 'sqlite-builtin)
     :custom
     (org-roam-directory (file-truename "~/Documents/Arbeit/WIKI/notes"))

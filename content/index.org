@@ -994,10 +994,10 @@ However, the default configuration can be improved a bit:
           ediff-split-window-function 'split-window-horizontally))
 #+end_src
 
-** ChatGPT
+** LLMs
 
 For the times they are a-changin'. Large language models are here to stay, and as cliche as it might sound,
-they are the future. It comes then natural to have a nice Emacs package to query ChatGPT.
+they are the future. It comes then natural to have a nice Emacs package to query different LLMs.
 
 #+begin_src emacs-lisp
   (use-package chatgpt-shell
@@ -1010,6 +1010,13 @@ they are the future. It comes then natural to have a nice Emacs package to query
     (require 'ob-chatgpt-shell)
     :custom
     (chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com")))
+#+end_src
+
+We also add support for Copilot, which for certain languages is a good boilerplate killer:
+
+#+begin_src emacs-lisp
+  (use-package copilot
+    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
 #+end_src
 
 * File browsing, terminal emulators, and web browsing

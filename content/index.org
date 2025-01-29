@@ -1016,7 +1016,15 @@ We also add support for Copilot, which for certain languages is a good boilerpla
 
 #+begin_src emacs-lisp
   (use-package copilot
-    :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+    :straight (
+  	     :host github
+  	     :repo "copilot-emacs/copilot.el"
+  	     :files ("*.el"))
+    :bind (:map copilot-completion-map
+                ("<tab>" . 'copilot-accept-completion)
+                ("TAB" . 'copilot-accept-completion)
+                ("C-TAB" . 'copilot-accept-completion-by-word)
+                ("C-<tab>" . 'copilot-accept-completion-by-word)))
 #+end_src
 
 * File browsing, terminal emulators, and web browsing

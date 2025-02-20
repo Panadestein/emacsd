@@ -247,7 +247,7 @@ The variables have self-explanatory names, but I have added a few comments for t
       (interactive) (revert-buffer t t))
     :config
     ;; Emacs internal options
-    (setq-default initial-scratch-message ";; Welcome Panadestein!!"
+    (setq-default initial-scratch-message ";; The purpose of computing is insight, not numbers."
                   ring-bell-function #'ignore
                   user-full-name "Ramón L. Panadés-Barrueta, PhD"
                   inhibit-startup-screen t

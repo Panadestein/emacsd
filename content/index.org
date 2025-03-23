@@ -2171,6 +2171,19 @@ Some extra exporting formats:
     :after org)
 #+end_src
 
+Add support for encrypted sections:
+
+#+begin_src emacs-lisp
+  (use-package org-crypt
+    :straight nil
+    :after org
+    :config
+    (org-crypt-use-before-save-magic)
+    (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+    :custom
+    (org-crypt-key "rpana92@gmail.com"))
+#+end_src
+
 And by the way, convert everything else to =org-mode= please:
 
 #+begin_src emacs-lisp

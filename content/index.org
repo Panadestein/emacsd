@@ -161,7 +161,7 @@ package manager brings me into closer alignment with the lofty principles champi
 In order to use =straight.el= properly, we need to add the following content to our =early-init.el= file:
 
 #+begin_src emacs-lisp :tangle ../early-init.el
-  ;;; early-init.el --- Emacs early init file
+  ;;; early-init.el --- Emacs early init file  -*- lexical-binding: t; -*-
   ;;; Commentary:
   ;; Code to run before init.el is loaded.
   ;;; Code:
@@ -299,7 +299,9 @@ This piece of code serves to reduce clutter and boost the reproducibility of the
   (let ((customization-file
          (expand-file-name "custom.el" user-emacs-directory)))
     (unless (file-exists-p customization-file)
-      (write-region "" nil customization-file))
+      (with-temp-buffer
+        (insert ";; -*- lexical-binding: t; -*-")
+        (write-file customization-file)))
     (setq custom-file customization-file)
     (load custom-file 'noerror))
 #+end_src

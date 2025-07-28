@@ -1527,8 +1527,10 @@ roots in APL ([[https://www.softwarepreservation.org/projects/apl/Books/APROGRAM
 
 The tool of thought for software solutions.
 
-(use-package dyalog-mode
-  :straight t)
+#+begin_src emacs-lisp
+  (use-package dyalog-mode
+    :straight t)
+#+end_src
 
 *** BQN
 

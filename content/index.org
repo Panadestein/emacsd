@@ -435,8 +435,7 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
-    :straight t
-    :hook (prog-mode . rainbow-delimiters-mode))
+    :straight t)
 #+end_src
 
 ** Minimap
@@ -1524,6 +1523,13 @@ eventually drew me to the Python world. As my interest in Python waned, I turned
 which lead me to the beauty of Lisp and Haskell. Despite some criticisms of these languages, the core features I value in them have their
 roots in APL ([[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]]). Programming in Iversonian array languages is a delightful experience.
 
+*** Dyalog APL
+
+The tool of thought for software solutions.
+
+(use-package dyalog-mode
+  :straight t)
+
 *** BQN
 
 An APL for your flying saucer, and the language I am more interested in at the moment:
@@ -2125,6 +2131,7 @@ makes org-mode files look gorgeous.
                                  (scheme . t)
                                  (shell . t)
                                  (jupyter . t)))
+    (add-to-list 'org-src-lang-modes '("jupyter-apl" . dyalog))
     (setq org-babel-clojure-backend 'cider)
     (setq org-latex-pdf-process '("latexmk -shell-escape -pdf -outdir=%o %f"))
     (setq org-preview-latex-default-process 'imagemagick)

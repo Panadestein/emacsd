@@ -435,7 +435,8 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
-    :straight t)
+    :straight t
+    :hook (prog-mode . rainbow-delimiters-mode))
 #+end_src
 
 ** Minimap
@@ -872,22 +873,9 @@ for translations, necessitating the additional installation of the =posframe= pa
 The translation directions can be easily adjusted in the prompt using =C-n= and =C-p=.
 
 #+begin_src emacs-lisp
-  (use-package go-translate
+  (use-package gt
     :straight t
-    :bind
-    (("C-c C-t" . gts-do-translate))
-    :config
-    (setq gts-translate-list '(("de" "en")
-                               ("fr" "en")
-                               ("en" "es")))
-    (setq gts-default-translator
-          (gts-translator
-           :picker
-           (gts-prompt-picker)
-           :engines
-           (list (gts-bing-engine) (gts-google-engine))
-           :render
-           (gts-posframe-pop-render))))
+    :disabled)
 
   (use-package posframe
     :straight t)
@@ -1529,7 +1517,11 @@ The tool of thought for software solutions.
 
 #+begin_src emacs-lisp
   (use-package dyalog-mode
-    :straight t)
+    :straight t
+    :init
+    (defun disable-rainbow-delimiters-apl ()
+      (rainbow-delimiters-mode -1))
+    :hook (dyalog-mode . disable-rainbow-delimiters-bqn))
 #+end_src
 
 *** BQN

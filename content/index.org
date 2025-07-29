@@ -2020,6 +2020,7 @@ This package provides support for Graphviz's =dot= command line tool.
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode
     :straight t
+    :disabled
     :config
     (setq graphviz-dot-indent-width 4))
 #+end_src

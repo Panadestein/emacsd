@@ -373,6 +373,9 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
   (use-package doom-themes
     :straight t
     :config
+    ;; Fix fontlock bug
+    (setcdr (assoc 'gnus-group-news-low-empty doom-themes-base-faces)
+            '(:inherit 'gnus-group-mail-1-empty :weight 'normal))
     ;; Global settings (defaults)
     (setq doom-themes-enable-bold t
           doom-themes-enable-italic t)
@@ -813,7 +816,8 @@ integration with GDB and PDB.
 
 #+begin_src emacs-lisp
   (use-package realgud
-    :straight t)
+    :straight t
+    :disabled)
 #+end_src
 
 For an experience closer to the mainstream IDEs one can use =dap-mode=, which uses the Debug Adapter Protocol:
@@ -1159,11 +1163,6 @@ a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behavi
     (eshell-toggle-init-function #'eshell-toggle-init-eshell)
     :bind
     ("C-c p" . eshell-toggle))
-
-  (use-package eshell-syntax-highlighting
-    :straight t
-    :config
-    (eshell-syntax-highlighting-global-mode +1))
 
   (use-package fish-completion
     :straight t
@@ -1557,6 +1556,27 @@ An APL for your flying saucer, and the language I am more interested in at the m
       "If there is not a current inferior-process-buffer in SESSION then create."
       (unless (string= session "none")
         (get-buffer-process (bqn-comint-buffer))))
+
+    ;; Fix: bug with first time src execution
+    (defun my-bqn-wait-for-prompt (buffer)
+      (with-current-buffer buffer
+        (let ((proc (get-buffer-process buffer)))
+          (while (and (process-live-p proc)
+                      (save-excursion
+                        (goto-char (point-max))
+                        (forward-line 0)
+                        (not (looking-at-p comint-prompt-regexp))))
+            (accept-process-output proc 0.05)))))
+    (advice-add 'bqn-comint-buffer :filter-return
+                (lambda (buf)
+  		(my-bqn-wait-for-prompt buf)
+                  buf))
+
+    ;; Fix: disable quail only for BQN
+    (defadvice quail-completion (around disable-for-bqn activate)
+      (if (string= "BQN-Z" current-input-method)
+          nil
+        ad-do-it))
     
     ;; Some utilities
     (defun toggle-bqn-keymap ()
@@ -1655,9 +1675,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
     :config
     ;; Glyphs and keyboard layout
     (require 'bqn-keymap-mode)
-    (require 'bqn-glyph-mode)
-    ;; Get rid of *Quail Completions*
-    (defun quail-completion ()))
+    (require 'bqn-glyph-mode))
 #+end_src
 
 *** Uiua
@@ -1954,7 +1972,8 @@ I also heavily use the =emacs-jupyter= package to communicate with Jupyter kerne
     (use-package jupyter
       :straight (:build (:not native-compile))
       :config
-        (setq jupyter-use-zmq t))
+        (setq jupyter-use-zmq t
+    	  jupyter-org-auto-connect nil))
   #+end_src
 
 ** Julia

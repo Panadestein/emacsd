@@ -334,8 +334,6 @@ just doesn't make any sense.
     (mapc (lambda (mode)
             (evil-set-initial-state mode 'emacs))
           '(bqn-help--mode
-  	  bqn-glyph-mode
-  	  bqn-keymap-mode
   	  dired-mode
   	  eldoc-mode
             elfeed-mode
@@ -1537,13 +1535,13 @@ An APL for your flying saucer, and the language I am more interested in at the m
       "Expand BODY according to PARAMS, return the expanded body."
       (require 'bqn-mode nil t)
       (let ((vars (org-babel--get-vars (or
-  				      processed-params
-  				      (org-babel-process-params params)))))
+    				      processed-params
+    				      (org-babel-process-params params)))))
         (concat
          (mapconcat
-  	(lambda (pair)
-  	  (format "%s=%S" (car pair) (org-babel-bqn-var-to-bqn (cdr pair))))
-  	vars "\n")
+    	(lambda (pair)
+    	  (format "%s=%S" (car pair) (org-babel-bqn-var-to-bqn (cdr pair))))
+    	vars "\n")
          "\n" body "\n")))
     (defun org-babel-execute:bqn (body params)
       "Execute a block of BQN code with org-babel."
@@ -1557,53 +1555,19 @@ An APL for your flying saucer, and the language I am more interested in at the m
       (unless (string= session "none")
         (get-buffer-process (bqn-comint-buffer))))
 
-    ;; Fix: bug with first time src execution
-    (defun my-bqn-wait-for-prompt (buffer)
-      (with-current-buffer buffer
-        (let ((proc (get-buffer-process buffer)))
-          (while (and (process-live-p proc)
-                      (save-excursion
-                        (goto-char (point-max))
-                        (forward-line 0)
-                        (not (looking-at-p comint-prompt-regexp))))
-            (accept-process-output proc 0.05)))))
-    (advice-add 'bqn-comint-buffer :filter-return
-                (lambda (buf)
-  		(my-bqn-wait-for-prompt buf)
-                  buf))
-
     ;; Fix: disable quail only for BQN
     (defadvice quail-completion (around disable-for-bqn activate)
       (if (string= "BQN-Z" current-input-method)
           nil
         ad-do-it))
     
-    ;; Some utilities
-    (defun toggle-bqn-keymap ()
-      "Toggle the BQN keymap display."
-      (interactive)
-      (let ((buf (get-buffer "*BQN keymap*")))
-        (if (and buf (get-buffer-window buf))
-            (progn
-              (delete-window (get-buffer-window buf))
-              (kill-buffer buf))
-  	(bqn-keymap-mode-show-keyboard))))
-    (defun toggle-bqn-glyphs ()
-      "Toggle the BQN glyphs display."
-      (interactive)
-      (let ((buf (get-buffer "*BQN Glyphs*")))
-        (if (and buf (get-buffer-window buf))
-            (progn
-              (delete-window (get-buffer-window buf))
-              (kill-buffer buf))
-  	(bqn-glyph-mode-show-glyphs))))
     (defun bqn-explain-line ()
       "Explain the current line in BQN, displaying the explanation result in the minibuffer."
       (interactive)
       ;; Capture the current line's content
       (let* ((current-line (thing-at-point 'line t))
              (command-to-explain (concat ")explain " current-line))
-  	   (proc (get-buffer-process (bqn-comint-buffer))))
+    	   (proc (get-buffer-process (bqn-comint-buffer))))
         ;; Use bqn-comint-evaluate-command to send the command
         (message "%s" (bqn--comint-call-process-silently proc command-to-explain))))
     
@@ -1636,46 +1600,29 @@ An APL for your flying saucer, and the language I am more interested in at the m
       '((t (:foreground "#b7a31e")))
       "Face used for primitive BQN 2-modifiers."
       :group 'bqn)
+    
     (defun my-bqn-mode-custom-faces ()
       "Customize string face for BQN mode."
       (set (make-local-variable 'font-lock-string-face)
-  	 '(:foreground "#ABB2BF"))
+    	 '(:foreground "#ABB2BF"))
       (font-lock-add-keywords nil
                               '(("\\({\\|}\\)"
-  			       0 'font-lock-type-face)))
+    			       0 'font-lock-type-face)))
       (font-lock-add-keywords nil
                               '(("\\(\\[\\|\\]\\|⟨\\|⟩\\)"
                                  0 '(face (:foreground "cyan"))))))
 
-    ;; Propagate fontlock to helper modes
-    (defun my-bqn-keymap-mode-setup ()
-      "Set up bqn-keymap-mode specific configurations."
-      ;; Set up font locking to highlight BQN glyphs in bqn-keymap-mode using bqn-mode's rules
-      (setq-local font-lock-defaults bqn--font-lock-defaults)
-      (font-lock-add-keywords nil '(("\\(\"\\)" 1 'default t)))
-      (font-lock-add-keywords nil '(("[-┌┬┐├┼┤└┴┘─│]+" . 'default)))
-      (font-lock-flush (point-min) (point-max))
-      ;; We don't need strings in this mode
-      (modify-syntax-entry ?\" "." (syntax-table)))
-    
     :bind (:map bqn-mode-map
-  	      ("M-i" . bqn-help-symbol-info-at-point)
-  	      ("C-c g" . toggle-bqn-glyphs)
-  	      ("C-c k" . toggle-bqn-keymap)
-  	      ("C-c C-e" . bqn-comint-eval-buffer)
-  	      ("C-x e" . bqn-explain-line)
-  	      ("C-x C-e" . bqn-comint-eval-dwim))
-    :hook ((bqn-mode . bqn-comint-buffer)
-  	 (bqn-mode . disable-rainbow-delimiters-bqn)
-  	 (bqn-mode . my-bqn-mode-custom-faces)
-  	 (bqn-mode . (lambda ()
+    	      ("M-i" . bqn-help-symbol-info-at-point)
+    	      ("C-c C-e" . bqn-comint-eval-buffer)
+    	      ("C-x e" . bqn-explain-line)
+    	      ("C-x C-e" . bqn-comint-eval-dwim))
+    :hook ((bqn-mode . disable-rainbow-delimiters-bqn)
+    	 (bqn-mode . my-bqn-mode-custom-faces)
+    	 (bqn-mode . (lambda ()
                          (set (make-local-variable 'company-backends)
-                              '((company-yasnippet company-capf company-keywords)))))
-  	 (bqn-keymap-mode . my-bqn-keymap-mode-setup))
-    :config
-    ;; Glyphs and keyboard layout
-    (require 'bqn-keymap-mode)
-    (require 'bqn-glyph-mode))
+                              '((company-yasnippet company-capf company-keywords)))))))
+
 #+end_src
 
 *** Uiua

@@ -1,3 +1,4 @@
+.packages/
 ac-comphist.dat
 anaconda-mode
 auto-save-list
@@ -8,9 +9,11 @@ eshell
 lib
 places
 package-quickstart.el
-snippets
 tramp
 transient
 .last-package-update-day
 .mc-lists.el
 .python-environments
+public/
+init.el
+early-init.el

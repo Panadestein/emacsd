@@ -41,7 +41,7 @@
 (setq org-html-validation-link nil
       org-html-head-include-scripts nil
       org-html-include-default-style nil
-      org-safe-remote-resources '("https://fniessen.github.io/org-html-themes/org/html-theme-readtheorg.setup")
+      org-safe-remote-resources '("https://fniessen.github.io/org-html-themes/org/setup/html-theme-readtheorg.setup")
       org-src-fontify-natively t)
 
 ;; Define the project to be published

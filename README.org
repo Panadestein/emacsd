@@ -1,45 +1,33 @@
 #+TITLE: Literate Emacs configuration
-#+AUTHOR: Panadestein
 
 #+BEGIN_HTML
-<a href="https://raw.githubusercontent.com/Panadestein/emacsd/master/LICENSE.md">
-<img alt="GPLv3" src="https://img.shields.io/github/license/Panadestein/emacsd" />
-</a>
-
-<a href="https://github.com/Panadestein/emacsd/actions/workflows/publish.yml">
-<img alt="Build status" src="https://github.com/Panadestein/emacsd/actions/workflows/publish.yml/badge.svg" />
-</a>
+<a href="https://raw.githubusercontent.com/Panadestein/emacsd/master/LICENSE.md"><img alt="GPLv3 license" src="https://img.shields.io/github/license/Panadestein/emacsd" /></a>
+<a href="https://github.com/Panadestein/emacsd/actions/workflows/publish.yml"><img alt="Website build status" src="https://github.com/Panadestein/emacsd/actions/workflows/publish.yml/badge.svg" /></a>
 #+END_HTML
 
-This is my [[https://en.wikipedia.org/wiki/Literate_programming][literate]] Emacs configuration. It was initially fine-tuned for Python,
-C, C++, FORTRAN and Lisp development, but it has grown far beyond the initial scope.
-I use =use-package= extensively, which ensures a reproducible configuration.
+My personal Emacs configuration, written as a literate Org document. It covers everyday editing,
+software development, remote work with TRAMP, terminals, notes, and a broad collection of
+programming-language modes.
 
-* Useful tweaks
+The annotated configuration is easier to explore on the
+[[https://panadestein.github.io/emacsd/][published website]], where the table of contents and source code appear side by side.
 
-I use Emacs mainly on [[https://github.com/Panadestein/nixos-config][NixOS]], with *Qtile* as desktop environment. I like to use the
-=systemd= unit of =emacsclient=. It speeds up the startup process as the heavy config
-file is uploaded only once. A very good explanation can be found [[https://wiki.archlinux.org/index.php/Emacs#Running_Emacs][here]]. After editing 
-the config file, the unit must be reloaded:
+* Repository layout
 
-#+BEGIN_SRC bash
-  systemctl --user restart emacs
+- =content/index.org= is the documented source of the configuration.
+- =init.el= and =early-init.el= are the corresponding Emacs startup files.
+- =build-site.el= exports the website with Org and the vendored =htmlize= package.
+- =content/site.css= and =content/site.js= provide the self-contained website interface.
+
+* Building the website
+
+With Emacs installed, run:
+
+#+BEGIN_SRC shell
+./publi.sh
 #+END_SRC
 
-To use =emacsclient= with the GUI application,
-the file =~/.local/share/applications/emacsclient.desktop= must be created with 
-the following content:
+The static site is written to =public/=. The build does not download themes or Emacs packages.
 
-#+BEGIN_SRC bash
-  [Desktop Entry]
-  Name=Emacs (Client)
-  GenericName=Text Editor
-  Comment=Edit text
-  MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-  Exec=emacsclient -с -a "emacs" %F
-  Icon=emacs
-  Type=Application
-  Terminal=false
-  Categories=Development;TextEditor;Utility;
-  StartupWMClass=Emacs
-#+END_SRC
+This is an evolving personal setup rather than a general-purpose Emacs distribution. Read through
+the configuration and adapt it to your system before using it wholesale.

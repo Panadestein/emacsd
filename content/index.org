@@ -1,9 +1,7 @@
 #+TITLE: Emacs literate configuration
-#+AUTHOR: [[https://panadestein.github.io/][Panadestein]]
+#+AUTHOR: Panadestein
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/setup/html-theme-readtheorg.setup
-{{{disable-search}}}
 #+HTML_HEAD: <meta name="google-site-verification" content="UnH0G3uduefQ6n9JV-YfihFU5SrKCWPHlvu6Ancvghs" />
 #+HTML_HEAD: <!-- Global site tag (gtag.js) - Google Analytics -->
 #+HTML_HEAD: <script async src="https://www.googletagmanager.com/gtag/js?id=G-XJW2VM2D12"></script>
@@ -15,31 +13,13 @@
 #+HTML_HEAD:   gtag('config', 'G-XJW2VM2D12');
 #+HTML_HEAD: </script>
 
-#+HTML_HEAD: <a href="https://github.com/Panadestein" class="github-corner" aria-label="View source on GitHub">
-#+HTML_HEAD: <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff;
-#+HTML_HEAD: position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
-#+HTML_HEAD: <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-#+HTML_HEAD: <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6
-#+HTML_HEAD: C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-#+HTML_HEAD: fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-#+HTML_HEAD: <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4
-#+HTML_HEAD: 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6
-#+HTML_HEAD: 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2
-#+HTML_HEAD: 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8
-#+HTML_HEAD: 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5
-#+HTML_HEAD: C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
-#+HTML_HEAD: <style>.github-corner:hover .octo-arm{animation:octocat-wave
-#+HTML_HEAD: 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}
-#+HTML_HEAD: @media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner
-#+HTML_HEAD: .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
-
 * Prelude: Emacs configuration and the world of Lisp
 
-Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. This setup, like many of its lineage,
-validates Newton's famous aphorism about standing on the shoulders of giants.
-A heartful nod to all the unsung heroes whose Emacs Lisp snippets form the backbone
-of this file. Speaking of Lisp, I have recently tasted the enlightenment frequently
-prophesied in many a hacker's lore. Here is one of my favorites, penned by RMS himself:
+Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. Like many configurations of its kind,
+it illustrates Newton's famous aphorism about standing on the shoulders of giants.
+A heartfelt nod goes to the unsung heroes whose Emacs Lisp snippets form the backbone
+of this file. Speaking of Lisp, I have also had a taste of the enlightenment promised
+in hacker lore. Here is one of my favorite examples, penned by RMS himself:
 
 #+BEGIN_VERSE
 In days long ago,
@@ -52,31 +32,31 @@ Today that's not so,
 In Lisp they can go.
 #+END_VERSE
 
-** Org-mode literate programming
+** Literate programming with Org mode
 
-The beauty of literate configuration with org-mode is that it allows for maintaining an Emacs
-config, a website, and an org-mode markup file at the same time. For example, in the header
-of this file you can find the following code:
+The beauty of a literate configuration is that it lets me maintain an Emacs configuration,
+a website, and an Org document at the same time. For example, the header of this file
+contains the following code:
 
 #+begin_src org-mode :tangle no
 #+TITLE: Emacs literate configuration
 #+PROPERTY: header-args :tangle ../init.el
 #+OPTIONS: toc:2 num:nil
-#+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+HTML_HEAD_EXTRA: <link rel="stylesheet" href="site.css">
 #+end_src
 
-Leveraging these options, I tangle (each time I save the file, refer to the org-mode [[sec:org][hook]]) 
-the source code blocks in this configuration to my Emacs =init.el=, while also setting
-up the ReadTheOrg theme utilized by the website. One nuance is the task of ensuring
-syntax highlighting when exporting to HTML with =org-mode= while using Emacs in batch mode.
-For a practical insight into how I accomplish this, feel free to examine my =build-site.el=
-script in the source [[https://github.com/Panadestein/emacsd][repository]].
+With these options, I tangle the source blocks in this configuration to my Emacs =init.el=
+whenever I save the file (see the [[sec:org][Org hook]]), while also styling
+the exported page with a small stylesheet stored alongside the Org source. The
+=build-site.el= script in the source [[https://github.com/Panadestein/emacsd][repository]] uses the
+Org exporter bundled with Emacs and a pinned local copy of =htmlize= for syntax
+highlighting, keeping local and automated builds reproducible.
 
 ** Deployment with Nix
 
-While it's perfectly feasible to configure Emacs with Nix, my preference leans towards the Elisp configuration.
-Nonetheless, I've incorporated the following overlay in conjunction with Cachix to access the latest commits
-from Emacs' master branch:
+Although it is perfectly feasible to configure Emacs with Nix, I prefer a hand-written
+Emacs Lisp configuration. I use the following overlay to track the latest commits from
+Emacs' master branch:
 
 #+begin_src nix :tangle no
   nixpkgs.overlays = [
@@ -91,8 +71,8 @@ from Emacs' master branch:
   ];
 #+end_src
 
-My [[https://github.com/Panadestein/nixos-config][NixOS configuration]] is version controlled with git, and can automatically
-deploy my Emacs distribution with =home-manager=: 
+My [[https://github.com/Panadestein/nixos-config][NixOS configuration]] is version-controlled with Git and can deploy
+my Emacs configuration automatically with Home Manager:
 
 #+begin_src nix :tangle no
   # Emacs configuration
@@ -137,10 +117,10 @@ To comply with the Emacs [[https://www.gnu.org/software/emacs/manual/html_node/e
 
 ** Setting up a package manager
 
-One of the cornerstones of any Emacs distribution is the package manager. Previously, I was mostly a happy user
-of =use-package= with the =package.el= backend. However, I did find myself in the need of using a more recent
-version of some packages (like =org-mode=). While there are tools like =Quelpa= that facilitate this without
-abandoning =package.el=, I opted for the approach ensuring reproducibility: [[https://github.com/radian-software/straight.el][straight.el]]. This purely functional
+One of the cornerstones of any Emacs distribution is its package manager. I was mostly happy using
+=use-package= with the =package.el= backend, but sometimes needed newer versions of packages such as
+=org-mode=. Although tools such as Quelpa make this possible without abandoning =package.el=, I chose
+the more reproducible approach offered by [[https://github.com/radian-software/straight.el][straight.el]]. This purely functional
 package manager brings me into closer alignment with the lofty principles championed by the Nix community.
 
 #+begin_src emacs-lisp
@@ -158,7 +138,7 @@ package manager brings me into closer alignment with the lofty principles champi
     (load bootstrap-file nil 'nomessage))
 #+end_src
 
-In order to use =straight.el= properly, we need to add the following content to our =early-init.el= file:
+To use =straight.el= properly, I add the following code to =early-init.el=:
 
 #+begin_src emacs-lisp :tangle ../early-init.el
   ;;; early-init.el --- Emacs early init file  -*- lexical-binding: t; -*-
@@ -173,7 +153,7 @@ In order to use =straight.el= properly, we need to add the following content to 
   ;;; early-init.el ends here
 #+end_src
 
-We can also have a nice integration with =use-package=:
+It also integrates neatly with =use-package=:
 
 #+begin_src emacs-lisp
   (straight-use-package 'use-package)
@@ -182,8 +162,8 @@ We can also have a nice integration with =use-package=:
     :bind  (("C-<f2>" . hydra-straight-helper/body)))
 #+end_src
 
-For reference, I still show here how to set =use-package= with =package.el=. First we add the GNU ELPA
-and MELPA archives, and then require =use-package=:
+For reference, here is how to configure =use-package= with =package.el=: first add the GNU ELPA
+and MELPA archives, then require =use-package=.
 
 #+begin_src emacs-lisp :tangle no
   (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -203,7 +183,7 @@ and MELPA archives, and then require =use-package=:
     (require 'use-package))
 #+end_src
 
-** Dirty hacks
+** Temporary workarounds
 
 The typical caveat of using bleeding-edge software is the occasional need for manual fixes. Here, I introduce
 (hopefully) temporary workarounds to address issues in broken packages.
@@ -231,7 +211,7 @@ Other workarounds:
 
 ** One editor to rule them all, one editor to find them
 
-Here I use the =use-package= macro to keep all Emacs internal settings organized in one single block.
+Here I use the =use-package= macro to keep Emacs' built-in settings organized in a single block.
 The variables have self-explanatory names, but I have added a few comments for the sake of clarity. 
 
 #+begin_src emacs-lisp
@@ -291,9 +271,9 @@ The variables have self-explanatory names, but I have added a few comments for t
      ("C-c C-r" . revert-buffer-no-confirm)))
 #+end_src
 
-** Safeguarding configuration file from unwanted =custom= interference
+** Protecting the configuration from unwanted =custom= changes
 
-This piece of code serves to reduce clutter and boost the reproducibility of the configuration.
+This code reduces clutter and makes the configuration more reproducible.
 
 #+begin_src emacs-lisp
   (let ((customization-file
@@ -308,7 +288,7 @@ This piece of code serves to reduce clutter and boost the reproducibility of the
 
 ** Precision line highlighting
 
-This code ensures line highlighting is applied selectively, focusing solely on programming and text buffers.
+This code applies line highlighting only in programming and text buffers.
 
 #+begin_src emacs-lisp
   (use-package hl-line
@@ -320,9 +300,8 @@ This code ensures line highlighting is applied selectively, focusing solely on p
 
 ** Old habits die hard
 
-Discarding years of honed Vim muscle memory is not an option for me. Yet, I'm beginning to find
-that Emacs keybindings are starting to resonate, and in some major modes, employing Evil
-just doesn't make any sense.
+Discarding years of honed Vim muscle memory is not an option for me. Still, Emacs keybindings
+are beginning to feel natural, and in some major modes Evil simply does not make sense.
 
 #+begin_src emacs-lisp
   (use-package evil
@@ -348,8 +327,8 @@ just doesn't make any sense.
 
 ** Streamlining the undo system
 
-Embracing Emacs comes with its quirks, and the default undo system stands out as one that puzzles me.
-Perhaps one day, I'll unlock its full potential. For the time being, I opt for a linear approach.
+Emacs has its quirks, and its default undo system still puzzles me. Perhaps one day I will
+unlock its full potential; for now, I prefer a linear approach.
 
 #+begin_src emacs-lisp
   (use-package undo-tree
@@ -365,7 +344,7 @@ Perhaps one day, I'll unlock its full potential. For the time being, I opt for a
 ** Themes
 
 As Nietzsche said, the voice of beauty speaks softly; it creeps only into the most fully awakened souls.
-Ergo the importance of a visually pleasant editor. These are my top three themes:
+That makes a visually pleasant editor important. These are my three favorite themes:
 
 #+begin_src emacs-lisp
   (use-package doom-themes
@@ -400,7 +379,7 @@ Ergo the importance of a visually pleasant editor. These are my top three themes
     :init (load-theme 'blackboard t))
 #+end_src
 
-And of course, highlight numbers in source code:
+And, of course, highlighting numbers in source code:
 
 #+begin_src emacs-lisp
   (use-package highlight-numbers
@@ -409,9 +388,10 @@ And of course, highlight numbers in source code:
     (prog-mode . highlight-numbers-mode))
 #+end_src
 
-** Handle very long lines
+** Handling very long lines
 
-Another well-known issue of Emacs, although it rarely affects me.
+Very long lines are another well-known source of performance problems in Emacs, although
+they rarely affect me.
 
 #+begin_src emacs-lisp
   (use-package so-long
@@ -422,7 +402,7 @@ Another well-known issue of Emacs, although it rarely affects me.
 
 ** Improved parentheses
 
-This helps a lot when lisping.
+This helps a lot when working with Lisp.
 
 #+begin_src emacs-lisp
   (use-package smartparens
@@ -430,9 +410,9 @@ This helps a lot when lisping.
     :hook (prog-mode . smartparens-mode))
 #+end_src
 
-** Highlight parentheses with different color
+** Highlighting parentheses with different colors
 
-Another eye candy. Parenthesis of different colors are very helpful in Lisp though.
+This is mostly eye candy, but differently colored parentheses are genuinely helpful in Lisp.
 
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -442,9 +422,8 @@ Another eye candy. Parenthesis of different colors are very helpful in Lisp thou
 
 ** Minimap
 
-This package emulates the minimap feature found in Sublime Text within the realm of Emacs.
-Although I'm moderately content with this configuration, I haven't fully embraced its
-regular usage just yet.
+This package brings Sublime Text's minimap feature to Emacs. I am reasonably happy with
+the configuration, although I do not use it regularly yet.
 
 #+begin_src emacs-lisp
   (use-package minimap
@@ -460,9 +439,9 @@ regular usage just yet.
 
 ** An elegant mode line
 
-A precious contribution from the Doom Emacs community, boasting the finest mode line I've
-encountered for Emacs. The supplementary package =all-the-icons= augments this experience,
-offering an array of splendid icons for the mode line, file managers, and numerous other packages.
+This excellent contribution from the Doom Emacs community is the best Emacs mode line I have
+encountered. The companion package =all-the-icons= provides icons for the mode line, file
+managers, and many other packages.
 
 #+begin_src emacs-lisp
   (use-package all-the-icons
@@ -487,9 +466,9 @@ This intriguing package offers functionality for handling multiple cursors,
 although its ergonomics could, in my opinion, use some improvement.
 Here are some of the most significant commands:
 
-- =C-n= make and go to next match
-- =C-p= make and go to previous match
-- =g r q= stop all cursors
+- =C-n= creates a cursor at the next match and moves to it
+- =C-p= creates a cursor at the previous match and moves to it
+- =g r q= stops all cursors
 
 #+begin_src emacs-lisp
   (use-package evil-mc
@@ -498,14 +477,13 @@ Here are some of the most significant commands:
     (global-evil-mc-mode 1))
 #+end_src
 
-** Tabs-bar-mode
+** Tab-bar mode
 
-Tabs are not traditionally a part of the standard Emacs workflow,
-preferring buffer-switching instead. The following is a simple configuration
-for incorporating tabs, included merely for the sake of completeness:
+Tabs are not traditionally part of the standard Emacs workflow, which favors switching
+between buffers. For completeness, the following configuration adds a tab bar:
 
-- =C-x t f "filename"= opens file in new tab
-- =C-x t 0= closes current tab
+- =C-x t f "filename"= opens a file in a new tab
+- =C-x t 0= closes the current tab
 
 #+begin_src emacs-lisp
   (use-package tabbar
@@ -515,7 +493,7 @@ for incorporating tabs, included merely for the sake of completeness:
 
 ** Enhanced HTML exports
 
-This package ensures that some =org-mode= babel exports have proper syntax highlighting.
+This package gives Org Babel exports proper syntax highlighting.
 
 #+begin_src emacs-lisp
   (use-package htmlize
@@ -526,9 +504,8 @@ This package ensures that some =org-mode= babel exports have proper syntax highl
 
 ** Incremental search and completion with Ivy
 
-The integration of Ivy and its auxiliary tools, Swiper and Counsel, greatly enhances
-my Emacs experience by providing an advanced incremental completion system.
-They fit seamlessly with my Doom Emacs setup, facilitating a smooth workflow.
+Ivy and its companion tools, Swiper and Counsel, provide an effective incremental
+completion system and fit smoothly into my workflow.
 Swiper's incremental buffer search functionality, invoked with =C-s=,
 outperforms the standard Emacs search.
 
@@ -595,9 +572,9 @@ outperforms the standard Emacs search.
 
 ** Jump anywhere in Emacs with avy
 
-This powerful package comes with tons of features for jumping to visible text
-using a char-based decision tree. I have a minimal configuration, as =avy-goto-char-timer=
-achieves most of the functionality I need:
+This powerful package offers many ways to jump to visible text using a character-based
+decision tree. My configuration is minimal because =avy-goto-char-timer= provides most
+of the functionality I need:
 
 #+begin_src emacs-lisp
   (use-package avy
@@ -652,8 +629,8 @@ Here is a nice example for =straight.el= (the =:color= keyword symbol has a spec
 
 ** Exploring command options with which-key
 
-Which-key is an indispensable tool for charting the turbulent waters of Emacs' packages keybindings.
-These suggestions prove incredibly useful when venturing into the realm of a new package.
+Which-key is an indispensable tool for navigating Emacs package keybindings. Its suggestions
+are especially useful when learning a new package.
 
 #+begin_src emacs-lisp
   (use-package which-key
@@ -686,10 +663,9 @@ features such as syntax highlighting and source code exploration for a more intu
 
 ** Code tags
 
-When navigating through large codebases, such as electronic structure packages, employing code tags
-can save your fingers from the wear and tear induced by continuous =grep= commands.
-I leverage the minimalist =gtags-mode= that maximizes the use of existing Emacs tools.
-Additionally, I've set up the =counsel-etags= package, although its method of parsing the
+When navigating large codebases such as electronic-structure packages, tags avoid repetitive
+=grep= commands. I use the minimalist =gtags-mode=, which builds on existing Emacs tools.
+I have also configured =counsel-etags=, although its method of parsing the
 TAGS file tends to be sluggish when used in conjunction with TRAMP.
 
 #+begin_src emacs-lisp
@@ -713,7 +689,7 @@ TAGS file tends to be sluggish when used in conjunction with TRAMP.
 
 ** Tree-sitter
 
-Emacs package to use the incremental parsing library [[https://tree-sitter.github.io/tree-sitter/][tree-sitter]].
+This package integrates the [[https://tree-sitter.github.io/tree-sitter/][Tree-sitter]] incremental parsing library with Emacs.
 
 #+begin_src emacs-lisp
   (use-package tree-sitter
@@ -726,7 +702,7 @@ Emacs package to use the incremental parsing library [[https://tree-sitter.githu
 
 ** Completion with company
 
-Source code completions. An all-time classic.
+Company is a classic completion framework for source code.
 
 #+begin_src emacs-lisp
   (use-package company
@@ -740,11 +716,11 @@ Source code completions. An all-time classic.
           company-tooltip-align-annotations t))
 #+end_src
 
-** Language server protocol
+** Language Server Protocol
 
-Microsoft's Language Server Protocol (LSP) is a great tool to provide IDE features to Emacs.
-I use two major-modes for managing the lsp servers, namely =lsp-mode= and =eglot=.
-The latter maximizes the use of already existing Emacs infrastructure.
+Microsoft's Language Server Protocol (LSP) brings IDE features to Emacs. I use two major
+modes for managing LSP servers: =lsp-mode= and =eglot=. The latter makes greater use of
+existing Emacs infrastructure.
 
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -781,8 +757,8 @@ The latter maximizes the use of already existing Emacs infrastructure.
     :straight t)
 #+end_src
 
-It is possible to create =lsp-mode= clients that should work over ssh.
-An example for Fortran and Python:
+It is possible to create =lsp-mode= clients that work over SSH. Here is an example for
+Fortran and Python:
 
 #+begin_src emacs-lisp :tangle no
   (lsp-register-client
@@ -797,9 +773,8 @@ An example for Fortran and Python:
                     :server-id 'pyls-remote))
 #+end_src
 
-On my experience however, =eglot= has better support for editing with TRAMP. As you
-can see, there is little configuration here, as most of the defaults are optimal
-for my workflow.
+In my experience, however, =eglot= better supports editing with TRAMP. There is little
+configuration here because most of its defaults already suit my workflow.
 
 #+begin_src emacs-lisp
   (use-package eglot
@@ -809,8 +784,8 @@ for my workflow.
 
 ** Debuggers
 
-The =realgut= debugger is a complete rewriting of the Emacs GUD. It has support for several debuggers and has seamless
-integration with GDB and PDB.
+The =realgud= debugger is a complete reimplementation of Emacs' GUD. It supports several
+debuggers and integrates seamlessly with GDB and PDB.
 
 #+begin_src emacs-lisp
   (use-package realgud
@@ -818,16 +793,16 @@ integration with GDB and PDB.
     :disabled)
 #+end_src
 
-For an experience closer to the mainstream IDEs one can use =dap-mode=, which uses the Debug Adapter Protocol:
+For an experience closer to mainstream IDEs, you can use =dap-mode= and the Debug Adapter Protocol:
 
 #+begin_src emacs-lisp
   (use-package dap-mode
     :straight t)
 #+end_src
 
-** Spell checking with FlySpell
+** Spell checking with Flyspell
 
-FlySpell does a lot out of the box, therefore I have a very basic config.
+Flyspell does a lot out of the box, so my configuration is minimal.
 
 #+begin_src emacs-lisp
   (use-package flyspell
@@ -842,8 +817,8 @@ FlySpell does a lot out of the box, therefore I have a very basic config.
 ** Grammar checking with LanguageTool
 
 This is a free and open-source multilingual grammar checker that supports more than thirty languages.
-A must-have if you write papers in LaTeX or org-mode. For the Emacs package to work one needs to install
-the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP server for example as a systemd unit.
+It is indispensable when writing papers in LaTeX or Org. The Emacs package requires
+[[https://languagetool.org/][LanguageTool]] and its HTTP server, which can run as a systemd unit.
 
 #+begin_src emacs-lisp
   (use-package langtool
@@ -853,7 +828,7 @@ the [[https://languagetool.org/][LanguageTool]] package, and start the HTTP serv
           langtool-http-server-port 8081))
 #+end_src
 
-Also, available as a language server:
+It is also available as a language server:
 
 #+begin_src emacs-lisp
   (use-package lsp-ltex
@@ -869,9 +844,9 @@ Also, available as a language server:
 
 ** Translator
 
-This package provides a potent translation tool integrated seamlessly with Emacs. It extends support to
-numerous translation engines including Google, Bing, and DeepL. My preference leans towards using pop-ups
-for translations, necessitating the additional installation of the =posframe= package.
+This package integrates a powerful translation tool with Emacs and supports engines including
+Google, Bing, and DeepL. I prefer displaying translations in pop-ups, which requires the
+=posframe= package.
 The translation directions can be easily adjusted in the prompt using =C-n= and =C-p=.
 
 #+begin_src emacs-lisp
@@ -887,9 +862,8 @@ The translation directions can be easily adjusted in the prompt using =C-n= and 
 
 Flycheck is indeed a valuable asset in the toolkit, despite certain constraints.
 For instance, the persistent checking might negatively affect performance,
-and certain checkers can impose severe overheads - this led me to disable =mypy=.
-In my current configuration, checks are performed exclusively during saves
-for a balanced performance.
+and certain checkers can impose severe overheads—this led me to disable =mypy=.
+To balance feedback and performance, my current configuration checks files only when they are saved.
 
 #+begin_src emacs-lisp
   (use-package flycheck
@@ -963,7 +937,7 @@ END_SHELL%
 
 ** Better ediff configuration
 
-Emacs built-in =ediff= is more powerful than =vimdiff= IMHO.
+Emacs' built-in =ediff= is more powerful than =vimdiff=, in my opinion.
 However, the default configuration can be improved a bit:
 
 #+begin_src emacs-lisp
@@ -987,8 +961,9 @@ However, the default configuration can be improved a bit:
 
 ** LLMs
 
-For the times they are a-changin'. Large language models are here to stay, and as cliche as it might sound,
-they are the future. It comes then natural to have a nice Emacs package to query different LLMs.
+The times they are a-changin'. Large language models are here to stay and, clichéd as it may
+sound, are likely to shape the future. It is therefore natural to have a convenient Emacs
+package for querying different models.
 
 #+begin_src emacs-lisp
   (use-package chatgpt-shell
@@ -1003,7 +978,7 @@ they are the future. It comes then natural to have a nice Emacs package to query
     (chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com")))
 #+end_src
 
-We also add support for Copilot, which for certain languages is a good boilerplate killer:
+I also add Copilot support, which is effective at generating boilerplate in some languages:
 
 #+begin_src emacs-lisp
   (use-package copilot
@@ -1022,8 +997,8 @@ We also add support for Copilot, which for certain languages is a good boilerpla
 
 ** Terminal support with Vterm
 
-This package uses a C library instead of Lisp to emulate the terminals. It is my favorite emulator
-currently.
+This package uses a C library rather than Lisp to emulate a terminal. It is currently my
+favorite terminal emulator.
 
 #+begin_src emacs-lisp
   (use-package vterm
@@ -1073,9 +1048,9 @@ currently.
                    (window-height . 0.3))))
 #+end_src
 
-A very nice =vterm= feature is the possibility of [[https://github.com/akermu/emacs-libvterm#message-passing][message passing]], allowing for executing Emacs commands from within a
-=vterm= buffer, even remote ones. It requires some configuration on the =.bashrc=. For example, for opening remote
-files, one could do the following:
+A particularly useful =vterm= feature is [[https://github.com/akermu/emacs-libvterm#message-passing][message passing]], which makes it possible to execute
+Emacs commands from a =vterm= buffer, including a remote one. It requires some configuration
+in =.bashrc=. For example, the following opens remote files:
 
 #+begin_src bash :tangle no
   vterm_printf(){
@@ -1108,10 +1083,9 @@ files, one could do the following:
 
 ** Terminal support with Eshell
 
-This is a command shell written purely in Emacs Lisp. While not being POSIX compliant,
-it is still a powerful tool for remote editing due to its native TRAMP support. Here I define
-a custom prompt that resembles my Zsh one. Use =clear 1= to have the same behaviour of
-=bash='s clear function.
+This command shell is written entirely in Emacs Lisp. Although it is not POSIX-compliant,
+its native TRAMP support makes it a powerful tool for remote editing. Here I define a custom
+prompt resembling my Zsh prompt. Use =clear 1= to get the same behavior as Bash's =clear= command.
 
 #+begin_src emacs-lisp
   (use-package eshell
@@ -1197,7 +1171,7 @@ TRAMP supports various protocols, such as SSH, FTP, and SFTP, allowing you to wo
 
 ** File browsers
 
-After trying a couple of file browsers I understood that all I needed was already there: =dired=.
+After trying several file browsers, I realized that everything I needed was already available in Dired.
 
 #+begin_src emacs-lisp
   (use-package ranger
@@ -1255,7 +1229,7 @@ After trying a couple of file browsers I understood that all I needed was alread
 ** Web browsers
 
 And because in the Emacs operating system we can do just about anything, I have added the =shr-tag-pre-highlight= and =shrface=
-packages, so =eww= gets an =org-mode= look and feel. This comes handy when comparing programming languages in Rosetta Code.
+packages, giving EWW an Org-like appearance. This is useful when comparing programming languages on Rosetta Code.
 
 #+begin_src emacs-lisp
   (use-package shr-tag-pre-highlight
@@ -1337,8 +1311,8 @@ And now that we are here, why don't we surf YouTube with this amazing package:
 
 ** IRC and Matrix
 
-Software tinkerers tend to hang out on IRCs a lot, so this configuration is very useful to get help on those channels, and keeping
-in touch with friends.
+Software tinkerers often spend time on IRC, so this configuration is useful both for getting
+help and for keeping in touch with friends.
 
 #+begin_src emacs-lisp
   (use-package ement
@@ -1349,7 +1323,8 @@ in touch with friends.
 
 ** PDF support
 
-Another C Library, it works better than the default Emacs PDF viewer, for instance it allows hyperlinks.
+This package uses another C library and works better than Emacs' default PDF viewer; for example,
+it supports hyperlinks.
 
 #+begin_src emacs-lisp
   (use-package pdf-tools
@@ -1368,8 +1343,8 @@ Another C Library, it works better than the default Emacs PDF viewer, for instan
 
 ** Multimedia player
 
-For multimedia content I use =emms=, a lightweight player written in Emacs Lisp, that integrates perfectly
-with =mpv=.
+For multimedia content, I use =emms=, a lightweight player written in Emacs Lisp that integrates
+perfectly with =mpv=.
 
 #+begin_src emacs-lisp
   (use-package emms
@@ -1387,7 +1362,7 @@ with =mpv=.
                                                "mp4" "mov" "wmv" "webm" "flv" "avi" "mkv"))))))))
 #+end_src
 
-Alternatively, I use the =empv= package, which provides a more elaborated interface to the =mpv= player.
+Alternatively, I use =empv=, which provides a more elaborate interface to the =mpv= player.
 
 #+begin_src emacs-lisp
   (use-package empv
@@ -1400,16 +1375,16 @@ Alternatively, I use the =empv= package, which provides a more elaborated interf
 
 * Programming
 
-Here you can find my configuration for different programming languages. I will introduce it
-in a laconic manner, because this section is rather opinionated.
+Here you can find my configuration for different programming languages. I describe it briefly
+because this section is rather opinionated.
 
 ** Lisp
 
-The language that gave birth to the "Maxwell equations of software". Lisp dialects are my favorite programming languages.
-Below I add a vague description of some of the things I like from them.
+The language that gave birth to the "Maxwell's equations of software." Lisp dialects are my
+favorite programming languages; below is a brief description of what I value in them.
 
 *** General
-Enhance the overall lisp experience in Emacs with Lispy, and its /evil/ friend Lispyville.
+Lispy and its Evil companion, Lispyville, improve the overall Lisp experience in Emacs.
 
 #+begin_src emacs-lisp
   (use-package lispy
@@ -1424,7 +1399,7 @@ Enhance the overall lisp experience in Emacs with Lispy, and its /evil/ friend L
 #+end_src
 
 *** Common Lisp
-Powerful compiler, great libraries and OOP features.
+A powerful compiler, excellent libraries, and strong object-oriented programming features.
 
 #+begin_src emacs-lisp
   (use-package slime
@@ -1439,7 +1414,8 @@ Powerful compiler, great libraries and OOP features.
 #+end_src
 
 *** Scheme and Racket
-Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great documentation, and scribble!
+Minimalism and elegant syntax in their purest form, plus hygienic macros. Racket also has
+excellent documentation and Scribble.
 
 #+begin_src emacs-lisp
   (use-package geiser
@@ -1459,7 +1435,7 @@ Minimalism and elegant syntax, the purest. Hygienic macros. Racket has a great d
 #+end_src
 
 *** Clojure
-Largest library ecosystem thanks to JVM, vectors and maps. Strong focus on functional programming.
+The JVM's enormous library ecosystem, vectors and maps, and a strong focus on functional programming.
 
 #+begin_src emacs-lisp
   (use-package clojure-mode
@@ -1475,7 +1451,7 @@ Largest library ecosystem thanks to JVM, vectors and maps. Strong focus on funct
 #+end_src
 
 *** Hy
-The youngest in this list, similar in spirit to Clojure, but translates to Python's AST.
+The youngest language on this list is similar in spirit to Clojure but compiles to Python's AST.
 
 #+begin_src emacs-lisp
   (use-package hy-mode
@@ -1492,7 +1468,7 @@ The youngest in this list, similar in spirit to Clojure, but translates to Pytho
 #+end_src
 
 Sometimes it is very useful to expand Emacs Lisp macros to better understand their functionality.
-For this, the =macrostep= package comes very handy.
+The =macrostep= package is very useful for this.
 
 #+begin_src emacs-lisp
   (use-package macrostep
@@ -1504,9 +1480,10 @@ For this, the =macrostep= package comes very handy.
 ** Iversonian array languages
 
 I began programming with Fortran, a common initiation for many physicists. The rise of NumPy and SciPy
-eventually drew me to the Python world. As my interest in Python waned, I turned to C++, but was quickly dissuaded by its aesthetic limitations,
-which lead me to the beauty of Lisp and Haskell. Despite some criticisms of these languages, the core features I value in them have their
-roots in APL ([[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programmin Language]]). Programming in Iversonian array languages is a delightful experience.
+eventually drew me to the Python world. As my interest in Python waned, I turned to C++ but was
+quickly dissuaded by its aesthetic limitations, which led me to the beauty of Lisp and Haskell.
+Despite some criticisms of these languages, the core features I value in them have roots in APL
+([[https://www.softwarepreservation.org/projects/apl/Books/APROGRAMMING%20LANGUAGE][A Programming Language]]). Programming in Iversonian array languages is a delightful experience.
 
 *** Dyalog APL
 
@@ -1523,7 +1500,7 @@ The tool of thought for software solutions.
 
 *** BQN
 
-An APL for your flying saucer, and the language I am more interested in at the moment:
+An APL for your flying saucer, and the language that interests me most at the moment:
 
 #+begin_src emacs-lisp
   (use-package bqn-mode
@@ -1627,7 +1604,7 @@ An APL for your flying saucer, and the language I am more interested in at the m
 
 *** Uiua
 
-Point free or die. Stack based, array oriented, general purpose programming language.
+Point-free or die. A stack-based, array-oriented, general-purpose programming language.
 
 #+begin_src emacs-lisp
   (use-package uiua-ts-mode
@@ -1652,7 +1629,7 @@ For now, this is only Lean:
 ** My Emacs Lisp packages
 
 Here I plan to add small packages I write from time to time, mainly for non-trivial editing
-tasks that I stumble against at work.
+tasks that I encounter at work.
 
 #+begin_src emacs-lisp :tangle ../lib/parse-greenx.el
   ;;; parse-greenx.el --- Utilities to refactor GreenX library
@@ -1723,7 +1700,7 @@ tasks that I stumble against at work.
 
 ** Fortran
 
-Fortran is a major component of my job as a physicist, this package provides all I need. 
+Fortran is a major component of my work as a physicist; this package provides everything I need.
 
 #+begin_src emacs-lisp
   (use-package f90-mode
@@ -1735,9 +1712,9 @@ Fortran is a major component of my job as a physicist, this package provides all
 
 ** IRPF90
 
-[[http://irpf90.ups-tlse.fr/][IRPF90]] is an environment that allows for efficient functional programming in FORTRAN
-using the Implicit Reference to Parameters (IRP) method. I have developed a derived
-mode for IRPF90:
+[[http://irpf90.ups-tlse.fr/][IRPF90]] is an environment for efficient functional programming in Fortran
+using the Implicit Reference to Parameters (IRP) method. I have developed a derived mode
+for IRPF90:
 
 #+begin_src emacs-lisp :tangle ../lib/irp-mode.el
   ;;; irp-mode.el --- A major mode for dealing with IRPF90 files
@@ -1784,7 +1761,7 @@ mode for IRPF90:
   ;;; irp-mode.el ends here
 #+end_src
 
-This mode can be also configured with =use-package=:
+This mode can also be configured with =use-package=:
 
 #+begin_src emacs-lisp
   (use-package irp-mode
@@ -1847,7 +1824,7 @@ which expands to
        (funcall use-package--warning79 :catch err))))
 #+end_src
 
-** Cmake
+** CMake
 
 #+begin_src emacs-lisp
   (use-package cmake-mode
@@ -1871,7 +1848,7 @@ which expands to
     (add-hook 'cmake-mode-hook #'my-cmake-font-lock))
 #+end_src
 
-** Cuda
+** CUDA
 
 #+begin_src emacs-lisp
   (use-package cuda-mode
@@ -1981,7 +1958,7 @@ I generally prefer in CASs.
 
 ** Graph visualization
 
-This package provides support for Graphviz's =dot= command line tool. 
+This package provides support for Graphviz's =dot= command-line tool.
 
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode
@@ -2055,8 +2032,8 @@ The best of Python and Bash, in a single shell:
 ** Org-mode
 <<sec:org>>
 
-Org-mode is the package allowing me to have this literate configuration. Org-superstar
-makes org-mode files look gorgeous.
+Org mode makes this literate configuration possible, while Org Superstar makes Org files
+look gorgeous.
 
 #+begin_src emacs-lisp
   (use-package org
@@ -2120,7 +2097,7 @@ makes org-mode files look gorgeous.
     (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 #+end_src
 
-Some extra exporting formats:
+Some additional export formats:
 
 #+begin_src emacs-lisp
   (use-package ox-reveal
@@ -2155,7 +2132,7 @@ Add support for encrypted sections:
     (org-crypt-key "rpana92@gmail.com"))
 #+end_src
 
-And by the way, convert everything else to =org-mode= please:
+And, while we are at it, convert everything else to Org:
 
 #+begin_src emacs-lisp
   (use-package org-pandoc-import
@@ -2217,7 +2194,7 @@ Niklas Luhmann's /Zettelkasten/ method.
 
 ** LaTeX
 
-Auctex provides all you will ever need to work with LaTeX, and more. 
+AUCTeX provides everything you could need for working with LaTeX, and more.
 
 #+begin_src emacs-lisp
   (use-package auctex
@@ -2358,7 +2335,7 @@ A porcelain as glorious as the one from Meißen:
 
 ** GitLab CI
 
-This package comes very handy when writing GitLab pipelines:
+This package is very useful when writing GitLab pipelines:
 
 #+begin_src emacs-lisp
   (use-package gitlab-ci-mode
@@ -2373,16 +2350,16 @@ This package comes very handy when writing GitLab pipelines:
     (gitlab-ci-mode-flycheck-enable))
 #+end_src
 
-** The heretic Vimscript
+** The heretical Vim script
 
 #+begin_src emacs-lisp
   (use-package vimrc-mode
     :straight t)
 #+end_src
 
-** Nix expressions language
+** Nix expression language
 
-Syntax highlighting for Nix expression's language files
+Syntax highlighting for Nix expression language files:
  
 #+begin_src emacs-lisp
   (use-package nix-mode
@@ -2392,7 +2369,7 @@ Syntax highlighting for Nix expression's language files
 
 ** GNU Guix package manager
 
-[[https://guix.gnu.org/][Guix]] is a functional package manager inspired by [[https://nixos.org/][Nix]], but using Guile scheme instead of the Nix expression's language.
+[[https://guix.gnu.org/][Guix]] is a functional package manager inspired by [[https://nixos.org/][Nix]], but it uses Guile Scheme instead of the Nix expression language.
 This package offers an Emacs interface to it.
 
 #+begin_src emacs-lisp
@@ -2400,13 +2377,12 @@ This package offers an Emacs interface to it.
     :straight t)
 #+end_src
 
-* Footer of the Emacs package
+* Closing the Emacs package
 <<sec:foot>>
 
-You've journeyed to the finale or perhaps, you've taken a particular interest in the art of closing an Emacs package.
-If my configuration intrigues you and you'd like to experiment with it, I warmly invite you to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub.
-Your support and feedback will surely fuel its continuous development. Thank you for your time and interest!
-So, without further ado, let's elegantly wrap up the tangling process:
+You have reached the end—or perhaps you are particularly interested in how an Emacs package
+is closed. If this configuration intrigues you, feel free to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub. Feedback and
+contributions are welcome. Without further ado, here is the end of the tangled file:
 
 #+begin_src emacs-lisp
   

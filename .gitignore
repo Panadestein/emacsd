@@ -1,4 +1,5 @@
 .packages/
+.org-timestamps/
 ac-comphist.dat
 anaconda-mode
 auto-save-list

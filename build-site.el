@@ -1,69 +1,63 @@
-;;; package --- Build Org website
+;;; build-site.el --- Build the Org website -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Build website from Org-mode source files
+;; Export the website with bundled Org and a vendored htmlize dependency.
 
 ;;; Code:
 
-;; Set a package installation directory to avoid conflicts
-
-(require 'package)
-(setq package-user-dir (expand-file-name "./.packages"))
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("elpa" . "https://elpa.gnu.org/packages/")))
-
-;; Initialize the package system
-
-(package-initialize)
-(unless package-archive-contents
-  (package-refresh-contents))
-
-;; Install packages needed for HTML export
-
-(package-install 'htmlize)
-(package-install 'reformatter)
-(package-install 'nix-mode)
-(package-install 'color-theme-modern)
-
-(require 'htmlize)
 (require 'ox-publish)
-(require 'font-lock)
 
-;; Using this library is a work-around to get color in HTML exports.
-;; Otherwise Emacs in batch mode cannot get the correct faces
+(defconst emacsd-site-root
+  (file-name-directory (or load-file-name buffer-file-name))
+  "Root directory of the emacsd website sources.")
 
-(load-theme 'greiner t t)
-(enable-theme 'greiner)
+(defconst emacsd-site-content-directory
+  (expand-file-name "content" emacsd-site-root))
 
-;; Set some variables for the export
+(defconst emacsd-site-output-directory
+  (expand-file-name "public" emacsd-site-root))
 
-(global-font-lock-mode t)
-(setq org-html-validation-link nil
+(add-to-list 'load-path (expand-file-name "vendor" emacsd-site-root))
+(require 'htmlize)
+
+(setq org-export-use-babel nil
+      org-html-doctype "html5"
+      org-html-html5-fancy t
+      org-html-head-include-default-style nil
       org-html-head-include-scripts nil
-      org-html-include-default-style nil
-      org-safe-remote-resources '("https://fniessen.github.io/org-html-themes/org/setup/html-theme-readtheorg.setup")
+      org-html-htmlize-output-type 'css
+      org-html-validation-link nil
+      org-publish-timestamp-directory
+      (expand-file-name ".org-timestamps/" emacsd-site-root)
+      org-publish-use-timestamps-flag nil
       org-src-fontify-natively t)
 
-;; Define the project to be published
-
 (setq org-publish-project-alist
-      (list
-       (list "emacsd"
-	     :recursive t
-	     :base-directory "./content"
-	     :publishing-directory "./public"
-	     :publishing-function 'org-html-publish-to-html
-	     :with-author t
-	     :with-creator nil
-	     :with-toc t
-	     :setion-numbers nil
-	     :time-stamp-file nil)))
+      `(("emacsd-pages"
+         :base-directory ,emacsd-site-content-directory
+         :base-extension "org"
+         :publishing-directory ,emacsd-site-output-directory
+         :publishing-function org-html-publish-to-html
+         :recursive t
+         :with-author t
+         :with-creator nil
+         :with-toc t
+         :section-numbers nil
+         :time-stamp-file nil
+         :html-head-extra "<link rel=\"stylesheet\" href=\"site.css\">\n<script src=\"site.js\" defer></script>"
+         :html-preamble "<a class=\"source-link\" href=\"https://github.com/Panadestein/emacsd\">Source on GitHub</a>"
+         :html-postamble nil)
+        ("emacsd-static"
+         :base-directory ,emacsd-site-content-directory
+         :base-extension "css\\|js"
+         :publishing-directory ,emacsd-site-output-directory
+         :publishing-function org-publish-attachment
+         :recursive t)
+        ("emacsd-site" :components ("emacsd-pages" "emacsd-static"))))
 
-;; Generate site
+(org-publish "emacsd-site" t)
 
-(org-publish-all t)
-
-(message "Build completed")
+(message "Website built in %s" emacsd-site-output-directory)
 
 (provide 'build-site)
 ;;; build-site.el ends here

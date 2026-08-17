@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-# Run Emacs Lisp publishing script
+set -euo pipefail
 
-emacs -Q --script build-site.el 
+cd "$(dirname "$0")"
+exec emacs --batch -Q --load build-site.el

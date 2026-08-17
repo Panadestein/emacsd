@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "#text-table-of-contents > ul > li"
   );
 
-  topLevelItems.forEach((item) => {
+  topLevelItems.forEach((item, index) => {
     const link = item.querySelector(":scope > a");
     const submenu = item.querySelector(":scope > ul");
 
@@ -15,28 +15,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     item.classList.add("toc-top-level");
     submenu.classList.add("toc-collapsible");
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "toc-toggle";
-    button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-label", `Show subsections for ${link.textContent}`);
+    submenu.id = `toc-submenu-${index}`;
+    link.classList.add("toc-section-link");
+    link.setAttribute("aria-controls", submenu.id);
+    link.setAttribute("aria-expanded", "false");
 
     const setExpanded = (expanded) => {
       item.classList.toggle("is-expanded", expanded);
-      button.setAttribute("aria-expanded", String(expanded));
-      button.setAttribute(
-        "aria-label",
-        `${expanded ? "Hide" : "Show"} subsections for ${link.textContent}`
-      );
+      link.setAttribute("aria-expanded", String(expanded));
     };
 
-    button.addEventListener("click", () => {
-      setExpanded(button.getAttribute("aria-expanded") !== "true");
+    link.addEventListener("click", () => {
+      setExpanded(link.getAttribute("aria-expanded") !== "true");
     });
-
-    link.addEventListener("click", () => setExpanded(true));
-    item.insertBefore(button, link);
 
     if (
       location.hash &&

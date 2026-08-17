@@ -135,46 +135,12 @@ li + li { margin-top: 0.3rem; }
 
 #table-of-contents li + li { margin-top: 0.45rem; }
 
-.has-js #table-of-contents .toc-top-level {
-  position: relative;
-  padding-left: 1.2rem;
-}
-
 .has-js #table-of-contents .toc-collapsible {
   display: none;
 }
 
 .has-js #table-of-contents .is-expanded > .toc-collapsible {
   display: block;
-}
-
-.toc-toggle {
-  position: absolute;
-  top: -0.1rem;
-  left: -0.25rem;
-  width: 1.25rem;
-  height: 1.25rem;
-  padding: 0;
-  border: 0;
-  color: var(--muted);
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-}
-
-.toc-toggle::before {
-  display: block;
-  content: "▸";
-  transition: transform 120ms ease;
-}
-
-.is-expanded > .toc-toggle::before {
-  transform: rotate(90deg);
-}
-
-.toc-toggle:hover,
-.toc-toggle:focus-visible {
-  color: var(--accent);
 }
 
 #table-of-contents a {
@@ -187,6 +153,19 @@ li + li { margin-top: 0.3rem; }
 
 #table-of-contents a:hover,
 #table-of-contents a:focus-visible { color: var(--accent); }
+
+#table-of-contents .toc-section-link {
+  padding-left: 0.55rem;
+  border-left: 0.18rem solid var(--accent);
+  color: var(--accent);
+  font-weight: 650;
+  transition: padding-left 120ms ease;
+}
+
+#table-of-contents .toc-section-link:hover,
+#table-of-contents .toc-section-link:focus-visible {
+  padding-left: 0.75rem;
+}
 
 code, pre {
   font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;

@@ -11,12 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const link = item.querySelector(":scope > a");
     const submenu = item.querySelector(":scope > ul");
 
-    if (!link || !submenu) return;
+    if (!link) return;
 
     item.classList.add("toc-top-level");
+    link.classList.add("toc-section-link");
+
+    if (!submenu) return;
+
     submenu.classList.add("toc-collapsible");
     submenu.id = `toc-submenu-${index}`;
-    link.classList.add("toc-section-link");
     link.setAttribute("aria-controls", submenu.id);
     link.setAttribute("aria-expanded", "false");
 

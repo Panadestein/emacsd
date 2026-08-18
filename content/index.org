@@ -13,9 +13,9 @@
 #+HTML_HEAD:   gtag('config', 'G-XJW2VM2D12');
 #+HTML_HEAD: </script>
 
-* Prelude: Emacs configuration and the world of Lisp
+* Overture
 
-Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. Like many configurations of its kind,
+Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. Like many of its kind,
 it illustrates Newton's famous aphorism about standing on the shoulders of giants.
 A heartfelt nod goes to the unsung heroes whose Emacs Lisp snippets form the backbone
 of this file. Speaking of Lisp, I have also had a taste of the enlightenment promised
@@ -1500,11 +1500,12 @@ The tool of thought for software solutions.
 
 *** BQN
 
-An APL for your flying saucer, and the language that interests me most at the moment:
+An APL for your flying saucer, and the language that interests me most at the moment.
+I am managing the package myself locally for now:
 
 #+begin_src emacs-lisp
   (use-package bqn-mode
-    :straight t
+    :straight (:type nil :local-repo "bqn-mode")
     :init
     ;; Rudimentary org-babel support
     (add-to-list 'org-babel-tangle-lang-exts '("bqn" . "bqn"))
@@ -2377,12 +2378,13 @@ This package offers an Emacs interface to it.
     :straight t)
 #+end_src
 
-* Closing the Emacs package
+* Postlude 
 <<sec:foot>>
 
-You have reached the end—or perhaps you are particularly interested in how an Emacs package
-is closed. If this configuration intrigues you, feel free to [[https://github.com/Panadestein/emacsd/fork][fork it]] on GitHub. Feedback and
-contributions are welcome. Without further ado, here is the end of the tangled file:
+At last, the closing parenthesis. An Emacs configuration is never finished (only briefly
+free of obvious defects) so [[https://github.com/Panadestein/emacsd/fork][fork it]], borrow whatever proves useful, and send back any
+improvement clever enough to survive your own init file. For now, however, Emacs expects
+a proper ending:
 
 #+begin_src emacs-lisp
   

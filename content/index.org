@@ -13,7 +13,7 @@
 #+HTML_HEAD:   gtag('config', 'G-XJW2VM2D12');
 #+HTML_HEAD: </script>
 
-* Overture
+* Prelude
 
 Welcome to my literate [[https://github.com/Panadestein/emacsd][Emacs configuration]]. Like many of its kind,
 it illustrates Newton's famous aphorism about standing on the shoulders of giants.

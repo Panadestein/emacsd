@@ -1534,10 +1534,10 @@ I am managing the package myself locally for now:
         (get-buffer-process (bqn-comint-buffer))))
 
     ;; Fix: disable quail only for BQN
-    (defadvice quail-completion (around disable-for-bqn activate)
-      (if (string= "BQN-Z" current-input-method)
-          nil
-        ad-do-it))
+    (defun quail-completion--disable-for-bqn (orig-fun &rest args)
+      (unless (string= "BQN-Z" current-input-method)
+        (apply orig-fun args)))
+    (advice-add 'quail-completion :around #'quail-completion--disable-for-bqn)
     
     (defun bqn-explain-line ()
       "Explain the current line in BQN, displaying the explanation result in the minibuffer."

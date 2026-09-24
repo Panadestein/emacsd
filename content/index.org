@@ -1505,7 +1505,7 @@ I am managing the package myself locally for now:
 
 #+begin_src emacs-lisp
   (use-package bqn-mode
-    :straight (:type nil :local-repo "bqn-mode")
+    :straight t
     :init
     ;; Rudimentary org-babel support
     (add-to-list 'org-babel-tangle-lang-exts '("bqn" . "bqn"))
